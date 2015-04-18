@@ -22,6 +22,10 @@ $(function(){
       <img th:src="${book.image}" alt="" />
       <p th:text="${book.title}" />
     </div>
+    <div class="item" th:each="kindle : ${kindleList}">
+      <img th:src="${kindle.largeImage}" alt="" />
+      <p th:text="${kindle.title}" />
+    </div>
   </div>
 </div>
 
