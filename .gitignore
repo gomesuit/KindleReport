@@ -1,5 +1,4 @@
 /target/
 /tmp/
-
-tmp/logs/access_log.2015-04-18.log
-sqlite/dev_kindle.sqlite3
+tmp/logs/
+sqlite/
