@@ -11,36 +11,30 @@
 <script src="/js/jquery.lazyload.min.js"></script>
 <script>
 $(function(){
-	var $container = $('#container');　
-	$container.imagesLoaded(function(){
-	  $container.masonry({
-	    itemSelector: '.item',
-	    isAnimated: true,
-	    isFitWidth: true,
-	    columnWidth: 180
-	  });
-	});
 	$('img').lazyload({
 		effect: 'fadeIn',
-		effectspeed: 2000,
-		threshold: 300
+		effectspeed: 2000
 	});
 });
 </script>
 </head>
 
 <body>
-
-<div id="wrapper">
-  <div id="container">
-    <div class="item" th:each="kindle : ${kindleList}">
-      <img src="/img/transparent.gif" th:attr="data-original=${kindle.largeImage}" alt="" />
-      <p th:text="${kindle.title}" />
-      <p th:text="${kindle.releaseDate}" />
-    </div>
-  </div>
-</div>
-
+	<div th:each="dateKindleList : ${dateKindleListList}">
+		<h1 th:text="${dateKindleList.releaseDate}" />
+		<table>
+			<span th:each="KindleList : ${dateKindleList.rowKindleList}">
+				<tr>
+					<span th:each="Kindle : ${KindleList}">
+						<td><img class="item2" src="/img/transparent.gif"
+							th:attr="data-original=${Kindle.largeImage}" alt="" />
+							<p th:text="${Kindle.title}" />
+							<p th:text="${Kindle.releaseDate}" /></td>
+					</span>
+				</tr>
+			</span>
+		</table>
+	</div>
 </body>
 
 </html>

@@ -28,4 +28,6 @@ public interface KindleMapper {
   String selectNoImage();
   void deleteNoImage(String asin);
   List<Kindle> selectKindleList();
+  List<String> selectRereaseDateList();
+  List<Kindle> selectDayKindleList(String releaseDate);
 }

@@ -241,7 +241,17 @@
 	<delete id="deleteNoImage" parameterType="java.lang.String" statementType="PREPARED" timeout="20">
 		delete from NOIMAGE where asin = #{asin}
 	</delete>
+	
 	<select id="selectKindleList" resultType="kindlereport.model.Kindle">
-		select * from Kindle LIMIT 10
+		select * from Kindle order by releaseDate desc LIMIT 100
 	</select>
+	
+	<select id="selectRereaseDateList" resultType="java.lang.String">
+		select distinct releaseDate from Kindle order by releaseDate desc LIMIT 100;
+	</select>
+	
+	<select id="selectDayKindleList" parameterType="java.lang.String" resultType="kindlereport.model.Kindle">
+		select * from Kindle where releaseDate = #{releaseDate} order by releaseDate desc;
+	</select>
+	
 </mapper>

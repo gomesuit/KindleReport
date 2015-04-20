@@ -1,4 +1,4 @@
-﻿.clearfix:before, .clearfix:after {
+.clearfix:before, .clearfix:after {
 	content: " ";
 	display: table;
 }
