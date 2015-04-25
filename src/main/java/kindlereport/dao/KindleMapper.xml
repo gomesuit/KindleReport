@@ -242,16 +242,22 @@
 		delete from NOIMAGE where asin = #{asin}
 	</delete>
 	
-	<select id="selectKindleList" resultType="kindlereport.model.Kindle">
-		select * from Kindle order by releaseDate desc LIMIT 100
+	<select id="selectKindleList" resultType="kindlereport.model.Kindle" parameterType="java.lang.Integer">
+		select
+			*
+		from
+			Kindle
+		order by
+			releaseDate desc
+		LIMIT #{limit} OFFSET #{offset}
 	</select>
 	
 	<select id="selectRereaseDateList" resultType="java.lang.String">
-		select distinct releaseDate from Kindle order by releaseDate desc LIMIT 100;
+		select distinct releaseDate from Kindle order by releaseDate desc LIMIT 100
 	</select>
 	
 	<select id="selectDayKindleList" parameterType="java.lang.String" resultType="kindlereport.model.Kindle">
-		select * from Kindle where releaseDate = #{releaseDate} order by releaseDate desc;
+		select * from Kindle where releaseDate = #{releaseDate} order by releaseDate desc
 	</select>
 	
 </mapper>

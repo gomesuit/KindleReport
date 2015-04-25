@@ -27,7 +27,7 @@ public interface KindleMapper {
   void insertNoImage(String asin);
   String selectNoImage();
   void deleteNoImage(String asin);
-  List<Kindle> selectKindleList();
+  List<Kindle> selectKindleList(Map<String,Integer> map);
   List<String> selectRereaseDateList();
   List<Kindle> selectDayKindleList(String releaseDate);
 }
