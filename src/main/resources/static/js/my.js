@@ -15,6 +15,9 @@ $(function(){
 		itemCount = 0;
 		pageLoad();
 	});
+	$(window).on('load resize', function(){
+		$('.item').tile(colnum);
+	});
 	function pageLoad(){
 		var request = $.ajax({
 			type: "GET",
