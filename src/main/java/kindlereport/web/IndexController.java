@@ -18,15 +18,14 @@ public class IndexController {
 	
 	@Autowired
 	private KindleMapper kindleMapper;
-	private MyBatisService myBatisService;
+	private MyBatisService myBatisService = new MyBatisService();
 
 	@RequestMapping("/")
 	public String home(Model model) {		
 		List<Kindle> kindleList = myBatisService.getKindleList(kindleMapper, 100, 0);
 		model.addAttribute("kindleList", kindleList);
 		
-		//return "default";
-		return "basic";
+		return "default";
 	}
 
 	@RequestMapping("/basic")

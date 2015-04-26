@@ -21,7 +21,7 @@ public class AjaxController {
 	
 	@RequestMapping("/json")
 	public List<Kindle> ajax(@RequestParam(value="itemCount", required=false, defaultValue="0") int itemCount, Model model) {
-		int limit = 15;
+		int limit = 16;
 		int offset = itemCount;
 		List<Kindle> kindleList = myBatisService.getKindleList(kindleMapper, limit, offset);
 		return kindleList;
