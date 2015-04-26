@@ -20,10 +20,13 @@ public class AjaxController {
 	private MyBatisService myBatisService = new MyBatisService();
 	
 	@RequestMapping("/json")
-	public List<Kindle> ajax(@RequestParam(value="itemCount", required=false, defaultValue="0") int itemCount, Model model) {
-		int limit = 16;
+	public List<Kindle> ajax(
+			@RequestParam(value = "itemCount", required = false, defaultValue = "0") int itemCount,
+			@RequestParam(value = "order", required = false, defaultValue = "1") int order,
+			Model model) {
+		int limit = 24;
 		int offset = itemCount;
-		List<Kindle> kindleList = myBatisService.getKindleList(kindleMapper, limit, offset);
+		List<Kindle> kindleList = myBatisService.getKindleList(kindleMapper, limit, offset, order);
 		return kindleList;
 	}
 	

@@ -70,7 +70,6 @@ h1 {
 [class*="col-"]:before {
   display: block;
   position: relative;
-  content: "COL";
   margin-bottom: 8px;
   font-family: sans-serif;
   font-size: 10px;

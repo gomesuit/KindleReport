@@ -22,7 +22,7 @@ public class IndexController {
 
 	@RequestMapping("/")
 	public String home(Model model) {		
-		List<Kindle> kindleList = myBatisService.getKindleList(kindleMapper, 100, 0);
+		List<Kindle> kindleList = myBatisService.getKindleList(kindleMapper, 100, 0, 1);
 		model.addAttribute("kindleList", kindleList);
 		
 		return "default";
@@ -30,7 +30,7 @@ public class IndexController {
 
 	@RequestMapping("/basic")
 	public String basic(Model model) {		
-		List<Kindle> kindleList = myBatisService.getKindleList(kindleMapper, 100, 0);
+		List<Kindle> kindleList = myBatisService.getKindleList(kindleMapper, 100, 0, 1);
 		model.addAttribute("kindleList", kindleList);
 		
 		return "basic";

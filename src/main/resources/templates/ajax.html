@@ -1,56 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>eComics report</title>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<title>eComics report</title>
 
-    <!-- Bootstrap -->
-	<link href="css/bootstrap.min.css" rel="stylesheet" />
-	<link rel="stylesheet" href="/css/style.css" />
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="/js/jquery.tile.min.js"></script>
-	<script src="/js/my.js"></script>
-  </head>
-  <body>
+<!-- Bootstrap -->
+<link href="css/bootstrap.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="/css/style.css" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="/js/jquery.tile.min.js"></script>
+<script src="/js/my.js"></script>
+</head>
+<body>
 	<nav class="navbar navbar-fixed-top navbar-inverse">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">eComics report</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-        </div><!-- /.nav-collapse -->
-      </div><!-- /.container -->
-    </nav>
-    <hr/><hr/>
-	<p>
-      <button type="button" class="btn btn-default">☓1</button>
-      <button type="button" class="btn btn-default">☓2</button>
-      <button type="button" class="btn btn-default">☓3</button>
-      <button type="button" class="btn btn-default">☓4</button>
-    </p>
-    
-	<div class="container">
-      <!-- Example row of columns -->
-      <div class="row">
-	      <div class="row-same-height row-full-height">
-	      </div>
-      </div>
-    </div>
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+					aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">eComics report</a>
+			</div>
+			<div id="navbar" class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="#">Home</a></li>
+					<li><a href="#about">About</a></li>
+					<li><a href="#contact">Contact</a></li>
+				</ul>
+			</div>
+			<!-- /.nav-collapse -->
+		</div>
+		<!-- /.container -->
+	</nav>
+	<hr />
+	<hr />
 
-  </body>
+	<div class="container">
+		<!-- Example row of columns -->
+		<div class="row">
+			<div class="col-md-10">
+				<button type="button" class="mybtn btn btn-default" value="1">☓1</button>
+				<button type="button" class="mybtn btn btn-default" value="2">☓2</button>
+				<button type="button" class="mybtn btn btn-default" value="3">☓3</button>
+				<button type="button" class="mybtn btn btn-default" value="4">☓4</button>
+				<button type="button" class="mybtn btn btn-default" value="6">☓6</button>
+			</div>
+			<div class="col-md-2">
+				<div class="dropdown">
+					<button class="btn btn-default dropdown-toggle" type="button"
+						id="dropdownMenu1" data-toggle="dropdown">
+						並べ替え <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu"
+						aria-labelledby="dropdownMenu1">
+						<li role="presentation" class="myorder" value="1"><a role="menuitem" tabindex="-1" href="">発売日降順</a></li>
+						<li role="presentation" class="myorder" value="2"><a role="menuitem" tabindex="-1" href="">発売日昇順</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div id="mainrow" class="row-same-height row-full-height"></div>
+		</div>
+	</div>
+
+</body>
 </html>

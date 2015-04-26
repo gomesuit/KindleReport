@@ -18,10 +18,11 @@ public class MyBatisService {
 	 * 自動生成されたマッパー実装はSpringのもとで管理され{@link Autowired}指定されたフィールドに自動設定される。
 	 */
 	
-	public List<Kindle> getKindleList(KindleMapper kindleMapper, int limit, int offset) {
+	public List<Kindle> getKindleList(KindleMapper kindleMapper, int limit, int offset, int order) {
 		Map<String,Integer> map = new HashMap<String,Integer>();
 		map.put("limit", limit);
 		map.put("offset", offset);
+		map.put("order", order);
 		return kindleMapper.selectKindleList(map);
 	}
 

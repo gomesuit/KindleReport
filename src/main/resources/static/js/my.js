@@ -1,8 +1,19 @@
 $(function(){
-	itemCount = 0;
+	var itemCount = 0;
+	var colnum = 4;
+	var order = 1;
 	pageLoad();
-	$(".btn").click(function(){
-		//$(".item").attr("class", "item col-md-3");
+	$(".mybtn").click(function(){
+		colnum = $(this).attr("value");
+		$("#mainrow").empty();
+		itemCount = 0;
+		pageLoad();
+	});
+	$(".myorder").click(function(){
+		order = $(this).attr("value");
+		$("#mainrow").empty();
+		itemCount = 0;
+		pageLoad();
 	});
 	function pageLoad(){
 		var request = $.ajax({
@@ -11,7 +22,8 @@ $(function(){
 			cache: false,
 			datatype: "json",
 			data:{
-				"itemCount" : itemCount
+				"itemCount" : itemCount,
+				"order" : order
 			},
 			timeout: 3000
 		});
@@ -19,13 +31,14 @@ $(function(){
 			//alert("通信成功");
 			var imgClassName = "img" + itemCount;
 			var tileClassName = "tile" + itemCount;
-			var row = $(".row-same-height");
+			var bootColClass = "col-md-" + (12 / colnum);
+			var row = $("#mainrow");
 			var str = "";
 			for(var i in data){
 				if(data[i].largeImage == ""){
 					data[i].largeImage = "img/noimage.png"
 				}
-				str += '<div class="col-md-3 col-full-height"><div class="' + tileClassName + ' item"><div class="content">'
+				str += '<div class="' + bootColClass + ' col-full-height"><div class="' + tileClassName + ' item"><div class="content">'
 					+ '<p>' + data[i].title + '</p>'
 					+ '<a href="' + data[i].detailPageURL + '" class="thumbnail"><img class="' + imgClassName + '" src="' + data[i].largeImage + '" /></a>'
 					+ '<p>' + data[i].releaseDate + '</p>'
@@ -41,7 +54,7 @@ $(function(){
 		      $(allImage[i]).bind("load", function(){
 		        completeImageCount ++;
 		        if (allImageCount == completeImageCount){
-				  $('.' + tileClassName).tile(4);
+				  $('.' + tileClassName).tile(colnum);
 		        }
 		      });
 		    }

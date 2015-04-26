@@ -248,7 +248,17 @@
 		from
 			Kindle
 		order by
-			releaseDate desc
+		<choose>
+			<when test="order == null or order == 1">
+				releaseDate desc
+			</when>
+			<when test="order == 2">
+				releaseDate asc
+			</when>
+			<otherwise>
+				releaseDate desc
+			</otherwise>
+		</choose>
 		LIMIT #{limit} OFFSET #{offset}
 	</select>
 	
