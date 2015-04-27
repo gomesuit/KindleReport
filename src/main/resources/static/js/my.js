@@ -1,16 +1,32 @@
 $(function(){
-	var itemCount = 0;
-	var colnum = 4;
-	var order = 1;
+	var itemCount;
+	var colnum;
+	var order;
+	init();
 	pageLoad();
+	function init(){
+		itemCount = 0;
+		colnum = $.cookie("colnum");
+		if (colnum == null){
+			colnum = 4;
+			$.cookie("colnum", colnum);
+		}
+		order = $.cookie("order");
+		if (order == null){
+			order = 1;
+			$.cookie("order", order);
+		}
+	}
 	$(".mybtn").click(function(){
 		colnum = $(this).attr("value");
+		$.cookie("colnum", colnum);
 		$("#mainrow").empty();
 		itemCount = 0;
 		pageLoad();
 	});
 	$(".myorder").click(function(){
 		order = $(this).attr("value");
+		$.cookie("order", order);
 		$("#mainrow").empty();
 		itemCount = 0;
 		pageLoad();
@@ -18,10 +34,11 @@ $(function(){
 //	$(window).on('load resize', function(){
 //		$('.item').tile(colnum);
 //	});
-	function pageLoad(){
+	function pageLoad(obj){
+		var url = "/json" + location.search;
 		var request = $.ajax({
 			type: "GET",
-			url: '/json',
+			url: url,
 			cache: false,
 			datatype: "json",
 			data:{
@@ -61,6 +78,7 @@ $(function(){
 		        }
 		      });
 		    }
+            obj.data('loading', false);
 		});
 		request.fail(function(){
 			//alert("通信エラー");
@@ -69,14 +87,22 @@ $(function(){
 			//alert("通信完了");
 		});
 	}
-    $(window).scroll(function(ev) {
-        var $window = $(ev.currentTarget),
-            height = $window.height(),
-            scrollTop = $window.scrollTop(),
-            documentHeight = $(document).height();
-        if (documentHeight === height + scrollTop) {
-            //alert('一番下だよ');
-            pageLoad();
+//    $(window).scroll(function(ev) {
+//        var $window = $(ev.currentTarget),
+//            height = $window.height(),
+//            scrollTop = $window.scrollTop(),
+//            documentHeight = $(document).height();
+//        if (documentHeight === height + scrollTop) {
+//            //alert('一番下だよ');
+//            pageLoad();
+//        }
+//    });
+    $(window).bottom({proximity: 0.05});
+    $(window).on('bottom', function() {
+    	var obj = $(this);
+        if (!obj.data('loading')) {
+            obj.data('loading', true);
+            pageLoad(obj);
         }
     });
 });
