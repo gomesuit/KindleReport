@@ -53,10 +53,37 @@ $(function() {
 		init()
 		pageLoad();
 	});
-//	$("a").click(function() {
-//		alert("aaaa");
-//		console.log($(this).attr("class"));
-//	});
+	$(document).on("click", ".item a", function(){
+		var url = $(this).attr("value");
+		history.replaceState($("#pageState").html());
+		itemPageLoad(url);
+	});
+	function itemPageLoad(url) {
+		var request = $.ajax({
+			type : "GET",
+			url : url,
+			cache : false,
+			datatype : "html",
+			data : {
+				"ajaxflg" : 1
+			},
+			timeout : 3000
+		});
+		request.done(function(data) {
+			//alert("通信成功");
+			//console.log(data);
+			$("#pageState").empty();
+			$("#pageState").html(data);
+			history.pushState($("#pageState").html(), "", url);
+		});
+		request.fail(function() {
+			// alert("通信エラー");
+		});
+		request.always(function() {
+			// alert("通信完了");
+		});
+		
+	}
 	// $(window).on('load resize', function(){
 	// $('.item').tile(colnum);
 	// });
@@ -90,11 +117,10 @@ $(function() {
 				str += '<div class="' + bootColClass
 						+ ' col-full-height"><div class="' + tileClassName
 						+ ' item"><div class="content">' + '<p>'
-						+ data[i].title + '</p>' + '<a href="/items/'
+						+ data[i].title + '</p>' + '<a value="/items/'
 						+ data[i].asin + '" class="thumbnail"><img class="'
 						+ imgClassName + '" src="' + data[i].largeImage
 						+ '" /></a>' + '<p>' + data[i].releaseDate + '</p>'
-						// + '<p><a class="btn btn-default" href="#" role="button">View details »</a></p>'
 						+ '<a class="btn btn-default" role="button">View details »</a>'
 						+ '</div></div></div>';
 			}
@@ -121,65 +147,65 @@ $(function() {
 			// alert("通信完了");
 		});
 	}
-	function pageLoad2() {
-		// var url = "/json" + location.search;
-		var request = $.ajax({
-			type : "GET",
-			url : "/json",
-			cache : false,
-			datatype : "json",
-			data : {
-				"order" : order,
-				"page" : position
-			},
-			timeout : 3000
-		});
-		request.done(function(data) {
-			// alert("通信成功");
-			var imgClassName = "img" + position;
-			var tileClassName = "tile" + position;
-			var bootColClass = "col-md-" + (12 / colnum);
-			var mainrow = $("#mainrow");
-			var pageId = "page" + position;
-			mainrow.prepend('<div id="' + pageId + '" />');
-			var pagerow = $("#" + pageId);
-			var str = "";
-			for ( var i in data) {
-				if (data[i].largeImage == "") {
-					data[i].largeImage = "img/noimage.png"
-				}
-				str += '<div class="' + bootColClass
-						+ ' col-full-height"><div class="' + tileClassName
-						+ ' item"><div class="content">' + '<p>'
-						+ data[i].title + '</p>' + '<a href="/items/'
-						+ data[i].asin + '" class="thumbnail"><img class="'
-						+ imgClassName + '" src="' + data[i].largeImage
-						+ '" /></a>' + '<p>' + data[i].releaseDate + '</p>'
-						// + '<p><a class="btn btn-default" href="#"
-						// role="button">View details »</a></p>'
-						+ '</div></div></div>';
-			}
-			str += '<div class="row"><h1>' + "page " + position + '</h1></div>'
-			pagerow.append(str);
-			var allImage = $("." + imgClassName);
-			var allImageCount = allImage.length;
-			var completeImageCount = 0;
-			for (var i = 0; i < allImageCount; i++) {
-				$(allImage[i]).bind("load", function() {
-					completeImageCount++;
-					if (allImageCount == completeImageCount) {
-						$('.' + tileClassName).tile(colnum);
-					}
-				});
-			}
-		});
-		request.fail(function() {
-			// alert("通信エラー");
-		});
-		request.always(function() {
-			// alert("通信完了");
-		});
-	}
+//	function pageLoad2() {
+//		// var url = "/json" + location.search;
+//		var request = $.ajax({
+//			type : "GET",
+//			url : "/json",
+//			cache : false,
+//			datatype : "json",
+//			data : {
+//				"order" : order,
+//				"page" : position
+//			},
+//			timeout : 3000
+//		});
+//		request.done(function(data) {
+//			// alert("通信成功");
+//			var imgClassName = "img" + position;
+//			var tileClassName = "tile" + position;
+//			var bootColClass = "col-md-" + (12 / colnum);
+//			var mainrow = $("#mainrow");
+//			var pageId = "page" + position;
+//			mainrow.prepend('<div id="' + pageId + '" />');
+//			var pagerow = $("#" + pageId);
+//			var str = "";
+//			for ( var i in data) {
+//				if (data[i].largeImage == "") {
+//					data[i].largeImage = "img/noimage.png"
+//				}
+//				str += '<div class="' + bootColClass
+//						+ ' col-full-height"><div class="' + tileClassName
+//						+ ' item"><div class="content">' + '<p>'
+//						+ data[i].title + '</p>' + '<a href="/items/'
+//						+ data[i].asin + '" class="thumbnail"><img class="'
+//						+ imgClassName + '" src="' + data[i].largeImage
+//						+ '" /></a>' + '<p>' + data[i].releaseDate + '</p>'
+//						// + '<p><a class="btn btn-default" href="#"
+//						// role="button">View details »</a></p>'
+//						+ '</div></div></div>';
+//			}
+//			str += '<div class="row"><h1>' + "page " + position + '</h1></div>'
+//			pagerow.append(str);
+//			var allImage = $("." + imgClassName);
+//			var allImageCount = allImage.length;
+//			var completeImageCount = 0;
+//			for (var i = 0; i < allImageCount; i++) {
+//				$(allImage[i]).bind("load", function() {
+//					completeImageCount++;
+//					if (allImageCount == completeImageCount) {
+//						$('.' + tileClassName).tile(colnum);
+//					}
+//				});
+//			}
+//		});
+//		request.fail(function() {
+//			// alert("通信エラー");
+//		});
+//		request.always(function() {
+//			// alert("通信完了");
+//		});
+//	}
 	// $(window).scroll(function(ev) {
 	// var $window = $(ev.currentTarget),
 	// height = $window.height(),
@@ -228,6 +254,7 @@ $(function() {
 					if (position < viewPosition) {
 						position = viewPosition;
 					}
+					//console.log($("#pageState").html());
 					history.pushState($("#pageState").html(), "", "?page="
 							+ viewPosition);
 				}

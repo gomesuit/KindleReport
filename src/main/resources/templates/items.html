@@ -44,33 +44,6 @@
 	<hr />
 	<hr />
 
-	<div id="pjaxContent" class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<h1 th:text="${kindle.title}" />
-				<p th:text="${kindle.releaseDate}" />
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-7">
-				<a th:href="${kindle.detailPageURL}" target="_blank">
-				<img th:src="${kindle.largeImage}" alt="" /></a>
-			</div>
-			<div class="col-md-3">
-				<li>comment</li>
-				<li>comment</li>
-				<li>comment</li>
-				<li>comment</li>
-				<li>comment</li>
-				<li>comment</li>
-				<li>comment</li>
-				<li>comment</li>
-				<li>comment</li>
-				<li>comment</li>
-				<li>comment</li>
-				<li>comment</li>
-			</div>
-		</div>
-	</div>
+	<div th:include="items_content::content"></div>
 </body>
 </html>

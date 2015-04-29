@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("items")
@@ -31,11 +32,17 @@ public class ItemsController {
 	}
 	
 	@RequestMapping(value = "{asin}", method = RequestMethod.GET)
-	public String ajax(@PathVariable String asin, Model model) {
+	public String ajax(
+			@PathVariable String asin,
+			@RequestParam(value = "ajaxflg", required = false, defaultValue = "0") int ajaxflg,
+			Model model) {
 		Map<String, String> kindle = kindleMapper.selectKindle(asin);
 		model.addAttribute("kindle", kindle);
-		
-		return "items";
+		if(ajaxflg == 1){
+			return "items_content";
+		}else{
+			return "items";
+		}
 	}
 	
 }
