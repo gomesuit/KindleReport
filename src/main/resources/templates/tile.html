@@ -15,7 +15,6 @@
 <script src="/js/jquery.bottom-1.0.js"></script>
 <script src="/js/jquery.cookie.js"></script>
 <script src="/js/jquery.pjax.min.js"></script>
-<script src="/js/my.js"></script>
 </head>
 <body>
 	<nav class="navbar navbar-fixed-top navbar-inverse">
@@ -60,16 +59,28 @@
 					<ul class="dropdown-menu" role="menu"
 						aria-labelledby="dropdownMenu1">
 						<li role="presentation" class="myorder" value="1"><a
-							role="menuitem" tabindex="-1" href="/ajax">発売日降順</a></li>
+							role="menuitem" tabindex="-1" href="#">発売日降順</a></li>
 						<li role="presentation" class="myorder" value="2"><a
-							role="menuitem" tabindex="-1" href="/ajax">発売日昇順</a></li>
+							role="menuitem" tabindex="-1" href="#">発売日昇順</a></li>
 					</ul>
 				</div>
 			</div>
 		</div>
-		<div id="pageState">
-			<div class="row">
-				<div id="mainrow" class="row-same-height row-full-height"></div>
+		<div class="row">
+			<div id="mainrow" class="row-same-height row-full-height">
+				<div th:each="kindle : ${kindleList}">
+					<div class="col-full-height">
+						<div class="item">
+							<div class="content">
+								<p th:text="${kindle.title}" />
+								<a th:href="'/items/'+${kindle.asin}" class="thumbnail">
+									<img th:src="${kindle.largeImage}" />
+								</a>
+								<p th:text="${kindle.releaseDate}" />
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

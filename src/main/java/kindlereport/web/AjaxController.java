@@ -21,11 +21,11 @@ public class AjaxController {
 	
 	@RequestMapping("/json")
 	public List<Kindle> ajax(
-			@RequestParam(value = "itemCount", required = false, defaultValue = "0") int itemCount,
+			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
 			@RequestParam(value = "order", required = false, defaultValue = "1") int order,
 			Model model) {
 		int limit = 24;
-		int offset = itemCount;
+		int offset = (page - 1) * limit;
 		List<Kindle> kindleList = myBatisService.getKindleList(kindleMapper, limit, offset, order);
 		return kindleList;
 	}
