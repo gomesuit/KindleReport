@@ -351,6 +351,7 @@ $(function() {
 		$("#" + pageId).remove();
 	}
 	$(window).on("popstate", function(_event) {
+		if (!_event.originalEvent.state) return;
 		var state = _event.originalEvent.state;
 		// console.log("_event", _event);
 		// console.log("state", state);
