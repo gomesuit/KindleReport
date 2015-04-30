@@ -75,6 +75,7 @@ $(function() {
 			$("#pageState").empty();
 			$("#pageState").html(data);
 			history.pushState($("#pageState").html(), "", url);
+			$(window).scrollTop(0);
 		});
 		request.fail(function() {
 			// alert("通信エラー");
@@ -114,15 +115,15 @@ $(function() {
 				if (data[i].largeImage == "") {
 					data[i].largeImage = "img/noimage.png"
 				}
-				str += '<div class="' + bootColClass
+				str += '<div class="item ' + bootColClass
 						+ ' col-full-height"><div class="' + tileClassName
-						+ ' item"><div class="content">' + '<p>'
+						+ ' content">' + '<p>'
 						+ data[i].title + '</p>' + '<a value="/items/'
 						+ data[i].asin + '" class="thumbnail"><img class="'
 						+ imgClassName + '" src="' + data[i].largeImage
 						+ '" /></a>' + '<p>' + data[i].releaseDate + '</p>'
-						+ '<a class="btn btn-default" role="button">View details »</a>'
-						+ '</div></div></div>';
+						//+ '<a class="btn btn-default" role="button">View details »</a>'
+						+ '</div></div>';
 			}
 			pagerow.append(str);
 			pagerow.append('<div class="row"><h1>' + "page " + position
@@ -232,8 +233,7 @@ $(function() {
 
 				if (scrollBottom < prevPageBottom) {
 					viewPosition--;
-					history.pushState($("#pageState").html(), "", "?page="
-							+ viewPosition);
+					history.pushState(null, "", "?page=" + viewPosition);
 				}
 			});
 	$(window).scroll(
@@ -297,7 +297,7 @@ $(function() {
 			obj.data('loading', true);
 			position++;
 			pageLoad(obj);
-			pageDelete(position - 2)
+			//pageDelete(position - 2)
 			// history.pushState("", "", "?page=" + position);
 		}
 	});
