@@ -39,14 +39,14 @@ $(function() {
 		}
 		viewPosition = position;
 	}
-	$(".mybtn").click(function() {
+	$(document).on("click", ".mybtn", function(){
 		colnum = $(this).attr("value");
 		$.cookie("colnum", colnum);
 		$("#mainrow").empty();
 		init()
 		pageLoad();
 	});
-	$(".myorder").click(function() {
+	$(document).on("click", ".myorder", function(){
 		order = $(this).attr("value");
 		$.cookie("order", order);
 		$("#mainrow").empty();
@@ -55,7 +55,7 @@ $(function() {
 	});
 	$(document).on("click", ".item a", function(){
 		var url = $(this).attr("value");
-		history.replaceState($("#pageState").html());
+		history.replaceState([$(window).scrollTop(), $("#pageState").html()], null, null);
 		itemPageLoad(url);
 	});
 	function itemPageLoad(url) {
@@ -74,7 +74,7 @@ $(function() {
 			//console.log(data);
 			$("#pageState").empty();
 			$("#pageState").html(data);
-			history.pushState($("#pageState").html(), "", url);
+			history.pushState([$(window).scrollTop(), $("#pageState").html()], "", url);
 			$(window).scrollTop(0);
 		});
 		request.fail(function() {
@@ -255,7 +255,7 @@ $(function() {
 						position = viewPosition;
 					}
 					//console.log($("#pageState").html());
-					history.pushState($("#pageState").html(), "", "?page="
+					history.pushState([$(window).scrollTop(), $("#pageState").html()], "", "?page="
 							+ viewPosition);
 				}
 			});
@@ -353,9 +353,12 @@ $(function() {
 	$(window).on("popstate", function(_event) {
 		if (!_event.originalEvent.state) return;
 		var state = _event.originalEvent.state;
-		// console.log("_event", _event);
-		// console.log("state", state);
-		$("#pageState").html(state);
+		//console.log("_event", _event);
+		console.log("state", state);
+		console.log($(window).scrollTop());
+		$("#pageState").html(state[1]);
+		$(window).scrollTop(state[0]);
+		console.log($(window).scrollTop());
 		init();
 	});
 });
