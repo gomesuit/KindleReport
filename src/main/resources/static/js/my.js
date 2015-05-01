@@ -74,7 +74,7 @@ $(function() {
 			//console.log(data);
 			$("#pageState").empty();
 			$("#pageState").html(data);
-			history.pushState([$(window).scrollTop(), $("#pageState").html()], "", url);
+			history.pushState([null, $("#pageState").html()], "", url);
 			$(window).scrollTop(0);
 		});
 		request.fail(function() {
@@ -255,7 +255,7 @@ $(function() {
 						position = viewPosition;
 					}
 					//console.log($("#pageState").html());
-					history.pushState([$(window).scrollTop(), $("#pageState").html()], "", "?page="
+					history.pushState([null, $("#pageState").html()], "", "?page="
 							+ viewPosition);
 				}
 			});
@@ -357,7 +357,9 @@ $(function() {
 		console.log("state", state);
 		console.log($(window).scrollTop());
 		$("#pageState").html(state[1]);
-		$(window).scrollTop(state[0]);
+		if(state[0] != null){
+			$(window).scrollTop(state[0]);
+		}
 		console.log($(window).scrollTop());
 		init();
 	});
