@@ -102,6 +102,45 @@
   padding: 10px 0px 10px 0px;
 }
 
+#detail-title-grid {
+  border: 3px solid #eeeeee;
+  background: #ffffff;
+  border-radius: 12px 12px 12px 12px;
+  padding: 10px 10px 10px 10px;
+}
+
+#detail-img-grid {
+  border: 3px solid #eeeeee;
+  background: #ffffff;
+  border-radius: 12px 12px 12px 12px;
+  padding: 10px 10px 10px 10px;
+}
+
+#detail-comment-grid {
+  border: 3px solid #eeeeee;
+  background: #ffffff;
+  border-radius: 12px 12px 12px 12px;
+  padding: 10px 10px 10px 10px;
+}
+
+.detailComment {
+  background-color: #F8F8F8;
+  border-radius: 5px 5px 5px 5px;
+  -moz-border-radius: 5px 5px 5px 5px;
+  -webkit-border-radius: 5px 5px 5px 5px;
+  border-width: 0 1px 1px 0;
+  border-color: #e8e8e8;
+  border-style: solid;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05);
+  -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05);
+  *zoom: 1;
+  text-align: left;
+  margin: 0 0 5px 0;
+  position: relative;
+  padding: 3px 10px 6px 10px;
+}
+
 /* content styles */
 
 /* .item { */

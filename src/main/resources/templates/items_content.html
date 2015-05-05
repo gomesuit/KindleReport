@@ -2,34 +2,44 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				<h1 th:text="${kindle.title}" />
-				<p th:text="${kindle.releaseDate}" />
+				<div id="detail-title-grid">
+					<h1 th:text="${kindle.title}" />
+					<p th:text="${kindle.releaseDate}" />
+				</div>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-8">
-				<a th:href="${kindle.detailPageURL}" target="_blank" class="thumbnail"> <img
-					th:src="${kindle.largeImage}" alt="" /></a>
+				<div id="detail-img-grid">
+					<a th:href="${kindle.detailPageURL}" target="_blank" class="thumbnail"> <img
+						th:src="${kindle.largeImage}" alt="" /></a>
+				</div>
 			</div>
 			<div class="col-md-4">
-				<li>comment</li>
-				<li>comment</li>
-				<li>comment</li>
-				<li>comment</li>
-				<li>comment</li>
-				<li>comment</li>
-				<li>comment</li>
-				<li>comment</li>
-				<li>comment</li>
-				<li>comment</li>
-				<li>comment</li>
-				<li>comment</li>
-				<div id="result"></div>
-				<form id="form">
-					<input type="text" id="message" />
-					<input type="submit" value="送信" />
-				</form>
+				<div id="detail-comment-grid">
+					<p>コメント</p>
+					<div id="result">
+						<p class="detailComment">コメント１</p>
+						<p class="detailComment">コメント２</p>
+						<p class="detailComment">コメント３</p>
+					</div>
+					<form id="form">
+						<input type="text" id="message" />
+						<input type="submit" value="送信" />
+					</form>
+				</div>
 			</div>
+		</div>
+	</div>
+</div>
+<div class="amaran-wrapper-inner">
+	<div class="amaran user blue" style="display: block;">
+		<div class="icon">
+			<img src="http://ecx.images-amazon.com/images/I/618xwsB--9L.jpg"
+				alt="" />
+		</div>
+		<div class="info">
+			<b>ミスマルカ興国しない物語 ～ミッション・シャルロッテ～ (角川スニーカー文庫)</b>
 		</div>
 	</div>
 </div>
