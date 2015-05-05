@@ -28,16 +28,24 @@ $(function() {
 			colnum = 4;
 			$.cookie("colnum", colnum);
 		}
+		selectColRadio(colnum);
+		
 		order = $.cookie("order");
 		if (order == null) {
 			order = 1;
 			$.cookie("order", order);
 		}
+		
 		position = getParam("page");
 		if (position == null) {
 			position = 1;
 		}
 		viewPosition = position;
+	}
+	function selectColRadio(num) {
+		$(".active").removeClass("active");
+		var radioName = "#colrdo" + num;
+		$(radioName).addClass("active");
 	}
 	$(document).on("click", ".mybtn", function(){
 		colnum = $(this).attr("value");
@@ -105,29 +113,33 @@ $(function() {
 			// alert("通信成功");
 			var imgClassName = "img" + position;
 			var tileClassName = "tile" + position;
+			var thumbnailClassName = "thumbnail" + position;
+			var titleClassName = "title" + position;
 			var bootColClass = "col-md-" + (12 / colnum);
 			var mainrow = $("#mainrow");
 			var pageId = "page" + position;
 			mainrow.append('<div id="' + pageId + '" />');
 			var pagerow = $("#" + pageId);
 			var str = "";
+			str += '<div class="row">';
 			for ( var i in data) {
 				if (data[i].largeImage == "") {
 					data[i].largeImage = "img/noimage.png"
 				}
-				str += '<div class="item ' + bootColClass
-						+ ' col-full-height"><div class="' + tileClassName
-						+ ' content">' + '<p>'
-						+ data[i].title + '</p>' + '<a value="/items/'
-						+ data[i].asin + '" class="thumbnail"><img class="'
-						+ imgClassName + '" src="' + data[i].largeImage
-						+ '" /></a>' + '<p>' + data[i].releaseDate + '</p>'
-						//+ '<a class="btn btn-default" role="button">View details »</a>'
-						+ '</div></div>';
+				str += ''
+						+ '<div class="item ' + bootColClass + '">'
+						+ '<div class="' + tileClassName + ' content">'
+						+ '<a value="/items/' + data[i].asin + '" class="thumbnail ' + thumbnailClassName + '">'
+						+ '<img class="' + imgClassName + '" src="' + data[i].largeImage + '" />'
+						+ '</a>'
+						+ '<p class="' + titleClassName + '">' + '『' + data[i].title + '』' + '</p>'
+						+ '<p>' + data[i].releaseDate + '</p>'
+						+ '</div>'
+						+ '</div>';
 			}
+			str += '</div>';
 			pagerow.append(str);
-			pagerow.append('<div class="row"><h1>' + "page " + position
-					+ '</h1></div>');
+			pagerow.append('<div class="row"><p　class="text-center">' + "page " + position + '</p></div>');
 			var allImage = $("." + imgClassName);
 			var allImageCount = allImage.length;
 			var completeImageCount = 0;
@@ -135,6 +147,8 @@ $(function() {
 				$(allImage[i]).bind("load", function() {
 					completeImageCount++;
 					if (allImageCount == completeImageCount) {
+						$('.' + thumbnailClassName).tile(colnum);
+						$('.' + titleClassName).tile(colnum);
 						$('.' + tileClassName).tile(colnum);
 					}
 				});
