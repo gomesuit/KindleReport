@@ -84,6 +84,9 @@ $(function() {
 			$("#pageState").html(data);
 			history.pushState([null, $("#pageState").html()], "", url);
 			$(window).scrollTop(0);
+			$("#form").validationEngine('attach', {
+			    promptPosition:"bottomLeft"
+			});
 		});
 		request.fail(function() {
 			// alert("通信エラー");

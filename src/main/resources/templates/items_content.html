@@ -1,10 +1,11 @@
 <div th:fragment="content">
-	<div class="container">
+	<div class="container" id="detail">
 		<div class="row">
 			<div class="col-md-12">
 				<div id="detail-title-grid">
 					<h1 th:text="${kindle.title}" />
 					<p th:text="${kindle.releaseDate}" />
+					<input type="hidden" id="asin" th:name="${kindle.asin}" th:value="${kindle.asin}" />
 				</div>
 			</div>
 		</div>
@@ -24,22 +25,22 @@
 						<p class="detailComment">コメント３</p>
 					</div>
 					<form id="form">
-						<input type="text" id="message" />
-						<input type="submit" value="送信" />
+<!-- 						<input type="text" id="message" /> -->
+<!-- 						<input type="submit" value="コメントする" /> -->
+<!-- 						<div class="form-group"> -->
+<!-- 							<input id="message" type="text" class="form-control" /> -->
+<!-- 						</div> -->
+<!-- 						<button type="submit" class="btn btn-default">コメントする</button> -->
+						<div class="input-group">
+							<input id="message" type="text" class="form-control validate[required,maxSize[60]]"
+								placeholder="Comment" /> <span
+								class="input-group-btn">
+								<button type="submit" class="btn btn-default">コメントする</button>
+							</span>
+						</div>
 					</form>
 				</div>
 			</div>
-		</div>
-	</div>
-</div>
-<div class="amaran-wrapper-inner">
-	<div class="amaran user blue" style="display: block;">
-		<div class="icon">
-			<img src="http://ecx.images-amazon.com/images/I/618xwsB--9L.jpg"
-				alt="" />
-		</div>
-		<div class="info">
-			<b>ミスマルカ興国しない物語 ～ミッション・シャルロッテ～ (角川スニーカー文庫)</b>
 		</div>
 	</div>
 </div>
