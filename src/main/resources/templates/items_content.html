@@ -20,9 +20,11 @@
 				<div id="detail-comment-grid">
 					<p>コメント</p>
 					<div id="result">
-						<p class="detailComment">コメント１</p>
-						<p class="detailComment">コメント２</p>
-						<p class="detailComment">コメント３</p>
+						<div class="detailComment" th:each="comment : ${commentList}">
+							<div th:text="${#dates.format(comment.registerDateTime, 'yyyy/MM/dd HH:mm')}" />
+							<div th:text="${comment.id}" />
+							<div th:text="${comment.content}" />
+						</div>
 					</div>
 					<form id="form">
 <!-- 						<input type="text" id="message" /> -->

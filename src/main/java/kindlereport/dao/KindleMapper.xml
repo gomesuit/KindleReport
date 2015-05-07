@@ -270,4 +270,36 @@
 		select * from Kindle where releaseDate = #{releaseDate} order by releaseDate desc
 	</select>
 	
+	<insert id="insertComment" parameterType="kindlereport.model.Comment" statementType="PREPARED" timeout="20">
+		insert into COMMENT (asin,
+							registerDateTime,
+							content)
+		values (#{asin},
+				#{registerDateTime},
+				#{content})
+		<selectKey keyProperty="id" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ROWID()
+		</selectKey>
+	</insert>
+	
+	<select id="selectComment" resultType="kindlereport.model.Comment">
+		select
+			*
+		from
+			COMMENT
+		where
+			asin = #{asin}
+		order by
+			id desc
+	</select>
+	
+	<select id="selectCommentById" resultType="kindlereport.model.Comment">
+		select
+			*
+		from
+			COMMENT
+		where
+			id = #{id}
+	</select>
+	
 </mapper>

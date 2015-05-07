@@ -1,5 +1,6 @@
 package kindlereport.dao;
 
+import kindlereport.model.Comment;
 import kindlereport.model.Kindle;
 
 import java.util.List;
@@ -30,4 +31,7 @@ public interface KindleMapper {
   List<Kindle> selectKindleList(Map<String,Integer> map);
   List<String> selectRereaseDateList();
   List<Kindle> selectDayKindleList(String releaseDate);
+  int insertComment(Comment comment);
+  List<Comment> selectComment(String asin);
+  Comment selectCommentById(int id);
 }

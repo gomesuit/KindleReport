@@ -2,7 +2,7 @@ package kindlereport.model;
 
 public class WebSocketReceive {
 	protected String asin;
-	protected String message;
+	protected int id;
 	
 	public String getAsin() {
 		return asin;
@@ -10,10 +10,10 @@ public class WebSocketReceive {
 	public void setAsin(String asin) {
 		this.asin = asin;
 	}
-	public String getMessage() {
-		return message;
+	public int getId() {
+		return id;
 	}
-	public void setMessage(String message) {
-		this.message = message;
+	public void setId(int id) {
+		this.id = id;
 	}
 }

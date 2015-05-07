@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import kindlereport.dao.KindleMapper;
-import kindlereport.model.Kindle;
+import kindlereport.model.Comment;
 import kindlereport.model.WebSocketReceive;
 import kindlereport.model.WebSocketTransmission;
 
@@ -67,15 +67,20 @@ public class EchoHandler extends TextWebSocketHandler {
         	//受信したJSON文字列をwebSocketReceiveに変換
         	ObjectMapper mapper = new ObjectMapper();
         	WebSocketReceive webSocketReceive = mapper.readValue(message.getPayload(), WebSocketReceive.class);
-        	//logger.info("Receive : {}", message.getPayload());
+        	logger.info("Receive : {}", message.getPayload());
         	
-        	//WebSocketTransmissionを作成
+        	//webSocketReceiveからWebSocketTransmissionを作成
         	WebSocketTransmission webSocketTransmission = receiveToTransmission(webSocketReceive);
+        	
+        	//DBへInsert
+//        	Comment comment = TransmissionToComment(webSocketTransmission);
+//        	kindleMapper.insertComment(comment);
+//        	logger.info("CommentId : {}", comment.getId());
         	
         	//更新したWebSocketTransmissionをJSON文字列に変換
         	String json = mapper.writeValueAsString(webSocketTransmission);
         	TextMessage returnMessage = new TextMessage(json);
-        	//logger.info("Transmission : {}", json);
+        	logger.info("Transmission : {}", json);
         	
             entry.getValue().sendMessage(returnMessage);
         }
@@ -83,20 +88,24 @@ public class EchoHandler extends TextWebSocketHandler {
     
     private WebSocketTransmission receiveToTransmission(WebSocketReceive webSocketReceive){
     	WebSocketTransmission webSocketTransmission = new WebSocketTransmission();
+    	Comment comment = kindleMapper.selectCommentById(webSocketReceive.getId());
     	Map<String,String> kindle = kindleMapper.selectKindle(webSocketReceive.getAsin());
     	
     	webSocketTransmission.setAsin(webSocketReceive.getAsin());
     	webSocketTransmission.setImgUrl(kindle.get("largeImage"));
-    	webSocketTransmission.setMessage(webSocketReceive.getMessage());
+    	webSocketTransmission.setMessage(comment.getContent());
     	webSocketTransmission.setTitle(kindle.get("title"));
-    	webSocketTransmission.setDateTime(getCurrentTime());
+    	webSocketTransmission.setDateTime(comment.getRegisterDateTime());
+    	webSocketTransmission.setId(comment.getId());
     	
     	return webSocketTransmission;
     }
     
-    private Date getCurrentTime(){
-    	Date date = new Date();
-    	
-    	return date;
+    private Comment TransmissionToComment(WebSocketTransmission webSocketTransmission){
+    	Comment comment = new Comment();
+    	comment.setAsin(webSocketTransmission.getAsin());
+    	comment.setContent(webSocketTransmission.getMessage());
+    	comment.setRegisterDateTime(webSocketTransmission.getDateTime());
+    	return comment;
     }
 }

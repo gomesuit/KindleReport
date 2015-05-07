@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import kindlereport.dao.KindleMapper;
+import kindlereport.model.Comment;
 import kindlereport.model.Kindle;
 import kindlereport.service.MyBatisService;
 
@@ -38,6 +39,8 @@ public class ItemsController {
 			Model model) {
 		Map<String, String> kindle = kindleMapper.selectKindle(asin);
 		model.addAttribute("kindle", kindle);
+		List<Comment> commentList = kindleMapper.selectComment(asin);
+		model.addAttribute("commentList", commentList);
 		if(ajaxflg == 1){
 			return "items_content";
 		}else{

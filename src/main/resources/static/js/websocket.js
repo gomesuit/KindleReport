@@ -1,6 +1,6 @@
 $(function() {
-	var url = "ws://" + location.host + "/echo";
-    var ws = new WebSocket(url);
+	url = "ws://" + location.host + "/echo";
+    ws = new WebSocket(url);
     ws.onopen = function(){
     };
     ws.onclose = function(){
@@ -9,7 +9,7 @@ $(function() {
     	var data = $.parseJSON(json.data);
 		var dateTime = unixTimeToString(data.dateTime);
         noticeBalloon(data);
-        $("#result").prepend(makeComment(dateTime, data.message));
+        $("#result").prepend(makeComment(data.id, dateTime, data.message));
     };
 	function noticeBalloon(data) {
 	    $.amaran({
@@ -23,11 +23,14 @@ $(function() {
 	        'position'  :'bottom right'
 	    });
 	}
-	function makeComment(dateTime, message) {
+	function makeComment(id, dateTime, message) {
 		var comment = '';
 		comment += '<div class="detailComment">';
 		comment += '<div>';
 		comment += dateTime;
+		comment += '</div>';
+		comment += '<div>';
+		comment += id;
 		comment += '</div>';
 		comment += '<div>';
 		comment += message;
@@ -45,14 +48,37 @@ $(function() {
     };
 	$(document).on("submit", "#form", function(){
 		var message = $("#message").val();
-		var imgUrl = $("img").attr("src");
-		var title = $("h1").text();
-		var data = JSON.stringify({
-			asin: $("#asin").attr("value"),
-			message: message
+		var request = $.ajax({
+		    headers: { 
+		        'Accept': 'application/json',
+		        'Content-Type': 'application/json' 
+		    },
+			type : "POST",
+			url : "/api/comment/register",
+			datatype : "json",
+			data : JSON.stringify({
+				"asin" : $("#asin").attr("value"),
+				"content" : message
+			}),
+			timeout : 3000
 		});
-        ws.send(data);
-        $("#message").val("");
+		request.done(function(data) {
+			// alert("通信成功");
+			console.log(data);
+			var wsData = JSON.stringify({
+				asin: $("#asin").attr("value"),
+				id: data
+			});
+	        ws.send(wsData);
+	        $("#message").val("");
+		});
+		request.fail(function() {
+			// alert("通信エラー");
+		});
+		request.always(function() {
+			// alert("通信完了");
+		});
+		
         return false;
     });
 	$("#form").validationEngine('attach', {

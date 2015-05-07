@@ -8,6 +8,7 @@ public class WebSocketTransmission {
 	protected String imgUrl;
 	protected String title;
 	protected Date dateTime;
+	protected int id;
 	
 	public String getAsin() {
 		return asin;
@@ -38,5 +39,11 @@ public class WebSocketTransmission {
 	}
 	public void setDateTime(Date dateTime) {
 		this.dateTime = dateTime;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 }

@@ -17,7 +17,6 @@ public class MyBatisService {
 	 * アノテーションとマッパーXMLで指定されたクエリを実行するマッパー実装が自動生成される。
 	 * 自動生成されたマッパー実装はSpringのもとで管理され{@link Autowired}指定されたフィールドに自動設定される。
 	 */
-	
 	public List<Kindle> getKindleList(KindleMapper kindleMapper, int limit, int offset, int order) {
 		Map<String,Integer> map = new HashMap<String,Integer>();
 		map.put("limit", limit);
@@ -25,5 +24,4 @@ public class MyBatisService {
 		map.put("order", order);
 		return kindleMapper.selectKindleList(map);
 	}
-
 }

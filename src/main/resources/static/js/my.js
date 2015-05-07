@@ -103,7 +103,7 @@ $(function() {
 		// var url = "/json" + location.search;
 		var request = $.ajax({
 			type : "GET",
-			url : "/json",
+			url : "/api/tile",
 			cache : false,
 			datatype : "json",
 			data : {
