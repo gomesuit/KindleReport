@@ -61,7 +61,7 @@ $(function() {
 		init()
 		pageLoad();
 	});
-	$(document).on("click", ".item a", function(){
+	$(document).on("click", ".tile a", function(){
 		var url = $(this).attr("value");
 		history.replaceState([$(window).scrollTop(), $("#pageState").html()], null, null);
 		itemPageLoad(url);
@@ -82,6 +82,7 @@ $(function() {
 			//console.log(data);
 			$("#pageState").empty();
 			$("#pageState").html(data);
+			commentHeightAdjust();
 			history.pushState([null, $("#pageState").html()], "", url);
 			$(window).scrollTop(0);
 			$("#form").validationEngine('attach', {
@@ -118,14 +119,14 @@ $(function() {
 		var params = clone(params);
 
 		this.getItemDom = function(){
-			var classString = 'item ' + params.bootColClass;
+			var classString = params.bootColClass;
 			var attrList = [getAttrString("class", classString)];
 			var text = this.getItemDomContent();
 			return getHtmlDom("div", attrList, text);
 		}
 
 		this.getItemDomContent = function(){
-			var classString = params.tileClassName + ' content';
+			var classString = "tile " + params.tileClassName;
 			var attrList = [getAttrString("class", classString)];
 			var text = this.getItemDomThumbnail() + this.getItemDomTile() + this.getItemDomReleaseDate();
 			return getHtmlDom("div", attrList, text);
@@ -133,7 +134,7 @@ $(function() {
 
 		this.getItemDomThumbnail = function(){
 			var valueString = "/items/" + this.asin;
-			var classString = "thumbnail " + params.thumbnailClassName;
+			var classString = "mythumbnail " + params.thumbnailClassName;
 			var attrList = [getAttrString("value", valueString), getAttrString("class", classString)];
 			var text = this.getItemDomImg();
 			return getHtmlDom("a", attrList, text);
@@ -145,22 +146,19 @@ $(function() {
 		}
 
 		this.getItemDomTile = function(){
-			var attrList = [getAttrString("class", params.titleClassName)];
+			var classString = "title " + params.titleClassName;
+			var attrList = [getAttrString("class", classString)];
 			var text = '『' + this.title + '』';
 			return getHtmlDom("p", attrList, text);
 		}
 
 		this.getItemDomReleaseDate = function(){
-			return getHtmlDom("p", null, this.releaseDate);
+			var classString = "releaseDate";
+			var attrList = [getAttrString("class", classString)];
+			return getHtmlDom("p", attrList, this.releaseDate);
 		}
 	}
 	var PageDom = function(kindlesdata, params){
-		this.bootColClass = "col-md-" + (12 / colnum);
-		this.tileClassName = "tile" + position;
-		this.thumbnailClassName = "thumbnail" + position;
-		this.imgClassName = "img" + position;
-		this.titleClassName = "title" + position;
-
 		this.getPageDom = function(){
 			var classString = "row";
 			var attrList = [getAttrString("class", classString)];
@@ -184,14 +182,16 @@ $(function() {
 		this.pageDom = new PageDom(kindlesdata, this.params);
 		
 		this.getPageRow = function(){
-			var dom = "";
-			dom += '<div id="' + this.pageId + '" />';
-			dom += '<div class="row">';
-			dom += this.pageDom.getPageDom();
-			dom += '</div>';
-			dom += '<div class="row"><p　class="text-center">' + "page " + position + '</p></div>';
-			
-			return dom;
+			var attrList = [getAttrString("id", this.pageId)];
+			var text = getHtmlDom("div", [getAttrString("class", "row")], this.pageDom.getPageDom()) + this.getPageNumber();
+			return getHtmlDom("div", attrList, text);
+		}
+
+		this.getPageNumber = function(){
+			var classString = "row";
+			var attrList = [getAttrString("class", classString)];
+			var text = getHtmlDom("p", [getAttrString("class", "text-center")], "page " + position);
+			return getHtmlDom("div", attrList, text);
 		}
 		
 		this.tileAdjust = function(){
@@ -235,7 +235,7 @@ $(function() {
 	    }
 		return dom;
 	}
-	function pageLoad(obj) { 
+	function pageLoad() { 
 		var request = $.ajax({
 			type : "GET",
 			url : "/api/tile",
@@ -253,7 +253,7 @@ $(function() {
 			mainrow.append(pageRow.getPageRow());
 			pageRow.tileAdjust();
 			
-			obj.data('loading', false);
+			$(window).data('loading', false);
 		});
 		request.fail(function() {
 			// alert("通信エラー");
@@ -332,6 +332,7 @@ $(function() {
 	// }
 	// });
 
+	//ページ送り（下スクロール）
 	$(window).scroll(
 			function(ev) {
 				var $window = $(ev.currentTarget);
@@ -350,6 +351,7 @@ $(function() {
 					history.pushState(null, "", "?page=" + viewPosition);
 				}
 			});
+	//ページ戻り（上スクロール）
 	$(window).scroll(
 			function(ev) {
 				var $window = $(ev.currentTarget);
@@ -410,7 +412,7 @@ $(function() {
 		if (!obj.data('loading')) {
 			obj.data('loading', true);
 			position++;
-			pageLoad(obj);
+			pageLoad();
 			//pageDelete(position - 2)
 			// history.pushState("", "", "?page=" + position);
 		}
@@ -477,4 +479,104 @@ $(function() {
 		//console.log($(window).scrollTop());
 		init();
 	});
+	
+	//==================================websocket==================================
+	
+	var url = "ws://" + location.host + "/echo";
+	commentHeightAdjust();
+	function commentHeightAdjust(){
+		var height = $("#detail-img-grid").height() - ($("#detail-p-grid").outerHeight(true) + $("#detail-input-grid").outerHeight(true));
+		$('#detail-scroll-grid').css("height", height);
+	}
+    ws = new WebSocket(url);
+    ws.onopen = function(){
+    };
+    ws.onclose = function(){
+    };
+    ws.onmessage = function(json){
+    	var data = $.parseJSON(json.data);
+		var dateTime = unixTimeToString(data.dateTime);
+        noticeBalloon(data);
+        if(data.asin == $("#asin").attr("value")){
+            $("#detail-scroll-grid").prepend(makeComment(data.id, dateTime, data.message));
+        }
+        $("#detail-scroll-grid").scrollTop(0);
+    };
+	function noticeBalloon(data) {
+	    $.amaran({
+	        'theme'     :'kindle no',
+	        'content'   :{
+	        	asin: data.asin,
+	            img: data.imgUrl,
+	            title: data.title,
+	            message: data.message
+	        },
+	        'position'  :'bottom right'
+	    });
+	}
+	function makeComment(id, dateTime, message) {
+		var comment = '';
+		comment += '<div class="detailComment">';
+		comment += '<div>';
+		comment += dateTime;
+		comment += '</div>';
+//		comment += '<div>';
+//		comment += id;
+//		comment += '</div>';
+		comment += '<div>';
+		comment += message;
+		comment += '</div>';
+		comment += '</div>';
+		return comment;
+	}
+	function unixTimeToString(dateTime){
+		var format = 'YYYY/MM/DD HH:mm';
+		var string = moment().format(format, new Date(dateTime));
+		return string;
+	}
+    ws.onerror = function(event){
+        alert("接続に失敗しました。");
+    };
+	$(document).on("submit", "#form", function(){
+		var message = $("#message").val();
+		var request = $.ajax({
+		    headers: { 
+		        'Accept': 'application/json',
+		        'Content-Type': 'application/json' 
+		    },
+			type : "POST",
+			url : "/api/comment/register",
+			datatype : "json",
+			data : JSON.stringify({
+				"asin" : $("#asin").attr("value"),
+				"content" : message
+			}),
+			timeout : 3000
+		});
+		request.done(function(data) {
+			// alert("通信成功");
+			//console.log(data);
+			var wsData = JSON.stringify({
+				asin: $("#asin").attr("value"),
+				id: data
+			});
+	        ws.send(wsData);
+	        $("#message").val("");
+		});
+		request.fail(function() {
+			// alert("通信エラー");
+		});
+		request.always(function() {
+			// alert("通信完了");
+		});
+		
+        return false;
+    });
+	$("#form").validationEngine('attach', {
+	    promptPosition:"bottomLeft"
+	});
+//	$(document).on("click", ".amaran", function(){
+//		alert("aaaa");
+//		alert($(this));
+//	});
 });

@@ -170,7 +170,7 @@
 			title,
 			releaseDate,
 			detailPageURL,
-			largeImage
+			ifnull(nullif(largeImage, ""), "/img/noimage.png") as largeImage
 		from
 			Kindle
 		where
@@ -268,5 +268,29 @@
 	
 	<select id="selectDayKindleList" parameterType="java.lang.String" resultType="kindlereport.model.Kindle">
 		select * from Kindle where releaseDate = #{releaseDate} order by releaseDate desc
-	</select>	
+	</select>
+	
+	<select id="selectKindleByAsin" resultType="kindlereport.model.Kindle">
+		select
+			asin,
+			author,
+			binding,
+			format,
+			isAdultProduct,
+			label,
+			manufacturer,
+			productGroup,
+			productTypeName,
+			publicationDate,
+			publisher,
+			releaseDate,
+			title,
+			content,
+			detailPageURL,
+			ifnull(nullif(largeImage, ""), "/img/noimage.png") as largeImage
+		from
+			Kindle
+		where
+			asin = #{asin}
+	</select>
 </mapper>

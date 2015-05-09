@@ -1,7 +1,6 @@
 package kindlereport.web;
 
 import java.util.List;
-import java.util.Map;
 
 import kindlereport.dao.CommentMapper;
 import kindlereport.dao.KindleMapper;
@@ -34,7 +33,7 @@ public class DetailsController {
 			@PathVariable String asin,
 			@RequestParam(value = "ajaxflg", required = false, defaultValue = "0") int ajaxflg,
 			Model model) {
-		Map<String, String> kindle = kindleMapper.selectKindle(asin);
+		Kindle kindle = kindleMapper.selectKindleByAsin(asin);
 		model.addAttribute("kindle", kindle);
 		List<Comment> commentList = commentMapper.selectComment(asin);
 		model.addAttribute("commentList", commentList);

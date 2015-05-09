@@ -30,4 +30,5 @@ public interface KindleMapper {
   List<Kindle> selectKindleList(Map<String,Integer> map);
   List<String> selectRereaseDateList();
   List<Kindle> selectDayKindleList(String releaseDate);
+  Kindle selectKindleByAsin(String asin);
 }
