@@ -32,14 +32,6 @@ public class TileController {
 		
 		return "default";
 	}
-	
-	@RequestMapping("/ajax")
-	public String ajax(Model model) {		
-		//List<Kindle> kindleList = myBatisService.getKindleList(100, 0);
-		//model.addAttribute("kindleList", kindleList);
-		
-		return "ajax";
-	}
 
 	@RequestMapping(value = "{page}", method = RequestMethod.GET)
 	public String ajax(@PathVariable int page,

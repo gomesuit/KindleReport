@@ -96,11 +96,146 @@ $(function() {
 		});
 		
 	}
+	function clone(src){
+	    var dst = {}
+	    for(var k in src){
+	        dst[k] = src[k];
+	    }
+	    return dst;
+	}
 	// $(window).on('load resize', function(){
 	// $('.item').tile(colnum);
 	// });
-	function pageLoad(obj) {
-		// var url = "/json" + location.search;
+	var ItemDom = function(kindledata, params){
+		this.asin = kindledata.asin;
+		this.title = kindledata.title;
+		this.releaseDate = kindledata.releaseDate;
+		if(kindledata.largeImage == ""){
+			this.imageUrl = "img/noimage.png";
+		}else{
+			this.imageUrl = kindledata.largeImage;
+		}
+		var params = clone(params);
+
+		this.getItemDom = function(){
+			var classString = 'item ' + params.bootColClass;
+			var attrList = [getAttrString("class", classString)];
+			var text = this.getItemDomContent();
+			return getHtmlDom("div", attrList, text);
+		}
+
+		this.getItemDomContent = function(){
+			var classString = params.tileClassName + ' content';
+			var attrList = [getAttrString("class", classString)];
+			var text = this.getItemDomThumbnail() + this.getItemDomTile() + this.getItemDomReleaseDate();
+			return getHtmlDom("div", attrList, text);
+		}
+
+		this.getItemDomThumbnail = function(){
+			var valueString = "/items/" + this.asin;
+			var classString = "thumbnail " + params.thumbnailClassName;
+			var attrList = [getAttrString("value", valueString), getAttrString("class", classString)];
+			var text = this.getItemDomImg();
+			return getHtmlDom("a", attrList, text);
+		}
+
+		this.getItemDomImg = function(){
+			var attrList = [getAttrString("class", params.imgClassName), getAttrString("src", this.imageUrl)];
+			return getHtmlDom("img", attrList);
+		}
+
+		this.getItemDomTile = function(){
+			var attrList = [getAttrString("class", params.titleClassName)];
+			var text = '『' + this.title + '』';
+			return getHtmlDom("p", attrList, text);
+		}
+
+		this.getItemDomReleaseDate = function(){
+			return getHtmlDom("p", null, this.releaseDate);
+		}
+	}
+	var PageDom = function(kindlesdata, params){
+		this.bootColClass = "col-md-" + (12 / colnum);
+		this.tileClassName = "tile" + position;
+		this.thumbnailClassName = "thumbnail" + position;
+		this.imgClassName = "img" + position;
+		this.titleClassName = "title" + position;
+
+		this.getPageDom = function(){
+			var classString = "row";
+			var attrList = [getAttrString("class", classString)];
+			var text = "";
+			for (var i in kindlesdata) {
+				var itemDom = new ItemDom(kindlesdata[i], params);
+				text += itemDom.getItemDom();
+			}
+			return getHtmlDom("div", attrList, text);
+		}
+	}
+	var PageRow = function(position, colnum, kindlesdata){
+		this.params = {
+			bootColClass:"col-md-" + (12 / colnum),
+			tileClassName:"tile" + position,
+			thumbnailClassName:"thumbnail" + position,
+			imgClassName:"img" + position,
+			titleClassName:"title" + position
+		};
+		this.pageId = "page" + position;
+		this.pageDom = new PageDom(kindlesdata, this.params);
+		
+		this.getPageRow = function(){
+			var dom = "";
+			dom += '<div id="' + this.pageId + '" />';
+			dom += '<div class="row">';
+			dom += this.pageDom.getPageDom();
+			dom += '</div>';
+			dom += '<div class="row"><p　class="text-center">' + "page " + position + '</p></div>';
+			
+			return dom;
+		}
+		
+		this.tileAdjust = function(){
+			var allImage = $("." + this.params.imgClassName);
+			var allImageCount = allImage.length;
+			var completeImageCount = 0;
+			for (var i = 0; i < allImageCount; i++) {
+				var that = this;
+				$(allImage[i]).on("load", function(){
+					completeImageCount++;
+					if (allImageCount == completeImageCount) {
+						$('.' + that.params.thumbnailClassName).tile(colnum);
+						$('.' + that.params.titleClassName).tile(colnum);
+						$('.' + that.params.tileClassName).tile(colnum);
+					}
+				});
+			}
+		}
+	}
+	function getAttrString(attrName, className){
+		return attrName + '="' + className + '"';
+	}
+	function getHtmlDom(htmlName, attrList, text){
+		var dom = '';
+		dom += '<';
+		dom += htmlName;
+		if(attrList != null){
+		    for (var i = 0; i < attrList.length; i++) {
+				dom += ' ';
+				dom += attrList[i];
+		    }
+		}
+	    if(text != null){
+			dom += ' >';
+			dom += text;
+			dom += '</';
+			dom += htmlName;
+			dom += '>';
+	    }else{
+			dom += ' />';
+	    }
+		return dom;
+	}
+	function pageLoad(obj) { 
 		var request = $.ajax({
 			type : "GET",
 			url : "/api/tile",
@@ -113,49 +248,11 @@ $(function() {
 			timeout : 3000
 		});
 		request.done(function(data) {
-			// alert("通信成功");
-			var imgClassName = "img" + position;
-			var tileClassName = "tile" + position;
-			var thumbnailClassName = "thumbnail" + position;
-			var titleClassName = "title" + position;
-			var bootColClass = "col-md-" + (12 / colnum);
+			var pageRow = new PageRow(position, colnum, data);
 			var mainrow = $("#mainrow");
-			var pageId = "page" + position;
-			mainrow.append('<div id="' + pageId + '" />');
-			var pagerow = $("#" + pageId);
-			var str = "";
-			str += '<div class="row">';
-			for ( var i in data) {
-				if (data[i].largeImage == "") {
-					data[i].largeImage = "img/noimage.png"
-				}
-				str += ''
-						+ '<div class="item ' + bootColClass + '">'
-						+ '<div class="' + tileClassName + ' content">'
-						+ '<a value="/items/' + data[i].asin + '" class="thumbnail ' + thumbnailClassName + '">'
-						+ '<img class="' + imgClassName + '" src="' + data[i].largeImage + '" />'
-						+ '</a>'
-						+ '<p class="' + titleClassName + '">' + '『' + data[i].title + '』' + '</p>'
-						+ '<p>' + data[i].releaseDate + '</p>'
-						+ '</div>'
-						+ '</div>';
-			}
-			str += '</div>';
-			pagerow.append(str);
-			pagerow.append('<div class="row"><p　class="text-center">' + "page " + position + '</p></div>');
-			var allImage = $("." + imgClassName);
-			var allImageCount = allImage.length;
-			var completeImageCount = 0;
-			for (var i = 0; i < allImageCount; i++) {
-				$(allImage[i]).bind("load", function() {
-					completeImageCount++;
-					if (allImageCount == completeImageCount) {
-						$('.' + thumbnailClassName).tile(colnum);
-						$('.' + titleClassName).tile(colnum);
-						$('.' + tileClassName).tile(colnum);
-					}
-				});
-			}
+			mainrow.append(pageRow.getPageRow());
+			pageRow.tileAdjust();
+			
 			obj.data('loading', false);
 		});
 		request.fail(function() {
@@ -371,13 +468,13 @@ $(function() {
 		if (!_event.originalEvent.state) return;
 		var state = _event.originalEvent.state;
 		//console.log("_event", _event);
-		console.log("state", state);
-		console.log($(window).scrollTop());
+		//console.log("state", state);
+		//console.log($(window).scrollTop());
 		$("#pageState").html(state[1]);
 		if(state[0] != null){
 			$(window).scrollTop(state[0]);
 		}
-		console.log($(window).scrollTop());
+		//console.log($(window).scrollTop());
 		init();
 	});
 });

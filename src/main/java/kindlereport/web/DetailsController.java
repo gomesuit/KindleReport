@@ -19,21 +19,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("items")
-public class ItemsController {
+public class DetailsController {
+	private static final String DETAILS_PAGE_URL = "items";
+	private static final String LIST_PAGE_URL = "list";
 	
 	@Autowired
 	private KindleMapper kindleMapper;
 	@Autowired
 	private CommentMapper commentMapper;
 	private MyBatisService myBatisService = new MyBatisService();
-
-	@RequestMapping("/")
-	public String home(Model model) {		
-		List<Kindle> kindleList = myBatisService.getKindleList(kindleMapper, 100, 0, 1);
-		model.addAttribute("kindleList", kindleList);
-		
-		return "default";
-	}
 	
 	@RequestMapping(value = "{asin}", method = RequestMethod.GET)
 	public String ajax(
@@ -44,6 +38,7 @@ public class ItemsController {
 		model.addAttribute("kindle", kindle);
 		List<Comment> commentList = commentMapper.selectComment(asin);
 		model.addAttribute("commentList", commentList);
+		model.addAttribute("LIST_PAGE_URL", LIST_PAGE_URL);
 		if(ajaxflg == 1){
 			return "items_content";
 		}else{

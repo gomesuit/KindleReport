@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api")
-public class AjaxController {
-	private static final Logger logger = LoggerFactory.getLogger(AjaxController.class);
+public class ApiController {
+	private static final Logger logger = LoggerFactory.getLogger(ApiController.class);
 	
 	@Autowired
 	private KindleMapper kindleMapper;

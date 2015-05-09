@@ -11,11 +11,6 @@
 		<div class="container">
 			<div class="row tileHeader">
 				<div class="col-md-10">
-<!-- 					<button type="button" class="mybtn btn btn-default" value="1">☓1</button> -->
-<!-- 					<button type="button" class="mybtn btn btn-default" value="2">☓2</button> -->
-<!-- 					<button type="button" class="mybtn btn btn-default" value="3">☓3</button> -->
-<!-- 					<button type="button" class="mybtn btn btn-default" value="4">☓4</button> -->
-<!-- 					<button type="button" class="mybtn btn btn-default" value="6">☓6</button> -->
 					<div class="btn-group" data-toggle="buttons">
 						<label id="colrdo1" class="btn btn-default mybtn" value="1" >
 							<input type="radio" />☓1
@@ -43,9 +38,9 @@
 						<ul class="dropdown-menu" role="menu"
 							aria-labelledby="dropdownMenu1">
 							<li role="presentation" class="myorder" value="1"><a
-								role="menuitem" tabindex="-1" href="/ajax">発売日降順</a></li>
+								role="menuitem" tabindex="-1" th:href="'/' + ${LIST_PAGE_URL}">発売日降順</a></li>
 							<li role="presentation" class="myorder" value="2"><a
-								role="menuitem" tabindex="-1" href="/ajax">発売日昇順</a></li>
+								role="menuitem" tabindex="-1" th:href="'/' + ${LIST_PAGE_URL}">発売日昇順</a></li>
 						</ul>
 					</div>
 				</div>

@@ -14,37 +14,22 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/")
 public class IndexController {
+	private static final String LIST_PAGE_URL = "list";
 	
 	@Autowired
 	private KindleMapper kindleMapper;
 	private MyBatisService myBatisService = new MyBatisService();
-
-	@RequestMapping("/")
-	public String home(Model model) {		
-		List<Kindle> kindleList = myBatisService.getKindleList(kindleMapper, 100, 0, 1);
-		model.addAttribute("kindleList", kindleList);
+	
+	@RequestMapping(LIST_PAGE_URL)
+	public String ajax(Model model) {
+		model.addAttribute("LIST_PAGE_URL", LIST_PAGE_URL);
 		
-		return "default";
-	}
-
-	@RequestMapping("/basic")
-	public String basic(Model model) {		
-		List<Kindle> kindleList = myBatisService.getKindleList(kindleMapper, 100, 0, 1);
-		model.addAttribute("kindleList", kindleList);
-		
-		return "basic";
+		return LIST_PAGE_URL;
 	}
 	
-	@RequestMapping("/ajax")
-	public String ajax(Model model) {		
-		//List<Kindle> kindleList = myBatisService.getKindleList(100, 0);
-		//model.addAttribute("kindleList", kindleList);
-		
-		return "ajax";
-	}
-	
-	@RequestMapping("/dayList")
+	@RequestMapping("dayList")
 	public String dayList(Model model) {
 		int colnum = 4;
 		
