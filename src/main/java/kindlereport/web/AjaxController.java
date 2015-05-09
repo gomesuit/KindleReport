@@ -3,6 +3,7 @@ package kindlereport.web;
 import java.util.Date;
 import java.util.List;
 
+import kindlereport.dao.CommentMapper;
 import kindlereport.dao.KindleMapper;
 import kindlereport.model.Comment;
 import kindlereport.model.Kindle;
@@ -25,6 +26,8 @@ public class AjaxController {
 	
 	@Autowired
 	private KindleMapper kindleMapper;
+	@Autowired
+	private CommentMapper commentMapper;
 	private MyBatisService myBatisService = new MyBatisService();
 	
 	@RequestMapping("tile")
@@ -41,7 +44,7 @@ public class AjaxController {
 	@RequestMapping(value = "comment/register", produces = "application/json", method = RequestMethod.POST)
 	public int commentRegister(@RequestBody Comment comment){
 		comment.setRegisterDateTime(getCurrentTime());
-		kindleMapper.insertComment(comment);
+		commentMapper.insertComment(comment);
 		return comment.getId();
 	}
 

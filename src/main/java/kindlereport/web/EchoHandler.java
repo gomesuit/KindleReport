@@ -1,10 +1,10 @@
 package kindlereport.web;
 
-import java.util.Date;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
+import kindlereport.dao.CommentMapper;
 import kindlereport.dao.KindleMapper;
 import kindlereport.model.Comment;
 import kindlereport.model.WebSocketReceive;
@@ -29,6 +29,8 @@ public class EchoHandler extends TextWebSocketHandler {
 	private static final Logger logger = LoggerFactory.getLogger(EchoHandler.class);
 	@Autowired
 	private KindleMapper kindleMapper;
+	@Autowired
+	private CommentMapper commentMapper;
 	
     /**
      * セッションプールです。
@@ -88,7 +90,7 @@ public class EchoHandler extends TextWebSocketHandler {
     
     private WebSocketTransmission receiveToTransmission(WebSocketReceive webSocketReceive){
     	WebSocketTransmission webSocketTransmission = new WebSocketTransmission();
-    	Comment comment = kindleMapper.selectCommentById(webSocketReceive.getId());
+    	Comment comment = commentMapper.selectCommentById(webSocketReceive.getId());
     	Map<String,String> kindle = kindleMapper.selectKindle(webSocketReceive.getAsin());
     	
     	webSocketTransmission.setAsin(webSocketReceive.getAsin());
@@ -99,13 +101,5 @@ public class EchoHandler extends TextWebSocketHandler {
     	webSocketTransmission.setId(comment.getId());
     	
     	return webSocketTransmission;
-    }
-    
-    private Comment TransmissionToComment(WebSocketTransmission webSocketTransmission){
-    	Comment comment = new Comment();
-    	comment.setAsin(webSocketTransmission.getAsin());
-    	comment.setContent(webSocketTransmission.getMessage());
-    	comment.setRegisterDateTime(webSocketTransmission.getDateTime());
-    	return comment;
     }
 }

@@ -3,6 +3,7 @@ package kindlereport.web;
 import java.util.List;
 import java.util.Map;
 
+import kindlereport.dao.CommentMapper;
 import kindlereport.dao.KindleMapper;
 import kindlereport.model.Comment;
 import kindlereport.model.Kindle;
@@ -22,6 +23,8 @@ public class ItemsController {
 	
 	@Autowired
 	private KindleMapper kindleMapper;
+	@Autowired
+	private CommentMapper commentMapper;
 	private MyBatisService myBatisService = new MyBatisService();
 
 	@RequestMapping("/")
@@ -39,7 +42,7 @@ public class ItemsController {
 			Model model) {
 		Map<String, String> kindle = kindleMapper.selectKindle(asin);
 		model.addAttribute("kindle", kindle);
-		List<Comment> commentList = kindleMapper.selectComment(asin);
+		List<Comment> commentList = commentMapper.selectComment(asin);
 		model.addAttribute("commentList", commentList);
 		if(ajaxflg == 1){
 			return "items_content";
