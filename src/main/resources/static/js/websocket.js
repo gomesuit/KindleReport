@@ -29,9 +29,9 @@ $(function() {
 		comment += '<div>';
 		comment += dateTime;
 		comment += '</div>';
-		comment += '<div>';
-		comment += id;
-		comment += '</div>';
+//		comment += '<div>';
+//		comment += id;
+//		comment += '</div>';
 		comment += '<div>';
 		comment += message;
 		comment += '</div>';
