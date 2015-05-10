@@ -66,6 +66,9 @@ $(function() {
 		history.replaceState([$(window).scrollTop(), $("#pageState").html()], null, null);
 		itemPageLoad(url);
 	});
+	function isListPage() {
+		return ($("#mainrow").get(0) != null)
+	}
 	function itemPageLoad(url) {
 		var request = $.ajax({
 			type : "GET",
@@ -235,6 +238,9 @@ $(function() {
 		return dom;
 	}
 	function pageLoad() { 
+		if(!isListPage()){
+			return null;
+		}
 		var request = $.ajax({
 			type : "GET",
 			url : "/api/tile",
@@ -334,6 +340,9 @@ $(function() {
 	//ページ戻り（上スクロール）
 	$(window).scroll(
 			function(ev) {
+				if(!isListPage()){
+					return null;
+				}
 				var $window = $(ev.currentTarget);
 				var prevPageId = "page" + (viewPosition - 1);
 				var prevPagerow = $("#" + prevPageId);
@@ -353,6 +362,9 @@ $(function() {
 	//ページ送り（下スクロール）
 	$(window).scroll(
 			function(ev) {
+				if(!isListPage()){
+					return null;
+				}
 				var $window = $(ev.currentTarget);
 				var nextPageId = "page" + (viewPosition);
 				var nextPagerow = $("#" + nextPageId);
@@ -402,6 +414,9 @@ $(function() {
 		proximity : 0
 	});
 	$(window).on('bottom', function() {
+		if(!isListPage()){
+			return null;
+		}
 		if (pageExistsCheck(position + 1)) {
 			position++;
 			return null;
