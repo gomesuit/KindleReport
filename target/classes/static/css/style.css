@@ -1,3 +1,29 @@
+
+
+#dateList .mythumbnail{
+	display: block;
+	padding: 4px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+}
+
+#dateList .mythumbnail img{
+	max-width: 100%;
+	display: block;
+	margin: 0 auto;
+}
+
+#dateList .releaseDate{
+	font-size: 208.3%;
+	text-align: left;
+	background-color: #F8F8F8;
+}
+
+
+
+
+
+
 #mainrow .tile {
 	border: 3px solid #eeeeee;
 	background: #ffffff;

@@ -5,6 +5,8 @@ import java.util.List;
 public class DateKindleList {
 	protected String releaseDate;
     protected List<List<Kindle>> rowKindleList;
+	protected String sidebarId;
+    
 	public String getReleaseDate() {
 		return releaseDate;
 	}
@@ -16,5 +18,11 @@ public class DateKindleList {
 	}
 	public void setRowKindleList(List<List<Kindle>> rowKindleList) {
 		this.rowKindleList = rowKindleList;
+	}
+	public String getSidebarId() {
+		return sidebarId;
+	}
+	public void setSidebarId(String sidebarId) {
+		this.sidebarId = sidebarId;
 	}
 }

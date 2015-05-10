@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<div th:include="common::meta" />
+<div th:include="common::static" />
+<script src="/js/vendor/jquery.sticky.js"></script>
+<script type="text/javascript">
+// $(document).ready(function(){
+//    $(".sidebar").each(function(i, elem) {
+// // 	    console.log(i + ': ' + $(elem).attr("id"));
+// 	    $("#" + $(elem).attr("id")).containedStickyScroll();
+// 	});
+// });
+$(document).ready(function(){
+	$(".sidebar").each(function(i, elem) {
+			// 	    console.log(i + ': ' + $(elem).attr("id"));
+		$("#" + $(elem).attr("id")).sticky({topSpacing : 62});
+	});
+});
+</script>
+</head>
+
+<body>
+	<div th:include="common::menubar" />
+	
+	<div id="dateList">
+		<div class="container">
+			<div class="row" th:each="dateKindleList : ${dateKindleListList}">
+				<div class="col-md-2">
+					<div class="sidebar" th:id="${dateKindleList.sidebarId}">
+						<p class="releaseDate" th:text="${dateKindleList.releaseDate}" />
+					</div>
+				</div>
+				<div class="col-md-10">
+					<div class="row" th:each="KindleList : ${dateKindleList.rowKindleList}" >
+						<div class="tile" th:each="Kindle : ${KindleList}">
+							<div class="col-md-2">
+								<div class="mythumbnail">
+									<a th:href="'/items/' + ${Kindle.asin}" >
+										<img th:src="${Kindle.largeImage}" th:if="${Kindle.largeImage} != ''" alt="" />
+										<img src="/img/noimage.png" th:if="${Kindle.largeImage} == ''" alt="" />
+										<p th:text="${Kindle.title}" />
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

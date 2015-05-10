@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class DetailsController {
 	private static final String DETAILS_PAGE_URL = "items";
 	private static final String LIST_PAGE_URL = "list";
+	private static final String DATELIST_PAGE_URL = "dateList";
 	
 	@Autowired
 	private KindleMapper kindleMapper;
@@ -38,6 +39,7 @@ public class DetailsController {
 		List<Comment> commentList = commentMapper.selectComment(asin);
 		model.addAttribute("commentList", commentList);
 		model.addAttribute("LIST_PAGE_URL", LIST_PAGE_URL);
+		model.addAttribute("DATELIST_PAGE_URL", DATELIST_PAGE_URL);
 		if(ajaxflg == 1){
 			return "items_content";
 		}else{
