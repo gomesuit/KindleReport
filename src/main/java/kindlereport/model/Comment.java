@@ -7,6 +7,7 @@ public class Comment {
 	protected int id;
 	protected Date registerDateTime;
 	protected String content;
+	protected String ipAddr;
 	
 	public String getAsin() {
 		return asin;
@@ -31,5 +32,11 @@ public class Comment {
 	}
 	public void setContent(String content) {
 		this.content = content;
+	}
+	public String getIpAddr() {
+		return ipAddr;
+	}
+	public void setIpAddr(String ipAddr) {
+		this.ipAddr = ipAddr;
 	}
 }

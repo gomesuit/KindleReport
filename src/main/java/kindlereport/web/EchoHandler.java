@@ -74,11 +74,6 @@ public class EchoHandler extends TextWebSocketHandler {
         	//webSocketReceiveからWebSocketTransmissionを作成
         	WebSocketTransmission webSocketTransmission = receiveToTransmission(webSocketReceive);
         	
-        	//DBへInsert
-//        	Comment comment = TransmissionToComment(webSocketTransmission);
-//        	kindleMapper.insertComment(comment);
-//        	logger.info("CommentId : {}", comment.getId());
-        	
         	//更新したWebSocketTransmissionをJSON文字列に変換
         	String json = mapper.writeValueAsString(webSocketTransmission);
         	TextMessage returnMessage = new TextMessage(json);
@@ -95,6 +90,9 @@ public class EchoHandler extends TextWebSocketHandler {
     	
     	webSocketTransmission.setAsin(webSocketReceive.getAsin());
     	webSocketTransmission.setImgUrl(kindle.get("largeImage"));
+    	if(webSocketTransmission.getImgUrl().equals("")){
+    		webSocketTransmission.setImgUrl("/img/noimage.png");
+    	}
     	webSocketTransmission.setMessage(comment.getContent());
     	webSocketTransmission.setTitle(kindle.get("title"));
     	webSocketTransmission.setDateTime(comment.getRegisterDateTime());

@@ -111,10 +111,9 @@ $(function() {
 		this.asin = kindledata.asin;
 		this.title = kindledata.title;
 		this.releaseDate = kindledata.releaseDate;
-		if(kindledata.largeImage == ""){
-			this.imageUrl = "img/noimage.png";
-		}else{
-			this.imageUrl = kindledata.largeImage;
+		this.imageUrl = kindledata.largeImage;
+		if(this.imageUrl == ""){
+			this.imageUrl = "/img/noimage.png";
 		}
 		var params = clone(params);
 
@@ -190,7 +189,7 @@ $(function() {
 		this.getPageNumber = function(){
 			var classString = "row";
 			var attrList = [getAttrString("class", classString)];
-			var text = getHtmlDom("p", [getAttrString("class", "text-center")], "page " + position);
+			var text = getHtmlDom("p", [getAttrString("class", "pagenumber text-center")], "-page" + position + "-");
 			return getHtmlDom("div", attrList, text);
 		}
 		
@@ -371,8 +370,7 @@ $(function() {
 						position = viewPosition;
 					}
 					//console.log($("#pageState").html());
-					history.pushState([null, $("#pageState").html()], "", "?page="
-							+ viewPosition);
+					history.pushState([null, $("#pageState").html()], "", "?page=" + viewPosition);
 				}
 			});
 	function pageExistsCheck(page) {

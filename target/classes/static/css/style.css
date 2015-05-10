@@ -6,6 +6,12 @@
 	padding: 7px 7px 7px 7px;
 }
 
+#mainrow .pagenumber {
+	font-size: 150%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
 #mainrow .tile .title{
 	margin-top: 5px;
 	margin-bottom: 5px;

@@ -170,7 +170,7 @@
 			title,
 			releaseDate,
 			detailPageURL,
-			ifnull(nullif(largeImage, ""), "/img/noimage.png") as largeImage
+			largeImage
 		from
 			Kindle
 		where
@@ -287,7 +287,7 @@
 			title,
 			content,
 			detailPageURL,
-			ifnull(nullif(largeImage, ""), "/img/noimage.png") as largeImage
+			largeImage
 		from
 			Kindle
 		where

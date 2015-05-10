@@ -3,6 +3,8 @@ package kindlereport.web;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import kindlereport.dao.CommentMapper;
 import kindlereport.dao.KindleMapper;
 import kindlereport.model.Comment;
@@ -42,8 +44,9 @@ public class ApiController {
 	}
 
 	@RequestMapping(value = "comment/register", produces = "application/json", method = RequestMethod.POST)
-	public int commentRegister(@RequestBody Comment comment){
+	public int commentRegister(@RequestBody Comment comment, HttpServletRequest request){
 		comment.setRegisterDateTime(getCurrentTime());
+		comment.setIpAddr(request.getRemoteAddr());
 		commentMapper.insertComment(comment);
 		return comment.getId();
 	}

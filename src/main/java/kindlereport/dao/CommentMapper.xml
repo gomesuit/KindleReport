@@ -7,10 +7,12 @@
 	<insert id="insertComment" parameterType="kindlereport.model.Comment" statementType="PREPARED" timeout="20">
 		insert into COMMENT (asin,
 							registerDateTime,
-							content)
+							content,
+							ipAddr)
 		values (#{asin},
 				#{registerDateTime},
-				#{content})
+				#{content},
+				#{ipAddr})
 		<selectKey keyProperty="id" resultType="int" order="AFTER">
 			SELECT LAST_INSERT_ROWID()
 		</selectKey>
