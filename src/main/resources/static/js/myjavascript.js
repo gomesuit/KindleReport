@@ -331,7 +331,7 @@ $(function() {
 	// }
 	// });
 
-	//ページ送り（下スクロール）
+	//ページ戻り（上スクロール）
 	$(window).scroll(
 			function(ev) {
 				var $window = $(ev.currentTarget);
@@ -350,7 +350,7 @@ $(function() {
 					history.pushState(null, "", "?page=" + viewPosition);
 				}
 			});
-	//ページ戻り（上スクロール）
+	//ページ送り（下スクロール）
 	$(window).scroll(
 			function(ev) {
 				var $window = $(ev.currentTarget);
@@ -473,6 +473,9 @@ $(function() {
 		$("#pageState").html(state[1]);
 		if(state[0] != null){
 			$(window).scrollTop(state[0]);
+			setTimeout(function(){
+				$(window).scrollTop(state[0]);
+			}, 1);
 		}
 		//console.log($(window).scrollTop());
 		init();
@@ -506,8 +509,8 @@ $(function() {
 	        'content'   :{
 	        	asin: data.asin,
 	            img: data.imgUrl,
-	            title: data.title,
-	            message: data.message
+	            title: escapeHtml(data.title),
+	            message: escapeHtml(data.message)
 	        },
 	        'position'  :'bottom right'
 	    });
@@ -522,11 +525,36 @@ $(function() {
 //		comment += id;
 //		comment += '</div>';
 		comment += '<div>';
-		comment += message;
+		comment += escapeHtml(message);
 		comment += '</div>';
 		comment += '</div>';
 		return comment;
 	}
+	var escapeHtml = (function (String) {
+	  var escapeMap = {
+	    '&': '&amp;',
+	    "'": '&#x27;',
+	    '`': '&#x60;',
+	    '"': '&quot;',
+	    '<': '&lt;',
+	    '>': '&gt;'
+	  };
+	  var escapeReg = '[';
+	  var reg;
+	  for (var p in escapeMap) {
+	    if (escapeMap.hasOwnProperty(p)) {
+	      escapeReg += p;
+	    }
+	  }
+	  escapeReg += ']';
+	  reg = new RegExp(escapeReg, 'g');
+	  return function escapeHtml (str) {
+	    str = (str === null || str === undefined) ? '' : '' + str;
+	    return str.replace(reg, function (match) {
+	      return escapeMap[match];
+	    });
+	  };
+	}(String));
 	function unixTimeToString(dateTime){
 		var format = 'YYYY/MM/DD HH:mm';
 		var string = moment().format(format, new Date(dateTime));
