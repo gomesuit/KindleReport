@@ -7,7 +7,7 @@
 					<span id="releaseDate" th:text="'発売日：' + ${kindle.releaseDate}" />
 					<span id="author" th:text="'著者：' + ${kindle.author}" />
 					<span id="publisher" th:text="'出版社：' + ${kindle.publisher}" />
-					<p id="content" th:text="'内容紹介：' + ${kindle.content}" />
+					<p id="content" th:utext="'内容紹介：' + ${kindle.content}" />
 					<input type="hidden" id="asin" th:name="${kindle.asin}" th:value="${kindle.asin}" />
 				</div>
 			</div>
