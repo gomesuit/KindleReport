@@ -60,6 +60,22 @@
 	margin: 0 auto;
 }
 
+#mainrow div[class*="-12"] .tile .mythumbnail img{
+	max-width: 20%;
+	display: inline;
+}
+#mainrow div[class*="-12"] .tile .mythumbnail{
+	display: inline;
+	border: 0px;
+	padding: 0px;
+}
+#mainrow div[class*="-12"] .tile .title{
+	display: inline;
+}
+#mainrow div[class*="-12"] .tile .releaseDate{
+	display: inline;
+}
+
 .tileHeader {
 	padding: 10px 0px 10px 0px;
 }
