@@ -162,19 +162,17 @@ $(function() {
 	}
 	var PageDom = function(kindlesdata, params){
 		this.getPageDom = function(){
-			var classString = "row";
-			var attrList = [getAttrString("class", classString)];
 			var text = "";
 			for (var i in kindlesdata) {
 				var itemDom = new ItemDom(kindlesdata[i], params);
 				text += itemDom.getItemDom();
 			}
-			return getHtmlDom("div", attrList, text);
+			return text;
 		}
 	}
 	var PageRow = function(position, colnum, kindlesdata){
 		this.params = {
-			bootColClass:"col-md-" + (12 / colnum),
+			bootColClass:"col-md-" + (12 / colnum) + " col-xs-" + (12 / colnum),
 			tileClassName:"tile" + position,
 			thumbnailClassName:"thumbnail" + position,
 			imgClassName:"img" + position,
@@ -185,15 +183,12 @@ $(function() {
 		
 		this.getPageRow = function(){
 			var attrList = [getAttrString("id", this.pageId)];
-			var text = getHtmlDom("div", [getAttrString("class", "row")], this.pageDom.getPageDom()) + this.getPageNumber();
+			var text = this.pageDom.getPageDom() + this.getPageNumber();
 			return getHtmlDom("div", attrList, text);
 		}
 
 		this.getPageNumber = function(){
-			var classString = "row";
-			var attrList = [getAttrString("class", classString)];
-			var text = getHtmlDom("p", [getAttrString("class", "pagenumber text-center")], "-page" + position + "-");
-			return getHtmlDom("div", attrList, text);
+			return getHtmlDom("p", [getAttrString("class", "pagenumber text-center")], "-page" + position + "-");
 		}
 		
 		this.tileAdjust = function(){

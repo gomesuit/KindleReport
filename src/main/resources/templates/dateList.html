@@ -25,13 +25,13 @@ $(document).ready(function(){
 	
 	<div id="dateList">
 		<div class="container">
-			<div class="row" th:each="dateKindleList : ${dateKindleListList}">
-				<div class="col-md-2">
+			<div class="" th:each="dateKindleList : ${dateKindleListList}">
+				<div class="col-md-2 col-xs-4">
 					<div class="sidebar" th:id="${dateKindleList.sidebarId}">
 						<p class="releaseDate" th:text="${dateKindleList.releaseDate}" />
 					</div>
 				</div>
-				<div class="col-md-10">
+				<div class="col-md-10 col-xs-8">
 					<div class="row" th:each="KindleList : ${dateKindleList.rowKindleList}" >
 						<div class="tile" th:each="Kindle : ${KindleList}">
 							<div class="col-md-2">
