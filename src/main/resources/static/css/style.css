@@ -60,20 +60,22 @@
 	margin: 0 auto;
 }
 
-#mainrow div[class*="-12"] .tile .mythumbnail img{
-	max-width: 20%;
-	display: inline;
-}
 #mainrow div[class*="-12"] .tile .mythumbnail{
-	display: inline;
+	display: inline-block;
 	border: 0px;
 	padding: 0px;
 }
+#mainrow div[class*="-12"] .tile .mythumbnail img{
+	max-width: 100px;
+	height: auto;
+}
+#mainrow div[class*="-12"] .tile .info{
+	display: inline-block;
+	position: absolute;
+}
 #mainrow div[class*="-12"] .tile .title{
-	display: inline;
 }
 #mainrow div[class*="-12"] .tile .releaseDate{
-	display: inline;
 }
 
 .tileHeader {

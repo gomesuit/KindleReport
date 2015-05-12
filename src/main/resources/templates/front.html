@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<div th:include="common::meta" />
+<div th:include="common::static" />
+</head>
+<body>
+	<div th:include="common::menubar" />
+
+	<div id="front">
+		<div class="container">
+			<div class="col-md-6">
+				<a th:href="'/' + ${LIST_PAGE_URL}">LIST</a>
+			</div>
+			<div class="col-md-6">
+				<a th:href="'/' + ${DATELIST_PAGE_URL}">DATELIST</a>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

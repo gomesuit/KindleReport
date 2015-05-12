@@ -17,9 +17,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class IndexController {
 	private static final String LIST_PAGE_URL = "list";
 	private static final String DATELIST_PAGE_URL = "dateList";
+	private static final String FRONT_PAGE_URL = "front";
 	
 	@Autowired
 	private KindleMapper kindleMapper;
+
+	@RequestMapping("/")
+	public String front(Model model) {
+		model.addAttribute("LIST_PAGE_URL", LIST_PAGE_URL);
+		model.addAttribute("DATELIST_PAGE_URL", DATELIST_PAGE_URL);
+		model.addAttribute("FRONT_PAGE_URL", "/");
+		
+		return FRONT_PAGE_URL;
+	}
 	
 	@RequestMapping(LIST_PAGE_URL)
 	public String ajax(Model model) {

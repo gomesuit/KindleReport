@@ -130,7 +130,7 @@ $(function() {
 		this.getItemDomContent = function(){
 			var classString = "tile " + params.tileClassName;
 			var attrList = [getAttrString("class", classString)];
-			var text = this.getItemDomThumbnail() + this.getItemDomTile() + this.getItemDomReleaseDate();
+			var text = this.getItemDomThumbnail() + this.getItemDomInfo();
 			return getHtmlDom("div", attrList, text);
 		}
 
@@ -146,8 +146,15 @@ $(function() {
 			var attrList = [getAttrString("class", params.imgClassName), getAttrString("src", this.imageUrl)];
 			return getHtmlDom("img", attrList);
 		}
+		
+		this.getItemDomInfo = function(){
+			var classString = "info";
+			var attrList = [getAttrString("class", classString)];
+			var text = this.getItemDomTitle() + this.getItemDomReleaseDate();
+			return getHtmlDom("div", attrList, text);
+		}
 
-		this.getItemDomTile = function(){
+		this.getItemDomTitle = function(){
 			var classString = "title " + params.titleClassName;
 			var attrList = [getAttrString("class", classString)];
 			var text = '『' + this.title + '』';
