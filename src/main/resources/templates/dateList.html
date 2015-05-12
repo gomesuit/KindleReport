@@ -28,7 +28,8 @@ $(document).ready(function(){
 			<div class="" th:each="dateKindleList : ${dateKindleListList}">
 				<div class="col-md-2 col-xs-4">
 					<div class="sidebar" th:id="${dateKindleList.sidebarId}">
-						<p class="releaseDate" th:text="${dateKindleList.releaseDate}" />
+						<p class="releaseDate" th:text="${dateKindleList.dateString}" th:if="${dateKindleList.releaseDate} != ${today}" />
+						<p class="releaseDate" th:text="${dateKindleList.dateString}" th:if="${dateKindleList.releaseDate} == ${today}" id="today" />
 					</div>
 				</div>
 				<div class="col-md-10 col-xs-8">

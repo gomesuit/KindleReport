@@ -19,6 +19,10 @@
 	background-color: #F8F8F8;
 }
 
+#dateList #today{
+	font-size: 300%;
+}
+
 
 
 #mainrow .tile {

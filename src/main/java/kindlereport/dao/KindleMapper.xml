@@ -262,9 +262,9 @@
 		LIMIT #{limit} OFFSET #{offset}
 	</select>
 	
-	<select id="selectRereaseDateList" resultType="java.lang.String">
+	<select id="selectRereaseDateList" parameterType="java.lang.String" resultType="java.lang.String">
 <!-- 		select distinct releaseDate from Kindle order by releaseDate desc LIMIT 10 -->
-		select distinct releaseDate from Kindle where releaseDate >= strftime('%Y-%m-%d', datetime('now', 'localtime')) order by releaseDate
+		select distinct releaseDate from Kindle where releaseDate >= #{date} order by releaseDate
 	</select>
 	
 	<select id="selectDayKindleList" parameterType="java.lang.String" resultType="kindlereport.model.Kindle">
