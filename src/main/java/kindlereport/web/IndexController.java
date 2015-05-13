@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import kindlereport.dao.KindleMapper;
 import kindlereport.model.DateKindleList;
@@ -79,7 +80,7 @@ public class IndexController {
 	}
 
     private String getCurrentDate(){
-    	SimpleDateFormat sdf = new SimpleDateFormat(KINDLE_DATE_FORMAT);
+    	SimpleDateFormat sdf = new SimpleDateFormat(KINDLE_DATE_FORMAT, Locale.JAPAN);
     	
     	Calendar calendar = Calendar.getInstance();
     	calendar.setTime(new Date());
@@ -89,12 +90,12 @@ public class IndexController {
     }
 
     private String getToday(){
-    	SimpleDateFormat sdf = new SimpleDateFormat(KINDLE_DATE_FORMAT);
+    	SimpleDateFormat sdf = new SimpleDateFormat(KINDLE_DATE_FORMAT, Locale.JAPAN);
     	return sdf.format(new Date());
     }
 
     private String dateConvert(String releaseDate){
-    	SimpleDateFormat sdf = new SimpleDateFormat(KINDLE_DATE_FORMAT);
+    	SimpleDateFormat sdf = new SimpleDateFormat(KINDLE_DATE_FORMAT, Locale.JAPAN);
     	SimpleDateFormat returnSdf = new SimpleDateFormat("M/d(E)");
     	Date date = null;
     	
