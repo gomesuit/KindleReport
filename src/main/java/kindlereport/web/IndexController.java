@@ -96,7 +96,7 @@ public class IndexController {
 
     private String dateConvert(String releaseDate){
     	SimpleDateFormat sdf = new SimpleDateFormat(KINDLE_DATE_FORMAT, Locale.JAPAN);
-    	SimpleDateFormat returnSdf = new SimpleDateFormat("M/d(E)");
+    	SimpleDateFormat returnSdf = new SimpleDateFormat("M/d(E)", Locale.JAPAN);
     	Date date = null;
     	
     	try {
