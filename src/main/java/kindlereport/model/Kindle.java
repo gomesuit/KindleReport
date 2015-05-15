@@ -17,6 +17,7 @@ public class Kindle {
     protected String content;
     protected String detailPageURL;
     protected String largeImage;
+    protected String mediumImage;
 
     public String getAsin() {
         return asin;
@@ -114,6 +115,12 @@ public class Kindle {
     public void setLargeImage(String largeImage) {
         this.largeImage = largeImage;
     }
+    public String getMediumImage() {
+		return mediumImage;
+	}
+	public void setMediumImage(String mediumImage) {
+		this.mediumImage = mediumImage;
+	}
 
     public void showAllData(){
         System.out.println("{");

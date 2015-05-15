@@ -7,8 +7,6 @@ import java.util.Map;
 
 public interface KindleMapper {
   int countKindle(String asin);
-  void insertKindle(Kindle kindle);
-  void updateKindle(Kindle kindle);
   List<String> selectSortValue(String searchIndex);
   List<String> selectBrowseNodes(String searchIndex);
   List<String> selectPowerPubdates(String searchIndex);

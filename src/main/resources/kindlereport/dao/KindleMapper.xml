@@ -6,59 +6,6 @@
 	<select id="countKindle" resultType="int">
 		select count(*) from Kindle where asin = #{asin}
 	</select>
-	<insert id="insertKindle" parameterType="kindlereport.model.Kindle" statementType="PREPARED" timeout="20">
-		insert into Kindle (asin,
-							author,
-							binding,
-							format,
-							isAdultProduct,
-							label,
-							manufacturer,
-							productGroup,
-							productTypeName,
-							publicationDate,
-							publisher,
-							releaseDate,
-							title,
-							content,
-							detailPageURL,
-							largeImage)
-		values (#{asin},
-				#{author},
-				#{binding},
-				#{format},
-				#{isAdultProduct},
-				#{label},
-				#{manufacturer},
-				#{productGroup},
-				#{productTypeName},
-				#{publicationDate},
-				#{publisher},
-				#{releaseDate},
-				#{title},
-				#{content},
-				#{detailPageURL},
-				#{largeImage})
-	</insert>
-
-	<update id="updateKindle" parameterType="kindlereport.model.Kindle" statementType="PREPARED" timeout="20">
-		update Kindle set
-			author = #{author},
-			binding = #{binding},
-			isAdultProduct = #{isAdultProduct},
-			label = #{label},
-			manufacturer = #{manufacturer},
-			productGroup = #{productGroup},
-			productTypeName = #{productTypeName},
-			publicationDate = #{publicationDate},
-			publisher = #{publisher},
-			releaseDate = #{releaseDate},
-			title = #{title},
-			content = #{content},
-			detailPageURL = #{detailPageURL},
-			largeImage = #{largeImage}
-		where asin = #{asin}
-	</update>
 
 	<select id="selectSortValue" resultType="java.lang.String">
 		select
@@ -288,7 +235,8 @@
 			title,
 			content,
 			detailPageURL,
-			largeImage
+			largeImage,
+			mediumImage
 		from
 			Kindle
 		where
