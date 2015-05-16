@@ -14,7 +14,7 @@
 				#{content},
 				#{ipAddr})
 		<selectKey keyProperty="id" resultType="int" order="AFTER">
-			SELECT LAST_INSERT_ROWID()
+			SELECT @@IDENTITY
 		</selectKey>
 	</insert>
 	
