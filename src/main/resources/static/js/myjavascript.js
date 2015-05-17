@@ -114,9 +114,9 @@ $(function() {
 		this.asin = kindledata.asin;
 		this.title = kindledata.title;
 		this.releaseDate = kindledata.releaseDate;
-		this.imageUrl = kindledata.largeImage;
-		if(this.imageUrl == ""){
-			this.imageUrl = "/img/noimage.png";
+		this.imageUrl = kindledata.mediumImage;
+		if(this.imageUrl == "" || this.imageUrl == null){
+			this.imageUrl = "/img/noimage_s.png";
 		}
 		var params = clone(params);
 
