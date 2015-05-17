@@ -503,8 +503,10 @@ $(function() {
 	var url = "ws://" + location.host + "/echo";
 	commentHeightAdjust();
 	function commentHeightAdjust(){
-		var height = $("#detail-img-grid").height() - ($("#detail-p-grid").outerHeight(true) + $("#detail-input-grid").outerHeight(true));
-		$('#detail-scroll-grid').css("height", height);
+		$("#detailImg").on("load", function(){
+			var height = $("#detail-img-grid").height() - ($("#detail-p-grid").outerHeight(true) + $("#detail-input-grid").outerHeight(true));
+			$('#detail-scroll-grid').css("height", height);
+		});
 	}
     ws = new WebSocket(url);
     ws.onopen = function(){
@@ -624,4 +626,7 @@ $(function() {
 //	});
 	//==================================datelist==================================
 	//$('.sidebar').containedStickyScroll();
+	function isDateListPage() {
+		return ($("#dateList").get(0) != null)
+	}
 });

@@ -16,8 +16,8 @@
 			<div class="col-md-8">
 				<div id="detail-img-grid">
 					<a th:href="${kindle.detailPageURL}" target="_blank" class="thumbnail">
-						<img th:src="${kindle.largeImage}" th:if="${kindle.largeImage} != ''" alt="" />
-						<img src="/img/noimage.png" th:if="${kindle.largeImage} == ''" alt="" />
+						<img id="detailImg" th:src="${kindle.largeImage}" th:if="${kindle.largeImage} != ''" alt="" />
+						<img id="detailImg" src="/img/noimage.png" th:if="${kindle.largeImage} == ''" alt="" />
 					</a>
 				</div>
 			</div>

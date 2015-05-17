@@ -11,12 +11,33 @@
 // 	    $("#" + $(elem).attr("id")).containedStickyScroll();
 // 	});
 // });
+//<![CDATA[
 $(document).ready(function(){
 	$(".sidebar").each(function(i, elem) {
 			// 	    console.log(i + ': ' + $(elem).attr("id"));
 		$("#" + $(elem).attr("id")).sticky({topSpacing : 62});
 	});
+
+	$(".dateRow").each(function(i, elem) {
+		var id = "#" + $(elem).attr("id") + " ";
+		var colnum = 6;
+		var allImage = $(id + ".img");
+		var allImageCount = allImage.length;
+		var completeImageCount = 0;
+		for (var i = 0; i < allImageCount; i++) {
+			var that = this;
+			$(allImage[i]).on("load", function(){
+				completeImageCount++;
+				if (allImageCount == completeImageCount) {
+					$(id + '.mythumbnail').tile(6);
+					$(id + '.title').tile(6);
+					$(id + '.tile').tile(6);
+				}
+			});
+		}
+	});
 });
+//]]>
 </script>
 </head>
 
@@ -24,31 +45,7 @@ $(document).ready(function(){
 	<div th:include="common::menubar" />
 	
 	<div id="dateList">
-		<div class="container">
-			<div class="" th:each="dateKindleList : ${dateKindleListList}">
-				<div class="col-md-2 col-xs-4">
-					<div class="sidebar" th:id="${dateKindleList.sidebarId}">
-						<p class="releaseDate" th:text="${dateKindleList.dateString}" th:if="${dateKindleList.releaseDate} != ${today}" />
-						<p class="releaseDate" th:text="${dateKindleList.dateString}" th:if="${dateKindleList.releaseDate} == ${today}" id="today" />
-					</div>
-				</div>
-				<div class="col-md-10 col-xs-8">
-					<div class="row" th:each="KindleList : ${dateKindleList.rowKindleList}" >
-						<div class="tile" th:each="Kindle : ${KindleList}">
-							<div class="col-md-2">
-								<div class="mythumbnail">
-									<a th:href="'/items/' + ${Kindle.asin}" >
-										<img th:src="${Kindle.largeImage}" th:if="${Kindle.largeImage} != ''" alt="" />
-										<img src="/img/noimage.png" th:if="${Kindle.largeImage} == ''" alt="" />
-										<p th:text="${Kindle.title}" />
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+		<div th:include="dateList_content::content"></div>
 	</div>
 </body>
 

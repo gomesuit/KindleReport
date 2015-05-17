@@ -10,7 +10,6 @@ import java.util.Locale;
 
 import kindlereport.dao.KindleMapper;
 import kindlereport.model.DateKindleList;
-import kindlereport.model.Kindle;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,9 +45,7 @@ public class IndexController {
 	}
 
 	@RequestMapping(DATELIST_PAGE_URL)
-	public String dateList(Model model) {
-		int colnum = 6;
-		
+	public String dateList(Model model) {		
 		List<DateKindleList> dateKindleListList = new ArrayList<DateKindleList>();
 		
 		List<String> dateList = kindleMapper.selectRereaseDateList(getCurrentDate());
@@ -57,23 +54,15 @@ public class IndexController {
 			DateKindleList dateKindleList = new DateKindleList();
 			dateKindleList.setReleaseDate(date);
 			dateKindleList.setDateString(dateConvert(date));
-			dateKindleList.setRowKindleList(new ArrayList<List<Kindle>>());
 			sidebarId++;
 			dateKindleList.setSidebarId("sidebar" + sidebarId);
-			List<Kindle> KindleList = kindleMapper.selectDayKindleList(date);
-			for(int i = 0; KindleList.size() > i; i = i + colnum){
-				int start = i;
-				int end = i + colnum;
-				if(KindleList.size() < end){
-					end = KindleList.size();
-				}
-				dateKindleList.getRowKindleList().add(KindleList.subList(start, end));
-			}
+			dateKindleList.setKindleList(kindleMapper.selectDayKindleList(date));
 			dateKindleListList.add(dateKindleList);
 		}
 		
 		model.addAttribute("dateKindleListList", dateKindleListList);
 		model.addAttribute("today", getToday());
+		
 		model.addAttribute("LIST_PAGE_URL", LIST_PAGE_URL);
 		model.addAttribute("DATELIST_PAGE_URL", DATELIST_PAGE_URL);
 		return DATELIST_PAGE_URL;
