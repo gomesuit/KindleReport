@@ -1,7 +1,10 @@
 package kindlereport.web;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,6 +28,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api")
 public class ApiController {
 	private static final Logger logger = LoggerFactory.getLogger(ApiController.class);
+
+	private static final String KINDLE_DATE_FORMAT = "yyyy-MM-dd";
 	
 	@Autowired
 	private KindleMapper kindleMapper;
@@ -56,5 +61,21 @@ public class ApiController {
     	
     	return date;
     }
-	
+    
+    
+	@RequestMapping("dateList")
+	public List<String> dateList() {
+		List<String> dateList = kindleMapper.selectRereaseDateList(getCurrentDate());
+		return dateList;
+	}
+
+    private String getCurrentDate(){
+    	SimpleDateFormat sdf = new SimpleDateFormat(KINDLE_DATE_FORMAT, Locale.JAPAN);
+    	
+    	Calendar calendar = Calendar.getInstance();
+    	calendar.setTime(new Date());
+    	calendar.add(Calendar.DAY_OF_MONTH, -3);
+    	
+    	return sdf.format(calendar.getTime());
+    }
 }

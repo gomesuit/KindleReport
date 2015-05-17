@@ -4,48 +4,15 @@
 <div th:include="common::meta" />
 <div th:include="common::static" />
 <script src="/js/vendor/jquery.sticky.js"></script>
-<script type="text/javascript">
-// $(document).ready(function(){
-//    $(".sidebar").each(function(i, elem) {
-// // 	    console.log(i + ': ' + $(elem).attr("id"));
-// 	    $("#" + $(elem).attr("id")).containedStickyScroll();
-// 	});
-// });
-//<![CDATA[
-$(document).ready(function(){
-	$(".sidebar").each(function(i, elem) {
-			// 	    console.log(i + ': ' + $(elem).attr("id"));
-		$("#" + $(elem).attr("id")).sticky({topSpacing : 62});
-	});
-
-	$(".dateRow").each(function(i, elem) {
-		var id = "#" + $(elem).attr("id") + " ";
-		var colnum = 6;
-		var allImage = $(id + ".img");
-		var allImageCount = allImage.length;
-		var completeImageCount = 0;
-		for (var i = 0; i < allImageCount; i++) {
-			var that = this;
-			$(allImage[i]).on("load", function(){
-				completeImageCount++;
-				if (allImageCount == completeImageCount) {
-					$(id + '.mythumbnail').tile(6);
-					$(id + '.title').tile(6);
-					$(id + '.tile').tile(6);
-				}
-			});
-		}
-	});
-});
-//]]>
-</script>
 </head>
 
 <body>
 	<div th:include="common::menubar" />
 	
-	<div id="dateList">
-		<div th:include="dateList_content::content"></div>
+	<div id="pageState">
+		<div id="dateList" class="container">
+			<div th:include="dateList_content::content"></div>
+		</div>
 	</div>
 </body>
 

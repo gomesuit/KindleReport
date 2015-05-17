@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/")
@@ -45,28 +46,37 @@ public class IndexController {
 	}
 
 	@RequestMapping(DATELIST_PAGE_URL)
-	public String dateList(Model model) {		
+	public String dateList(
+			@RequestParam(value = "ajaxDate", required = false) String ajaxDate,
+			@RequestParam(value = "ajaxFlg", required = false, defaultValue = "0") int ajaxflg,
+			Model model) {
 		List<DateKindleList> dateKindleListList = new ArrayList<DateKindleList>();
-		
-		List<String> dateList = kindleMapper.selectRereaseDateList(getCurrentDate());
-		int sidebarId = 0;
-		for(String date : dateList){
-			DateKindleList dateKindleList = new DateKindleList();
-			dateKindleList.setReleaseDate(date);
-			dateKindleList.setDateString(dateConvert(date));
-			sidebarId++;
-			dateKindleList.setSidebarId("sidebar" + sidebarId);
-			dateKindleList.setKindleList(kindleMapper.selectDayKindleList(date));
-			dateKindleListList.add(dateKindleList);
-		}
-		
-		model.addAttribute("dateKindleListList", dateKindleListList);
-		model.addAttribute("today", getToday());
-		
 		model.addAttribute("LIST_PAGE_URL", LIST_PAGE_URL);
 		model.addAttribute("DATELIST_PAGE_URL", DATELIST_PAGE_URL);
-		return DATELIST_PAGE_URL;
+		model.addAttribute("today", getToday());
+		
+		if(ajaxflg == 0){
+			//List<String> dateList = kindleMapper.selectRereaseDateList(getCurrentDate());
+			//for(String date : dateList){
+				//dateKindleListList.add(createDateKindleList(date));
+			//}
+			model.addAttribute("dateKindleListList", dateKindleListList);
+			return DATELIST_PAGE_URL;
+		}else{
+			dateKindleListList.add(createDateKindleList(ajaxDate));
+			model.addAttribute("dateKindleListList", dateKindleListList);
+			return DATELIST_PAGE_URL + "_content";
+		}
 	}
+    private DateKindleList createDateKindleList(String date){
+		DateKindleList dateKindleList = new DateKindleList();
+		dateKindleList.setReleaseDate(date);
+		dateKindleList.setDateString(dateConvert(date));
+		dateKindleList.setSidebarId("sidebar" + date);
+		dateKindleList.setKindleList(kindleMapper.selectDayKindleList(date));
+		
+		return dateKindleList;
+    }
 
     private String getCurrentDate(){
     	SimpleDateFormat sdf = new SimpleDateFormat(KINDLE_DATE_FORMAT, Locale.JAPAN);

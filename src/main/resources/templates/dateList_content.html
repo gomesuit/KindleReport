@@ -1,21 +1,19 @@
 <div th:fragment="content">
-	<div class="container">
-		<div class="dateRow" th:id="${dateKindleList.releaseDate}" th:each="dateKindleList : ${dateKindleListList}">
-			<div class="col-md-2 col-xs-4">
-				<div class="sidebar" th:id="${dateKindleList.sidebarId}">
-					<p class="releaseDate" th:text="${dateKindleList.dateString}" th:if="${dateKindleList.releaseDate} != ${today}" />
-					<p class="releaseDate" th:text="${dateKindleList.dateString}" th:if="${dateKindleList.releaseDate} == ${today}" id="today" />
-				</div>
+	<div class="dateRow" th:id="${dateKindleList.releaseDate}" th:each="dateKindleList : ${dateKindleListList}">
+		<div class="col-md-2 col-xs-4">
+			<div class="sidebar" th:id="${dateKindleList.sidebarId}">
+				<p class="releaseDate" th:text="${dateKindleList.dateString}" th:if="${dateKindleList.releaseDate} != ${today}" />
+				<p class="releaseDate" th:text="${dateKindleList.dateString}" th:if="${dateKindleList.releaseDate} == ${today}" id="today" />
 			</div>
-			<div class="col-md-10 col-xs-8">
-				<div class="col-md-2" th:each="kindle : ${dateKindleList.kindleList}">
-					<div class="tile">
-						<a class="mythumbnail" th:href="'/items/' + ${kindle.asin}" >
-							<img class="img" th:src="${kindle.mediumImage}" th:if="${kindle.mediumImage} != '' and ${kindle.mediumImage} != null" alt="" />
-							<img class="img" src="/img/noimage_s.png" th:if="${kindle.mediumImage} == '' or ${kindle.mediumImage} == null" alt="" />
-						</a>
-						<p class="title" th:text="${kindle.title}" />
-					</div>
+		</div>
+		<div class="col-md-10 col-xs-8">
+			<div class="col-md-2" th:each="kindle : ${dateKindleList.kindleList}">
+				<div class="tile">
+					<a class="mythumbnail" th:value="'/items/' + ${kindle.asin}" >
+						<img class="img" th:src="${kindle.mediumImage}" th:if="${kindle.mediumImage} != '' and ${kindle.mediumImage} != null" alt="" />
+						<img class="img" src="/img/noimage_s.png" th:if="${kindle.mediumImage} == '' or ${kindle.mediumImage} == null" alt="" />
+					</a>
+					<p class="title" th:text="${kindle.title}" />
 				</div>
 			</div>
 		</div>

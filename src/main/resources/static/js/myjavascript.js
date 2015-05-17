@@ -495,6 +495,13 @@ $(function() {
 			}, 1);
 		}
 		//console.log($(window).scrollTop());
+		
+		//暫定
+		$(".sidebar").each(function(i, elem) {
+				// 	    console.log(i + ': ' + $(elem).attr("id"));
+			$("#" + $(elem).attr("id")).sticky({topSpacing : 62});
+		});
+		
 		init();
 	});
 	
@@ -629,4 +636,80 @@ $(function() {
 	function isDateListPage() {
 		return ($("#dateList").get(0) != null)
 	}
+	function datePageLoad(date) {
+		if(!isDateListPage()){
+			return null;
+		}
+		var request = $.ajax({
+			type : "GET",
+			url : "/dateList",
+			async: false,
+			cache : false,
+			datatype : "html",
+			data : {
+				"ajaxDate" : date,
+				"ajaxFlg" : 1
+			},
+			timeout : 3000,
+			context : date
+		});
+		request.done(function(data) {
+			$("#dateList").append(data);
+			
+			var id = "#" + this + " ";
+			var colnum = 6;
+			var allImage = $(id + ".img");
+			var allImageCount = allImage.length;
+			var completeImageCount = 0;
+			for (var i = 0; i < allImageCount; i++) {
+				var that = this;
+				$(allImage[i]).on("load", function(){
+					completeImageCount++;
+					if (allImageCount == completeImageCount) {
+						$(id + '.mythumbnail').tile(6);
+						$(id + '.title').tile(6);
+						$(id + '.tile').tile(6);
+						//console.log(id);
+					}
+				});
+			}
+			$("#sidebar" + this).sticky({topSpacing : 62});
+		});
+		request.fail(function() {
+			// alert("通信エラー");
+		});
+		request.always(function() {
+			// alert("通信完了");
+		});
+	}
+	function dateListLoad(){
+		if(!isDateListPage()){
+			return null;
+		}
+		var request = $.ajax({
+			type : "GET",
+			url : "/api/dateList",
+			cache : false,
+			datatype : "json",
+			timeout : 3000
+		});
+		request.done(function(data) {
+			for (var i in data) {
+				datePageLoad(data[i]);
+			}
+//			datePageLoad("2015-05-15");
+//			datePageLoad("2015-05-16");
+//			datePageLoad("2015-05-17");
+//			datePageLoad("2015-05-18");
+//			datePageLoad("2015-05-19");
+//			datePageLoad("2015-05-20");
+		});
+		request.fail(function() {
+			// alert("通信エラー");
+		});
+		request.always(function() {
+			// alert("通信完了");
+		});
+	}
+	dateListLoad();
 });
