@@ -640,6 +640,9 @@ $(function() {
 		if(!isDateListPage()){
 			return null;
 		}
+		if(date == null){
+			return null;
+		}
 		var request = $.ajax({
 			type : "GET",
 			url : "/dateList",
@@ -674,6 +677,7 @@ $(function() {
 				});
 			}
 			$("#sidebar" + this).sticky({topSpacing : 62});
+			$(window).data('loading', false);
 		});
 		request.fail(function() {
 			// alert("通信エラー");
@@ -682,6 +686,7 @@ $(function() {
 			// alert("通信完了");
 		});
 	}
+	var dateList;
 	function dateListLoad(){
 		if(!isDateListPage()){
 			return null;
@@ -694,15 +699,13 @@ $(function() {
 			timeout : 3000
 		});
 		request.done(function(data) {
-			for (var i in data) {
-				datePageLoad(data[i]);
-			}
-//			datePageLoad("2015-05-15");
-//			datePageLoad("2015-05-16");
-//			datePageLoad("2015-05-17");
-//			datePageLoad("2015-05-18");
-//			datePageLoad("2015-05-19");
-//			datePageLoad("2015-05-20");
+			dateList = data.reverse();
+			datePageLoad(dateList.pop());
+			datePageLoad(dateList.pop());
+			datePageLoad(dateList.pop());
+			datePageLoad(dateList.pop());
+			//読み込み後今日の日付にスクロール位置を変更する→後で実装予定
+			//$(window).scrollTop($("#today").offset().top);
 		});
 		request.fail(function() {
 			// alert("通信エラー");
@@ -712,4 +715,14 @@ $(function() {
 		});
 	}
 	dateListLoad();
+	$(window).on('bottom', function() {
+		if(!isDateListPage()){
+			return null;
+		}
+		var obj = $(this);
+		if (!obj.data('loading')) {
+			obj.data('loading', true);
+			datePageLoad(dateList.pop());
+		}
+	});
 });
