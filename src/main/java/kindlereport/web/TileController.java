@@ -1,12 +1,9 @@
 package kindlereport.web;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import kindlereport.dao.KindleMapper;
-import kindlereport.model.DateKindleList;
-import kindlereport.model.Kindle;
+import kindlereport.model.KindleTile;
 import kindlereport.service.MyBatisService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +24,7 @@ public class TileController {
 
 	@RequestMapping("/")
 	public String home(Model model) {		
-		List<Kindle> kindleList = myBatisService.getKindleList(kindleMapper, 100, 0, 1);
+		List<KindleTile> kindleList = myBatisService.getKindleList(kindleMapper, 100, 0, 1);
 		model.addAttribute("kindleList", kindleList);
 		
 		return "default";
@@ -39,7 +36,7 @@ public class TileController {
 			Model model) {
 		int limit = 24;
 		int offset = page * limit;
-		List<Kindle> kindleList = myBatisService.getKindleList(kindleMapper, limit, offset, order);
+		List<KindleTile> kindleList = myBatisService.getKindleList(kindleMapper, limit, offset, order);
 		model.addAttribute("kindleList", kindleList);
 		
 		return "tile";

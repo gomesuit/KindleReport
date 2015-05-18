@@ -5,7 +5,7 @@ import java.util.List;
 public class DateKindleList {
 	protected String releaseDate;
 	protected String dateString;
-    protected List<Kindle> kindleList;
+    protected List<KindleTile> kindleList;
 	protected String sidebarId;
     
 	public String getReleaseDate() {
@@ -14,10 +14,10 @@ public class DateKindleList {
 	public void setReleaseDate(String releaseDate) {
 		this.releaseDate = releaseDate;
 	}
-	public List<Kindle> getKindleList() {
+	public List<KindleTile> getKindleList() {
 		return kindleList;
 	}
-	public void setKindleList(List<Kindle> kindleList) {
+	public void setKindleList(List<KindleTile> kindleList) {
 		this.kindleList = kindleList;
 	}
 	public String getSidebarId() {

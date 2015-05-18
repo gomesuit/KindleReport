@@ -50,19 +50,14 @@ public class IndexController {
 			@RequestParam(value = "ajaxDate", required = false) String ajaxDate,
 			@RequestParam(value = "ajaxFlg", required = false, defaultValue = "0") int ajaxflg,
 			Model model) {
-		List<DateKindleList> dateKindleListList = new ArrayList<DateKindleList>();
 		model.addAttribute("LIST_PAGE_URL", LIST_PAGE_URL);
 		model.addAttribute("DATELIST_PAGE_URL", DATELIST_PAGE_URL);
 		model.addAttribute("today", getToday());
 		
 		if(ajaxflg == 0){
-			//List<String> dateList = kindleMapper.selectRereaseDateList(getCurrentDate());
-			//for(String date : dateList){
-				//dateKindleListList.add(createDateKindleList(date));
-			//}
-			model.addAttribute("dateKindleListList", dateKindleListList);
 			return DATELIST_PAGE_URL;
 		}else{
+			List<DateKindleList> dateKindleListList = new ArrayList<DateKindleList>();
 			dateKindleListList.add(createDateKindleList(ajaxDate));
 			model.addAttribute("dateKindleListList", dateKindleListList);
 			return DATELIST_PAGE_URL + "_content";
@@ -76,16 +71,6 @@ public class IndexController {
 		dateKindleList.setKindleList(kindleMapper.selectDayKindleList(date));
 		
 		return dateKindleList;
-    }
-
-    private String getCurrentDate(){
-    	SimpleDateFormat sdf = new SimpleDateFormat(KINDLE_DATE_FORMAT, Locale.JAPAN);
-    	
-    	Calendar calendar = Calendar.getInstance();
-    	calendar.setTime(new Date());
-    	calendar.add(Calendar.DAY_OF_MONTH, -3);
-    	
-    	return sdf.format(calendar.getTime());
     }
 
     private String getToday(){

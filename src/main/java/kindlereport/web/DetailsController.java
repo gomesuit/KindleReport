@@ -6,7 +6,6 @@ import kindlereport.dao.CommentMapper;
 import kindlereport.dao.KindleMapper;
 import kindlereport.model.Comment;
 import kindlereport.model.Kindle;
-import kindlereport.service.MyBatisService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,7 +26,6 @@ public class DetailsController {
 	private KindleMapper kindleMapper;
 	@Autowired
 	private CommentMapper commentMapper;
-	private MyBatisService myBatisService = new MyBatisService();
 	
 	@RequestMapping(value = "{asin}", method = RequestMethod.GET)
 	public String ajax(

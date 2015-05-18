@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import kindlereport.dao.CommentMapper;
 import kindlereport.dao.KindleMapper;
 import kindlereport.model.Comment;
-import kindlereport.model.Kindle;
+import kindlereport.model.KindleTile;
 import kindlereport.service.MyBatisService;
 
 import org.slf4j.Logger;
@@ -38,13 +38,13 @@ public class ApiController {
 	private MyBatisService myBatisService = new MyBatisService();
 	
 	@RequestMapping("tile")
-	public List<Kindle> tile(
+	public List<KindleTile> tile(
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
 			@RequestParam(value = "order", required = false, defaultValue = "1") int order,
 			Model model) {
 		int limit = 24;
 		int offset = (page - 1) * limit;
-		List<Kindle> kindleList = myBatisService.getKindleList(kindleMapper, limit, offset, order);
+		List<KindleTile> kindleList = myBatisService.getKindleList(kindleMapper, limit, offset, order);
 		return kindleList;
 	}
 
