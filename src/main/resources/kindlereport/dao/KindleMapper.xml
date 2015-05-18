@@ -83,7 +83,7 @@
 		where
 			releaseDate = #{releaseDate}
 		order by
-			asin desc
+			title asc
 	</select>
 	
 	<select id="selectKindleByAsin" resultType="kindlereport.model.KindleDetail">
