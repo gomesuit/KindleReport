@@ -26,15 +26,6 @@
 			asin = #{asin}
 	</select>
 	
-	<select id="selectExclusion" resultType="java.lang.String">
-		select
-			'%'||word||'%'
-		from
-			EXCLUSION
-		where
-			active = 1
-	</select>
-	
 	<select id="selectKindleList" resultType="kindlereport.model.KindleTile" parameterType="java.lang.Integer">
 		select
 			K.asin,
