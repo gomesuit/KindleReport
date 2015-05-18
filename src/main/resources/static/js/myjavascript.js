@@ -255,6 +255,9 @@ $(function() {
 			timeout : 3000
 		});
 		request.done(function(data) {
+			if(data.length == 0){
+				return null;
+			}
 			var pageRow = new PageRow(position, colnum, data);
 			var mainrow = $("#mainrow");
 			mainrow.append(pageRow.getPageRow());

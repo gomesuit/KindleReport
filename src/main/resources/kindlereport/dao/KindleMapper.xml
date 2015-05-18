@@ -42,22 +42,26 @@
 			K.title,
 			K.mediumImage
 		from
-			Kindle K, kindleregist R
-		where
-			K.asin = R.asin
+			Kindle K INNER JOIN KindleRegist R ON K.asin = R.asin
+		<if test="order == 4">
+			where R.deleteTime is not null
+		</if>
 		order by
 		<choose>
 			<when test="order == null or order == 1">
-				K.releaseDate desc
+				K.releaseDate desc, K.title asc
 			</when>
 			<when test="order == 2">
-				K.releaseDate asc
+				K.releaseDate asc, K.title asc
 			</when>
 			<when test="order == 3">
 				R.insertTime desc
 			</when>
+			<when test="order == 4">
+				R.deleteTime desc
+			</when>
 			<otherwise>
-				K.releaseDate desc
+				K.releaseDate desc, K.title asc
 			</otherwise>
 		</choose>
 		LIMIT #{limit} OFFSET #{offset}
@@ -79,31 +83,25 @@
 		where
 			releaseDate = #{releaseDate}
 		order by
-			releaseDate desc
+			asin desc
 	</select>
 	
-	<select id="selectKindleByAsin" resultType="kindlereport.model.Kindle">
+	<select id="selectKindleByAsin" resultType="kindlereport.model.KindleDetail">
 		select
-			asin,
-			author,
-			binding,
-			format,
-			isAdultProduct,
-			label,
-			manufacturer,
-			productGroup,
-			productTypeName,
-			publicationDate,
-			publisher,
-			releaseDate,
-			title,
-			content,
-			detailPageURL,
-			largeImage,
-			mediumImage
+			K.asin,
+			K.author,
+			K.publisher,
+			K.releaseDate,
+			K.title,
+			K.content,
+			K.detailPageURL,
+			K.largeImage,
+			R.insertTime,
+			R.updateTime,
+			R.deleteTime
 		from
-			Kindle
+			Kindle K INNER JOIN KindleRegist R ON K.asin = R.asin
 		where
-			asin = #{asin}
+			K.asin = #{asin}
 	</select>
 </mapper>

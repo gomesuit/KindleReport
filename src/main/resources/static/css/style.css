@@ -191,6 +191,18 @@ body {
 	background-color: #F8F8F8;
 }
 
+#detail #insertTime {
+	background-color: #F8F8F8;
+	margin-right: 20px;
+}
+#detail #updateTime {
+	background-color: #F8F8F8;
+	margin-right: 20px;
+}
+#detail #deleteTime {
+	background-color: #F8F8F8;
+}
+
 #detail #content {
 	font-size: 108.3%;
 	color: #333;

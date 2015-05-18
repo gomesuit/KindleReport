@@ -5,7 +5,7 @@ import java.util.List;
 import kindlereport.dao.CommentMapper;
 import kindlereport.dao.KindleMapper;
 import kindlereport.model.Comment;
-import kindlereport.model.Kindle;
+import kindlereport.model.KindleDetail;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,16 +32,16 @@ public class DetailsController {
 			@PathVariable String asin,
 			@RequestParam(value = "ajaxflg", required = false, defaultValue = "0") int ajaxflg,
 			Model model) {
-		Kindle kindle = kindleMapper.selectKindleByAsin(asin);
+		KindleDetail kindle = kindleMapper.selectKindleByAsin(asin);
 		model.addAttribute("kindle", kindle);
 		List<Comment> commentList = commentMapper.selectComment(asin);
 		model.addAttribute("commentList", commentList);
 		model.addAttribute("LIST_PAGE_URL", LIST_PAGE_URL);
 		model.addAttribute("DATELIST_PAGE_URL", DATELIST_PAGE_URL);
 		if(ajaxflg == 1){
-			return "items_content";
+			return DETAILS_PAGE_URL + "_content";
 		}else{
-			return "items";
+			return DETAILS_PAGE_URL;
 		}
 	}
 	
