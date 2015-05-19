@@ -3,13 +3,20 @@ package kindlereport.model;
 import java.util.Date;
 
 public class WebSocketTransmission {
+	protected int sw;
 	protected String asin;
 	protected String message;
 	protected String imgUrl;
 	protected String title;
 	protected Date dateTime;
 	protected int id;
-	
+
+	public int getSw() {
+		return sw;
+	}
+	public void setSw(int sw) {
+		this.sw = sw;
+	}
 	public String getAsin() {
 		return asin;
 	}

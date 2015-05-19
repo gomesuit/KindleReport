@@ -6,7 +6,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import kindlereport.dao.CommentMapper;
 import kindlereport.dao.KindleMapper;
+import kindlereport.dao.TagMapper;
 import kindlereport.model.Comment;
+import kindlereport.model.Tag;
 import kindlereport.model.WebSocketReceive;
 import kindlereport.model.WebSocketTransmission;
 
@@ -31,6 +33,8 @@ public class EchoHandler extends TextWebSocketHandler {
 	private KindleMapper kindleMapper;
 	@Autowired
 	private CommentMapper commentMapper;
+	@Autowired
+	private TagMapper tagMapper;
 	
     /**
      * セッションプールです。
@@ -69,15 +73,15 @@ public class EchoHandler extends TextWebSocketHandler {
         	//受信したJSON文字列をwebSocketReceiveに変換
         	ObjectMapper mapper = new ObjectMapper();
         	WebSocketReceive webSocketReceive = mapper.readValue(message.getPayload(), WebSocketReceive.class);
-        	logger.info("Receive : {}", message.getPayload());
+        	logger.debug("Receive : {}", message.getPayload());
         	
-        	//webSocketReceiveからWebSocketTransmissionを作成
+        	//webSocketReceiveから送信文字列を作成
         	WebSocketTransmission webSocketTransmission = receiveToTransmission(webSocketReceive);
         	
         	//更新したWebSocketTransmissionをJSON文字列に変換
         	String json = mapper.writeValueAsString(webSocketTransmission);
         	TextMessage returnMessage = new TextMessage(json);
-        	logger.info("Transmission : {}", json);
+        	logger.debug("Transmission : {}", json);
         	
             entry.getValue().sendMessage(returnMessage);
         }
@@ -85,18 +89,32 @@ public class EchoHandler extends TextWebSocketHandler {
     
     private WebSocketTransmission receiveToTransmission(WebSocketReceive webSocketReceive){
     	WebSocketTransmission webSocketTransmission = new WebSocketTransmission();
-    	Comment comment = commentMapper.selectCommentById(webSocketReceive.getId());
-    	Map<String,String> kindle = kindleMapper.selectKindle(webSocketReceive.getAsin());
-    	
+    	webSocketTransmission.setSw(webSocketReceive.getSw());
     	webSocketTransmission.setAsin(webSocketReceive.getAsin());
-    	webSocketTransmission.setImgUrl(kindle.get("largeImage"));
-    	if(webSocketTransmission.getImgUrl().equals("")){
-    		webSocketTransmission.setImgUrl("/img/noimage.png");
+    	
+    	if(webSocketReceive.isComment()){
+        	
+        	Comment comment = commentMapper.selectCommentById(webSocketReceive.getId());
+        	Map<String,String> kindle = kindleMapper.selectKindle(webSocketReceive.getAsin());
+
+        	webSocketTransmission.setImgUrl(kindle.get("largeImage"));
+        	if(webSocketTransmission.getImgUrl().equals("")){
+        		webSocketTransmission.setImgUrl("/img/noimage.png");
+        	}
+        	webSocketTransmission.setMessage(comment.getContent());
+        	webSocketTransmission.setTitle(kindle.get("title"));
+        	webSocketTransmission.setDateTime(comment.getRegisterDateTime());
+        	webSocketTransmission.setId(comment.getId());
+    		
     	}
-    	webSocketTransmission.setMessage(comment.getContent());
-    	webSocketTransmission.setTitle(kindle.get("title"));
-    	webSocketTransmission.setDateTime(comment.getRegisterDateTime());
-    	webSocketTransmission.setId(comment.getId());
+    	if(webSocketReceive.isTagRegist()){
+        	webSocketTransmission.setId(webSocketReceive.getId());
+    		Tag tag = tagMapper.selectTagById(webSocketReceive.getId());
+        	webSocketTransmission.setMessage(tag.getName());
+    	}
+    	if(webSocketReceive.isTagDelete()){
+        	webSocketTransmission.setId(webSocketReceive.getId());
+    	}
     	
     	return webSocketTransmission;
     }

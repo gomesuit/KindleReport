@@ -4,8 +4,10 @@ import java.util.List;
 
 import kindlereport.dao.CommentMapper;
 import kindlereport.dao.KindleMapper;
+import kindlereport.dao.TagMapper;
 import kindlereport.model.Comment;
 import kindlereport.model.KindleDetail;
+import kindlereport.model.Tag;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +28,8 @@ public class DetailsController {
 	private KindleMapper kindleMapper;
 	@Autowired
 	private CommentMapper commentMapper;
+	@Autowired
+	private TagMapper tagMapper;
 	
 	@RequestMapping(value = "{asin}", method = RequestMethod.GET)
 	public String ajax(
@@ -36,6 +40,9 @@ public class DetailsController {
 		model.addAttribute("kindle", kindle);
 		List<Comment> commentList = commentMapper.selectComment(asin);
 		model.addAttribute("commentList", commentList);
+		List<Tag> tagList = tagMapper.selectTagsByAsin(asin);
+		model.addAttribute("tagList", tagList);
+		
 		model.addAttribute("LIST_PAGE_URL", LIST_PAGE_URL);
 		model.addAttribute("DATELIST_PAGE_URL", DATELIST_PAGE_URL);
 		if(ajaxflg == 1){

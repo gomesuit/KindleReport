@@ -99,6 +99,15 @@
 	padding: 10px 0px 10px 0px;
 }
 
+
+#detail-tag-grid {
+	border: 3px solid #eeeeee;
+	background: #ffffff;
+	border-radius: 0px 0px 12px 12px;
+	padding: 10px 10px 10px 10px;
+}
+
+
 #detail-title-grid {
 	border: 3px solid #eeeeee;
 	background: #ffffff;

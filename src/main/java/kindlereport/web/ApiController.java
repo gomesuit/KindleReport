@@ -10,8 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import kindlereport.dao.CommentMapper;
 import kindlereport.dao.KindleMapper;
+import kindlereport.dao.TagMapper;
 import kindlereport.model.Comment;
 import kindlereport.model.KindleTile;
+import kindlereport.model.Tag;
+import kindlereport.model.TagMap;
 import kindlereport.service.MyBatisService;
 
 import org.slf4j.Logger;
@@ -35,6 +38,8 @@ public class ApiController {
 	private KindleMapper kindleMapper;
 	@Autowired
 	private CommentMapper commentMapper;
+	@Autowired
+	private TagMapper tagMapper;
 	private MyBatisService myBatisService = new MyBatisService();
 	
 	@RequestMapping("tile")
@@ -54,6 +59,30 @@ public class ApiController {
 		comment.setIpAddr(request.getRemoteAddr());
 		commentMapper.insertComment(comment);
 		return comment.getId();
+	}
+
+	@RequestMapping(value = "tag/register", produces = "application/json", method = RequestMethod.POST)
+	public int tagRegister(@RequestBody TagMap tagMap){
+		Tag tag = tagMapper.selectTagByName(tagMap.getName());
+		if(tag == null){
+			tag = new Tag();
+			tag.setName(tagMap.getName());
+			tagMapper.insertTag(tag);
+		}
+		tagMap.setTagId(tag.getId());
+		tagMapper.insertTagMap(tagMap);
+		
+		return tagMap.getTagId();
+	}
+
+	@RequestMapping(value = "tag/delete", produces = "application/json", method = RequestMethod.POST)
+	public int tagDeleter(@RequestBody TagMap tagMap){
+		tagMapper.deleteTagMap(tagMap);
+		if(tagMapper.countTagMap(tagMap.getTagId()) == 0){
+			tagMapper.deleteTag(tagMap.getTagId());
+		}
+		
+		return tagMap.getTagId();
 	}
 
     private Date getCurrentTime(){

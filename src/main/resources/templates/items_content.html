@@ -17,6 +17,25 @@
 			</div>
 		</div>
 		<div class="row">
+			<div class="col-md-12">
+				<div id="detail-tag-grid">
+					<a id="tagRegist" href="javascript:void(0);">タグ登録</a>
+					<div id="tagList">
+						<span class="detailTag" th:id="'detailTag' + ${tag.id}" th:each="tag : ${tagList}">
+							<span th:text="${tag.name}" />
+							<button class="tagDelete" type="button" th:value="${tag.id}">*</button>
+						</span>
+					</div>
+					<form id="tagform">
+						<div id="tag-input-group" style="display: none;">
+							<input id="tagInput" type="text" class="validate[required,maxSize[50]]" />
+							<button type="submit">登録</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="row">
 			<div class="col-md-8">
 				<div id="detail-img-grid">
 					<a th:href="${kindle.detailPageURL}" target="_blank" class="thumbnail">

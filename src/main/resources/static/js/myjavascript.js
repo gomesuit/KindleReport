@@ -525,12 +525,22 @@ $(function() {
     };
     ws.onmessage = function(json){
     	var data = $.parseJSON(json.data);
-		var dateTime = unixTimeToString(data.dateTime);
-        noticeBalloon(data);
-        if(data.asin == $("#asin").attr("value")){
-            $("#detail-scroll-grid").prepend(makeComment(data.id, dateTime, data.message));
-        }
-        $("#detail-scroll-grid").scrollTop(0);
+    	if(data.sw == 1){
+    		var dateTime = unixTimeToString(data.dateTime);
+            noticeBalloon(data);
+            if(data.asin == $("#asin").attr("value")){
+                $("#detail-scroll-grid").prepend(makeComment(data.id, dateTime, data.message));
+            }
+            $("#detail-scroll-grid").scrollTop(0);
+    	}else if(data.sw == 2){
+            if(data.asin == $("#asin").attr("value")){
+        		$("#tagList").append(makeTag(data.message, data.id));
+            }
+    	}else if(data.sw == 3){
+    		if(data.asin == $("#asin").attr("value")){
+    			$("#detailTag" + data.id).remove();
+    		}
+    	}
     };
 	function noticeBalloon(data) {
 	    $.amaran({
@@ -558,6 +568,22 @@ $(function() {
 		comment += '</div>';
 		comment += '</div>';
 		return comment;
+	}
+	function makeTag(tagName, id) {
+		var tag = '';
+		tag += '<span class="detailTag" id="';
+		tag += "detailTag" + id;
+		tag += '">';
+		tag += '<span>';
+		tag += escapeHtml(tagName);
+		tag += '</span>';
+		tag += '<button class="tagDelete" type="button" value="';
+		tag += id;
+		tag += '">';
+		tag += '*';
+		tag += '</button>';
+		tag += '</span>';
+		return tag;
 	}
 	var escapeHtml = (function (String) {
 	  var escapeMap = {
@@ -612,6 +638,7 @@ $(function() {
 			// alert("通信成功");
 			//console.log(data);
 			var wsData = JSON.stringify({
+				sw : 1,
 				asin: $("#asin").attr("value"),
 				id: data
 			});
@@ -629,6 +656,90 @@ $(function() {
     });
 	$("#form").validationEngine('attach', {
 	    promptPosition:"bottomLeft"
+	});
+	$(document).on("submit", "#tagform", function(){
+		var request = $.ajax({
+		    headers: { 
+		        'Accept': 'application/json',
+		        'Content-Type': 'application/json' 
+		    },
+			type : "POST",
+			url : "/api/tag/register",
+			datatype : "json",
+			data : JSON.stringify({
+				asin : $("#asin").attr("value"),
+				name : $("#tagInput").val()
+			}),
+			timeout : 3000
+		});
+		request.done(function(data) {
+			// alert("通信成功");
+			//console.log(data);
+			var wsData = JSON.stringify({
+				sw : 2,
+				asin: $("#asin").attr("value"),
+				id: data
+			});
+	        ws.send(wsData);
+	        $("#tagInput").val("");
+		});
+		request.fail(function() {
+			// alert("通信エラー");
+		});
+		request.always(function() {
+			// alert("通信完了");
+		});
+		
+        return false;
+    });
+	$("#tagform").validationEngine('attach', {
+	    promptPosition:"bottomLeft"
+	});
+
+	$(document).on("click", ".tagDelete", function(){
+		tagId = $(this).attr("value");
+		$(this).parent().remove();
+		var request = $.ajax({
+		    headers: { 
+		        'Accept': 'application/json',
+		        'Content-Type': 'application/json' 
+		    },
+			type : "POST",
+			url : "/api/tag/delete",
+			datatype : "json",
+			data : JSON.stringify({
+				asin : $("#asin").attr("value"),
+				tagId : tagId
+			}),
+			timeout : 3000
+		});
+		request.done(function(data) {
+			// alert("通信成功");
+			//console.log(data);
+			var wsData = JSON.stringify({
+				sw : 3,
+				asin: $("#asin").attr("value"),
+				id: data
+			});
+	        ws.send(wsData);
+	        $("#tagInput").val("");
+		});
+		request.fail(function() {
+			// alert("通信エラー");
+		});
+		request.always(function() {
+			// alert("通信完了");
+		});
+		
+        return false;
+	});
+	$(document).on("click", "#tagRegist", function(){
+		target = $("#tag-input-group");
+		if(target.css("display") == "none"){
+			target.css("display", "block");
+		}else{
+			target.css("display", "none");
+		}
 	});
 //	$(document).on("click", ".amaran", function(){
 //		alert("aaaa");

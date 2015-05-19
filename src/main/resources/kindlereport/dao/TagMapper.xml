@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kindlereport.dao.TagMapper">
+	
+	<insert id="insertTag" parameterType="kindlereport.model.Tag" statementType="PREPARED" timeout="20">
+		insert into tag (name) values (#{name})
+		<selectKey keyProperty="id" resultType="int" order="AFTER">
+			SELECT @@IDENTITY
+		</selectKey>
+	</insert>
+	
+	<insert id="insertTagMap" parameterType="kindlereport.model.TagMap" statementType="PREPARED" timeout="20">
+		insert into tagmap (asin, tag_id) values (#{asin}, #{tagId})
+	</insert>
+	
+	<select id="selectTagsByAsin" parameterType="java.lang.String" resultType="kindlereport.model.Tag">
+		select
+			*
+		from
+			tag t INNER JOIN tagmap m ON t.id = m.tag_id
+		where
+			m.asin = #{asin}
+		order by
+			t.id
+	</select>
+	
+	<select id="selectTagById" parameterType="int" resultType="kindlereport.model.Tag">
+		select
+			*
+		from
+			tag
+		where
+			id = #{id}
+	</select>
+	
+	<select id="selectTagByName" parameterType="java.lang.String" resultType="kindlereport.model.Tag">
+		select
+			*
+		from
+			tag
+		where
+			name = #{name}
+	</select>
+	
+	<delete id="deleteTagMap" parameterType="kindlereport.model.TagMap" statementType="PREPARED" timeout="20">
+		delete from tagmap where asin = #{asin} and tag_id = #{tagId}
+	</delete>
+	
+	<select id="countTagMap" resultType="int">
+		select
+			count(*)
+		from
+			tagmap
+		where
+			tag_id = #{tagId}
+	</select>
+	
+	<delete id="deleteTag" parameterType="int" statementType="PREPARED" timeout="20">
+		delete from tag where id = #{id}
+	</delete>
+	
+</mapper>
