@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<div th:include="common::meta" />
-<div th:include="common::static" />
+<head th:substituteby="common::meta" />
+<head th:substituteby="common::static" />
 </head>
 <body>
-	<div th:include="common::menubar" />
+	<div th:substituteby="common::menubar" />
 
 	<div id="pageState">
 		<div class="container">

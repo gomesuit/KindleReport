@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<div th:include="common::meta" />
-<div th:include="common::static" />
+<head th:substituteby="common::meta" />
+<head th:substituteby="common::static" />
 <script src="/js/vendor/jquery.sticky.js"></script>
 </head>
 
 <body>
-	<div th:include="common::menubar" />
+	<div th:substituteby="common::menubar" />
 	
 	<div id="pageState">
 		<div id="dateList" class="container">
-			<div th:include="dateList_content::content"></div>
+			<div th:substituteby="dateList_content::content"></div>
 		</div>
 	</div>
 </body>

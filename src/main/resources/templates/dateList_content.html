@@ -1,4 +1,4 @@
-<div th:fragment="content">
+<div th:fragment="content" th:remove="tag">
 	<div class="dateRow" th:id="${dateKindleList.releaseDate}" th:each="dateKindleList : ${dateKindleListList}">
 		<div class="col-md-2 col-xs-4">
 			<div class="sidebar" th:id="${dateKindleList.sidebarId}">
