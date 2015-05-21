@@ -8,10 +8,10 @@
 					<span id="author" th:text="'著者：' + ${kindle.author}" />
 					<span id="publisher" th:text="'出版社：' + ${kindle.publisher}" />
 					<br />
-					<span id="insertTime" th:text="'データ登録日：' + ${#dates.format(kindle.insertTime, 'yyyy/MM/dd HH:mm')}" />
-					<span id="updateTime" th:text="'データ最終更新日：' + ${#dates.format(kindle.updateTime, 'yyyy/MM/dd HH:mm')}" />
+					<span id="insertTime" th:text="'初回登録日時：' + ${#dates.format(kindle.insertTime, 'yyyy/MM/dd HH:mm')}" />
+					<span id="updateTime" th:text="'最終更新日時：' + ${#dates.format(kindle.updateTime, 'yyyy/MM/dd HH:mm')}" />
 					<span id="deleteTime" th:text="Amazonページ削除済み" th:if="${kindle.deleteTime} != null" />
-					<p id="content" th:utext="'内容紹介：' + ${kindle.content}" />
+					<p id="content" th:utext="${kindle.content}" />
 					<input type="hidden" id="asin" th:name="${kindle.asin}" th:value="${kindle.asin}" />
 				</div>
 			</div>
@@ -22,14 +22,16 @@
 					<a id="tagRegist" href="javascript:void(0);">タグ登録</a>
 					<div id="tagList">
 						<span class="detailTag" th:id="'detailTag' + ${tag.id}" th:each="tag : ${tagList}">
-							<span th:text="${tag.name}" />
-							<button class="tagDelete" type="button" th:value="${tag.id}">*</button>
+							<span class="detailLabel label label-warning glyphicon glyphicon-tag" th:text="${tag.name}" aria-hidden="false" />
+							<button class="tagDelete btn btn-default btn-xs" type="button" style="display: none;" th:value="${tag.id}">
+								<span class="glyphicon glyphicon-remove" aria-hidden="false" />
+							</button>
 						</span>
 					</div>
 					<form id="tagform">
 						<div id="tag-input-group" style="display: none;">
 							<input id="tagInput" type="text" class="validate[required,maxSize[50]]" />
-							<button type="submit">登録</button>
+							<button id="tagButton" type="submit">登録</button>
 						</div>
 					</form>
 				</div>
@@ -59,7 +61,7 @@
 					<div id="detail-input-grid">
 						<form id="form">
 							<div class="input-group">
-								<input id="message" type="text" class="form-control validate[required,maxSize[60]]" placeholder="Comment" />
+								<input id="message" type="text" class="form-control validate[required,maxSize[60]]" placeholder="Comment ..." />
 									<span class="input-group-btn">
 									<button type="submit" class="btn btn-default">コメントする</button>
 								</span>

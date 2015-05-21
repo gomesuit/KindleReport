@@ -91,6 +91,9 @@ $(function() {
 			$("#form").validationEngine('attach', {
 			    promptPosition:"bottomLeft"
 			});
+			$("#tagform").validationEngine('attach', {
+			    promptPosition:"bottomLeft"
+			});
 		});
 		request.fail(function() {
 			// alert("通信エラー");
@@ -534,7 +537,7 @@ $(function() {
             $("#detail-scroll-grid").scrollTop(0);
     	}else if(data.sw == 2){
             if(data.asin == $("#asin").attr("value")){
-        		$("#tagList").append(makeTag(data.message, data.id));
+        		$("#tagList").append(makeTag(data.message, data.id, isOpenTagForm()));
             }
     	}else if(data.sw == 3){
     		if(data.asin == $("#asin").attr("value")){
@@ -569,18 +572,25 @@ $(function() {
 		comment += '</div>';
 		return comment;
 	}
-	function makeTag(tagName, id) {
+	function makeTag(tagName, id, isOpen) {
+		if(isOpen){
+			display = "inline";
+		}else{
+			display = "none";
+		}
 		var tag = '';
 		tag += '<span class="detailTag" id="';
 		tag += "detailTag" + id;
 		tag += '">';
-		tag += '<span>';
+		tag += '<span class="detailLabel label label-warning glyphicon glyphicon-tag">';
 		tag += escapeHtml(tagName);
 		tag += '</span>';
-		tag += '<button class="tagDelete" type="button" value="';
+		tag += '<button class="tagDelete btn btn-default btn-xs" type="button" th:value="';
 		tag += id;
-		tag += '">';
-		tag += '*';
+		tag += '" style="display: ';
+		tag += display;
+		tag += ';">';
+		tag += '<span class="glyphicon glyphicon-remove" aria-hidden="false" />';
 		tag += '</button>';
 		tag += '</span>';
 		return tag;
@@ -734,13 +744,24 @@ $(function() {
         return false;
 	});
 	$(document).on("click", "#tagRegist", function(){
-		target = $("#tag-input-group");
-		if(target.css("display") == "none"){
-			target.css("display", "block");
+		targetInput = $("#tag-input-group");
+		targetButton = $(".tagDelete");
+		if(!isOpenTagForm()){
+			targetInput.css("display", "block");
+			targetButton.css("display", "inline");
 		}else{
-			target.css("display", "none");
+			targetInput.css("display", "none");
+			targetButton.css("display", "none");
 		}
 	});
+	function isOpenTagForm() {
+		targetInput = $("#tag-input-group");
+		if(targetInput.css("display") == "none"){
+			return false;
+		}else{
+			return true;
+		}
+	}
 //	$(document).on("click", ".amaran", function(){
 //		alert("aaaa");
 //		alert($(this));

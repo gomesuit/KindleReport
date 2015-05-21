@@ -220,3 +220,46 @@ body {
 	margin-top: 10px;
 	margin-bottom: 0px;
 }
+
+#detail #tagList .detailTag {
+	padding-top: 5px;
+	padding-bottom: 2px;
+	display: inline-block;
+}
+
+#detail #tagList .detailLabel {
+	font-size: 103%;
+}
+
+#detail #tagList .tagDelete {
+	margin-left: -6px;
+	margin-top: -4px;
+	padding: 2px 6px;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	position: relative;
+}
+
+#detail #tagform {
+	margin-top: 5px;
+}
+
+#detail #tagInput {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+	padding: 2px 7px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+#detail #tagButton {
+	background-color: #fff;
+	border: 1px solid transparent;
+	border-color: #ccc;
+	padding: 2px 7px;
+	margin-left: -6px;
+	border-radius: 4px;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
