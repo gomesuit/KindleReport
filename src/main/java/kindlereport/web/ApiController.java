@@ -3,8 +3,10 @@ package kindlereport.web;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,7 +17,6 @@ import kindlereport.model.Comment;
 import kindlereport.model.KindleTile;
 import kindlereport.model.Tag;
 import kindlereport.model.TagMap;
-import kindlereport.service.MyBatisService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +32,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api")
 public class ApiController {
 	private static final Logger logger = LoggerFactory.getLogger(ApiController.class);
-
 	private static final String KINDLE_DATE_FORMAT = "yyyy-MM-dd";
 	
 	@Autowired
@@ -40,16 +40,29 @@ public class ApiController {
 	private CommentMapper commentMapper;
 	@Autowired
 	private TagMapper tagMapper;
-	private MyBatisService myBatisService = new MyBatisService();
 	
 	@RequestMapping("tile")
 	public List<KindleTile> tile(
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
 			@RequestParam(value = "order", required = false, defaultValue = "1") int order,
+			@RequestParam(value = "tagId", required = false, defaultValue = "0") int tagId,
 			Model model) {
 		int limit = 24;
 		int offset = (page - 1) * limit;
-		List<KindleTile> kindleList = myBatisService.getKindleList(kindleMapper, limit, offset, order);
+		List<KindleTile> kindleList;
+		
+		Map<String,Integer> requestParam = new HashMap<String,Integer>();
+		requestParam.put("limit", limit);
+		requestParam.put("offset", offset);
+		requestParam.put("order", order);
+		requestParam.put("tagId", tagId);
+		
+		if(tagId == 0){
+			kindleList = kindleMapper.selectKindleList(requestParam);
+		}else{
+			kindleList = kindleMapper.selectKindleListByTag(requestParam);
+		}
+		
 		return kindleList;
 	}
 

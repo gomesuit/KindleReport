@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Locale;
 
 import kindlereport.dao.KindleMapper;
+import kindlereport.dao.TagMapper;
 import kindlereport.model.DateKindleList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ public class IndexController {
 	
 	@Autowired
 	private KindleMapper kindleMapper;
+	@Autowired
+	private TagMapper tagMapper;
 
 	@RequestMapping("/")
 	public String front(Model model) {
@@ -38,9 +41,12 @@ public class IndexController {
 	}
 	
 	@RequestMapping(LIST_PAGE_URL)
-	public String ajax(Model model) {
+	public String ajax(
+			@RequestParam(value = "tagId", required = false, defaultValue = "0") int tagId,
+			Model model) {
 		model.addAttribute("LIST_PAGE_URL", LIST_PAGE_URL);
 		model.addAttribute("DATELIST_PAGE_URL", DATELIST_PAGE_URL);
+		model.addAttribute("tag", tagMapper.selectTagById(tagId));
 		
 		return LIST_PAGE_URL;
 	}

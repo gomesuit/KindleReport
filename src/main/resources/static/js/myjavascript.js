@@ -253,7 +253,8 @@ $(function() {
 			datatype : "json",
 			data : {
 				"order" : order,
-				"page" : position
+				"page" : position,
+				"tagId" : getParam("tagId")
 			},
 			timeout : 3000
 		});
@@ -344,6 +345,17 @@ $(function() {
 	// pageLoad();
 	// }
 	// });
+	function createParam(viewPosition) {
+		url = "?page=" + viewPosition;
+		if (location.search == "") {
+			return url;
+		}
+		tagId = getParam("tagId");
+		if(tagId != null){
+			url += "&tagId=" + tagId;
+		}
+		return url;
+	}
 
 	//ページ戻り（上スクロール）
 	$(window).scroll(
@@ -364,7 +376,7 @@ $(function() {
 
 				if (scrollBottom < prevPageBottom) {
 					viewPosition--;
-					history.pushState(null, "", "?page=" + viewPosition);
+					history.pushState(null, "", createParam(viewPosition));
 				}
 			});
 	//ページ送り（下スクロール）
@@ -390,7 +402,7 @@ $(function() {
 						position = viewPosition;
 					}
 					//console.log($("#pageState").html());
-					history.pushState([null, $("#pageState").html()], "", "?page=" + viewPosition);
+					history.pushState([null, $("#pageState").html()], "", createParam(viewPosition));
 				}
 			});
 	function pageExistsCheck(page) {
@@ -579,7 +591,9 @@ $(function() {
 			display = "none";
 		}
 		var tag = '';
-		tag += '<span class="detailTag" id="';
+		tag += '<a href="';
+		tag += '/list?tagId=' + id;
+		tag += '" class="detailTag" id="';
 		tag += "detailTag" + id;
 		tag += '">';
 		tag += '<span class="detailLabel label label-warning glyphicon glyphicon-tag">';
@@ -592,7 +606,7 @@ $(function() {
 		tag += ';">';
 		tag += '<span class="glyphicon glyphicon-remove" aria-hidden="false" />';
 		tag += '</button>';
-		tag += '</span>';
+		tag += '</a>';
 		return tag;
 	}
 	var escapeHtml = (function (String) {

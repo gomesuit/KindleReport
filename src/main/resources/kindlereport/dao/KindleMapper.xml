@@ -26,7 +26,7 @@
 			asin = #{asin}
 	</select>
 	
-	<select id="selectKindleList" resultType="kindlereport.model.KindleTile" parameterType="java.lang.Integer">
+	<select id="selectKindleList" resultType="kindlereport.model.KindleTile">
 		select
 			K.asin,
 			K.releaseDate,
@@ -94,5 +94,42 @@
 			Kindle K INNER JOIN KindleRegist R ON K.asin = R.asin
 		where
 			K.asin = #{asin}
+	</select>
+	
+	<select id="selectKindleListByTag" resultType="kindlereport.model.KindleTile">
+		select
+			K.asin,
+			K.releaseDate,
+			K.title,
+			K.mediumImage
+		from
+			tagmap T INNER JOIN Kindle K ON T.asin = K.asin INNER JOIN KindleRegist R ON K.asin = R.asin
+		where
+			1 = 1
+		<if test="order == 4">
+			and R.deleteTime is not null
+		</if>
+		<if test="tagId != 0">
+			and T.tag_id = #{tagId}
+		</if>
+		order by
+		<choose>
+			<when test="order == null or order == 1">
+				K.releaseDate desc, K.title asc
+			</when>
+			<when test="order == 2">
+				K.releaseDate asc, K.title asc
+			</when>
+			<when test="order == 3">
+				R.insertTime desc
+			</when>
+			<when test="order == 4">
+				R.deleteTime desc
+			</when>
+			<otherwise>
+				K.releaseDate desc, K.title asc
+			</otherwise>
+		</choose>
+		LIMIT #{limit} OFFSET #{offset}
 	</select>
 </mapper>

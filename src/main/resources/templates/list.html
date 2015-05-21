@@ -9,9 +9,16 @@
 
 	<div id="pageState">
 		<div class="container">
-			<div class="tileHeader">
+			<div id="tileHeader" class="col-md-12">
+				<div class="col-md-12">
+					<span>タグ：</span>
+					<span class="detailLabel label label-warning glyphicon glyphicon-tag" th:text="${tag.name}" aria-hidden="false" th:if="${tag} != null"/>
+					<button class="tagDelete btn btn-default btn-xs" type="button" style="display: none;" th:value="${tag.id}" th:if="${tag} != null">
+						<span class="glyphicon glyphicon-remove" aria-hidden="false" />
+					</button>
+				</div>
 				<div class="col-md-10">
-					<div class="btn-group" data-toggle="buttons">
+					<div id="list-btn-group" class="btn-group" data-toggle="buttons">
 						<label id="colrdo1" class="btn btn-default mybtn" value="1" >
 							<input type="radio" />☓1
 						</label>
@@ -30,7 +37,7 @@
 					</div>
 				</div>
 				<div class="col-md-2">
-					<div class="dropdown">
+					<div id="list-dropdown" class="dropdown">
 						<button class="btn btn-default dropdown-toggle" type="button"
 							id="dropdownMenu1" data-toggle="dropdown">
 							並べ替え <span class="caret"></span>

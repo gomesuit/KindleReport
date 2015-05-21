@@ -21,16 +21,16 @@
 				<div id="detail-tag-grid">
 					<a id="tagRegist" href="javascript:void(0);">タグ登録</a>
 					<div id="tagList">
-						<span class="detailTag" th:id="'detailTag' + ${tag.id}" th:each="tag : ${tagList}">
+						<a th:href="'/' + ${LIST_PAGE_URL} + '?tagId=' + ${tag.id}" class="detailTag" th:id="'detailTag' + ${tag.id}" th:each="tag : ${tagList}">
 							<span class="detailLabel label label-warning glyphicon glyphicon-tag" th:text="${tag.name}" aria-hidden="false" />
 							<button class="tagDelete btn btn-default btn-xs" type="button" style="display: none;" th:value="${tag.id}">
 								<span class="glyphicon glyphicon-remove" aria-hidden="false" />
 							</button>
-						</span>
+						</a>
 					</div>
 					<form id="tagform">
 						<div id="tag-input-group" style="display: none;">
-							<input id="tagInput" type="text" class="validate[required,maxSize[50]]" />
+							<input id="tagInput" type="text" class="validate[required,maxSize[50]]" placeholder="Input tag ..." />
 							<button id="tagButton" type="submit">登録</button>
 						</div>
 					</form>
@@ -61,7 +61,7 @@
 					<div id="detail-input-grid">
 						<form id="form">
 							<div class="input-group">
-								<input id="message" type="text" class="form-control validate[required,maxSize[60]]" placeholder="Comment ..." />
+								<input id="message" type="text" class="form-control validate[required,maxSize[60]]" placeholder="Input comment ..." />
 									<span class="input-group-btn">
 									<button type="submit" class="btn btn-default">コメントする</button>
 								</span>

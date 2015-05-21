@@ -95,8 +95,18 @@
 #mainrow div[class*="-12"] .tile .releaseDate{
 }
 
-.tileHeader {
-	padding: 10px 0px 10px 0px;
+#tileHeader {
+	background: #ffffff;
+	border-radius: 12px 12px 12px 12px;
+	margin: 0px 0px 0px 0px;
+	border: 3px solid #eeeeee;
+	padding: 7px 7px 7px 7px;
+}
+
+#list-btn-group {
+}
+
+#list-dropdown {
 }
 
 
