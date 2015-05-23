@@ -8,7 +8,6 @@ import java.util.Map;
 
 public interface KindleMapper {
   Map<String,String> selectKindle(String asin);
-  List<String> selectExclusion();
   List<KindleTile> selectKindleList(Map<String,Integer> map);
   List<KindleTile> selectKindleListByTag(Map<String,Integer> map);
   List<String> selectRereaseDateList(String date);

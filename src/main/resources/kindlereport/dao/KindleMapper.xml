@@ -21,20 +21,25 @@
 		select
 			K.asin,
 			K.releaseDate,
-			K.title,
+			I.tileTitle as title,
 			K.mediumImage
 		from
-			Kindle K INNER JOIN KindleRegist R ON K.asin = R.asin
+			Kindle K INNER JOIN KindleRegist R ON K.asin = R.asin LEFT JOIN KindleMyInfo I ON K.asin = I.asin
+		where
+			I.isNovel = 0
+			and I.isMagazine = 0
+			and I.isAdult = 0
+			and K.isAdultProduct = 0
 		<if test="order == 4">
-			where R.deleteTime is not null
+			and R.deleteTime is not null
 		</if>
 		order by
 		<choose>
 			<when test="order == null or order == 1">
-				K.releaseDate desc, K.title asc
+				K.releaseDate desc, I.tileTitle asc
 			</when>
 			<when test="order == 2">
-				K.releaseDate asc, K.title asc
+				K.releaseDate asc, I.tileTitle asc
 			</when>
 			<when test="order == 3">
 				R.insertTime desc
@@ -43,7 +48,47 @@
 				R.deleteTime desc
 			</when>
 			<otherwise>
-				K.releaseDate desc, K.title asc
+				K.releaseDate desc, I.tileTitle asc
+			</otherwise>
+		</choose>
+		LIMIT #{limit} OFFSET #{offset}
+	</select>
+	
+	<select id="selectKindleListByTag" resultType="kindlereport.model.KindleTile">
+		select
+			K.asin,
+			K.releaseDate,
+			I.tileTitle as title,
+			K.mediumImage
+		from
+			tagmap T INNER JOIN Kindle K ON T.asin = K.asin INNER JOIN KindleRegist R ON K.asin = R.asin LEFT JOIN KindleMyInfo I ON K.asin = I.asin
+		where
+			I.isNovel = 0
+			and I.isMagazine = 0
+			and I.isAdult = 0
+			and K.isAdultProduct = 0
+		<if test="order == 4">
+			and R.deleteTime is not null
+		</if>
+		<if test="tagId != 0">
+			and T.tag_id = #{tagId}
+		</if>
+		order by
+		<choose>
+			<when test="order == null or order == 1">
+				K.releaseDate desc, I.tileTitle asc
+			</when>
+			<when test="order == 2">
+				K.releaseDate asc, I.tileTitle asc
+			</when>
+			<when test="order == 3">
+				R.insertTime desc
+			</when>
+			<when test="order == 4">
+				R.deleteTime desc
+			</when>
+			<otherwise>
+				K.releaseDate desc, I.tileTitle asc
 			</otherwise>
 		</choose>
 		LIMIT #{limit} OFFSET #{offset}
@@ -51,21 +96,36 @@
 	
 	<select id="selectRereaseDateList" parameterType="java.lang.String" resultType="java.lang.String">
 <!-- 		select distinct releaseDate from Kindle order by releaseDate desc LIMIT 10 -->
-		select distinct releaseDate from Kindle where releaseDate >= #{date} order by releaseDate
+		select distinct
+			K.releaseDate
+		from
+			Kindle K LEFT JOIN KindleMyInfo I ON K.asin = I.asin
+		where
+			K.releaseDate >= #{date}
+			and I.isNovel = 0
+			and I.isMagazine = 0
+			and I.isAdult = 0
+			and K.isAdultProduct = 0
+		order by
+			K.releaseDate
 	</select>
 	
 	<select id="selectDayKindleList" parameterType="java.lang.String" resultType="kindlereport.model.KindleTile">
 		select
-			asin,
-			releaseDate,
-			title,
-			mediumImage
+			K.asin,
+			K.releaseDate,
+			I.tileTitle as title,
+			K.mediumImage
 		from
-			Kindle
+			Kindle K LEFT JOIN KindleMyInfo I ON K.asin = I.asin
 		where
-			releaseDate = #{releaseDate}
+			K.releaseDate = #{releaseDate}
+			and I.isNovel = 0
+			and I.isMagazine = 0
+			and I.isAdult = 0
+			and K.isAdultProduct = 0
 		order by
-			title asc
+			I.tileTitle asc
 	</select>
 	
 	<select id="selectKindleByAsin" resultType="kindlereport.model.KindleDetail">
@@ -85,42 +145,5 @@
 			Kindle K INNER JOIN KindleRegist R ON K.asin = R.asin
 		where
 			K.asin = #{asin}
-	</select>
-	
-	<select id="selectKindleListByTag" resultType="kindlereport.model.KindleTile">
-		select
-			K.asin,
-			K.releaseDate,
-			K.title,
-			K.mediumImage
-		from
-			tagmap T INNER JOIN Kindle K ON T.asin = K.asin INNER JOIN KindleRegist R ON K.asin = R.asin
-		where
-			1 = 1
-		<if test="order == 4">
-			and R.deleteTime is not null
-		</if>
-		<if test="tagId != 0">
-			and T.tag_id = #{tagId}
-		</if>
-		order by
-		<choose>
-			<when test="order == null or order == 1">
-				K.releaseDate desc, K.title asc
-			</when>
-			<when test="order == 2">
-				K.releaseDate asc, K.title asc
-			</when>
-			<when test="order == 3">
-				R.insertTime desc
-			</when>
-			<when test="order == 4">
-				R.deleteTime desc
-			</when>
-			<otherwise>
-				K.releaseDate desc, K.title asc
-			</otherwise>
-		</choose>
-		LIMIT #{limit} OFFSET #{offset}
 	</select>
 </mapper>
