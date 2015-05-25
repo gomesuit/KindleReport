@@ -45,19 +45,21 @@ public class ApiController {
 	public List<KindleTile> tile(
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
 			@RequestParam(value = "order", required = false, defaultValue = "1") int order,
-			@RequestParam(value = "tagId", required = false, defaultValue = "0") int tagId,
+			@RequestParam(value = "tagId", required = false, defaultValue = "0") int tagId[],
 			Model model) {
 		int limit = 24;
 		int offset = (page - 1) * limit;
 		List<KindleTile> kindleList;
 		
-		Map<String,Integer> requestParam = new HashMap<String,Integer>();
+		Map<String,Object> requestParam = new HashMap<String,Object>();
 		requestParam.put("limit", limit);
 		requestParam.put("offset", offset);
 		requestParam.put("order", order);
-		requestParam.put("tagId", tagId);
+		requestParam.put("tagId", tagId[0]);
 		
-		if(tagId == 0){
+		logger.info("{}", tagId);
+		
+		if(tagId[0] == 0){
 			kindleList = kindleMapper.selectKindleList(requestParam);
 		}else{
 			kindleList = kindleMapper.selectKindleListByTag(requestParam);
