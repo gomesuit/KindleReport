@@ -10,6 +10,7 @@ public interface TagMapper {
 	void insertTagMap(TagMap tagMap);
 	List<Tag> selectTagsByAsin(String asin);
 	Tag selectTagById(int id);
+	List<Tag> selectTagListById(List<Integer> tagId);
 	Tag selectTagByName(String name);
 	void deleteTagMap(TagMap tagMap);
 	int countTagMap(int tagId);

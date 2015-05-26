@@ -3,7 +3,6 @@ package kindlereport.web;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -42,11 +41,13 @@ public class IndexController {
 	
 	@RequestMapping(LIST_PAGE_URL)
 	public String ajax(
-			@RequestParam(value = "tagId", required = false, defaultValue = "0") int tagId,
+			@RequestParam(value = "tagId", required = false) List<Integer> tagId,
 			Model model) {
 		model.addAttribute("LIST_PAGE_URL", LIST_PAGE_URL);
 		model.addAttribute("DATELIST_PAGE_URL", DATELIST_PAGE_URL);
-		model.addAttribute("tag", tagMapper.selectTagById(tagId));
+		if(tagId != null){
+			model.addAttribute("tagList", tagMapper.selectTagListById(tagId));
+		}
 		
 		return LIST_PAGE_URL;
 	}

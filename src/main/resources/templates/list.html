@@ -12,10 +12,12 @@
 			<div id="tileHeader" class="col-md-12">
 				<div class="col-md-12">
 					<span>タグ：</span>
-					<span class="detailLabel label label-warning glyphicon glyphicon-tag" th:text="${tag.name}" aria-hidden="false" th:if="${tag} != null"/>
-					<button class="tagDelete btn btn-default btn-xs" type="button" style="display: none;" th:value="${tag.id}" th:if="${tag} != null">
-						<span class="glyphicon glyphicon-remove" aria-hidden="false" />
-					</button>
+					<div th:each="tag : ${tagList}">
+						<span class="detailLabel label label-warning glyphicon glyphicon-tag" th:text="${tag.name}" aria-hidden="false" th:if="${tag} != null"/>
+						<button class="tagDelete btn btn-default btn-xs" type="button" style="display: none;" th:value="${tag.id}" th:if="${tag} != null">
+							<span class="glyphicon glyphicon-remove" aria-hidden="false" />
+						</button>
+					</div>
 				</div>
 				<div class="col-md-10">
 					<div id="list-btn-group" class="btn-group" data-toggle="buttons">

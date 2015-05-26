@@ -61,7 +61,7 @@
 			I.tileTitle as title,
 			K.mediumImage
 		from
-			tagmap T INNER JOIN Kindle K ON T.asin = K.asin INNER JOIN KindleRegist R ON K.asin = R.asin LEFT JOIN KindleMyInfo I ON K.asin = I.asin
+			Kindle K INNER JOIN KindleRegist R ON K.asin = R.asin LEFT JOIN KindleMyInfo I ON K.asin = I.asin
 		where
 			I.isNovel = 0
 			and I.isMagazine = 0
@@ -70,9 +70,9 @@
 		<if test="order == 4">
 			and R.deleteTime is not null
 		</if>
-		<if test="tagId != 0">
-			and T.tag_id = #{tagId}
-		</if>
+		<foreach item="id" index="index" collection="tagId">
+			and exists (select 'X' from tagmap T where K.asin = T.asin and T.tag_id = #{id})
+		</foreach>
 		order by
 		<choose>
 			<when test="order == null or order == 1">

@@ -45,7 +45,7 @@ public class ApiController {
 	public List<KindleTile> tile(
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
 			@RequestParam(value = "order", required = false, defaultValue = "1") int order,
-			@RequestParam(value = "tagId", required = false, defaultValue = "0") int tagId[],
+			@RequestParam(value = "tagId", required = false) List<Integer> tagIdList,
 			Model model) {
 		int limit = 24;
 		int offset = (page - 1) * limit;
@@ -55,11 +55,11 @@ public class ApiController {
 		requestParam.put("limit", limit);
 		requestParam.put("offset", offset);
 		requestParam.put("order", order);
-		requestParam.put("tagId", tagId[0]);
+		requestParam.put("tagId", tagIdList);
 		
-		logger.info("{}", tagId);
+		logger.info("{}", tagIdList);
 		
-		if(tagId[0] == 0){
+		if(tagIdList == null){
 			kindleList = kindleMapper.selectKindleList(requestParam);
 		}else{
 			kindleList = kindleMapper.selectKindleListByTag(requestParam);

@@ -35,6 +35,18 @@
 			id = #{id}
 	</select>
 	
+	<select id="selectTagListById" resultType="kindlereport.model.Tag">
+		select
+			*
+		from
+			tag
+		where
+			id in
+		<foreach item="id" index="index" collection="list" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</select>
+	
 	<select id="selectTagByName" parameterType="java.lang.String" resultType="kindlereport.model.Tag">
 		select
 			*

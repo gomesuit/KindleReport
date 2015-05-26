@@ -17,7 +17,11 @@ $(function() {
 		for (i = 0; i < params.length; i++) {
 			neet = params[i].split("=");
 			paramsArray.push(neet[0]);
-			paramsArray[neet[0]] = neet[1];
+			if(paramsArray[neet[0]] == null){
+				paramsArray[neet[0]] = neet[1];
+			}else{
+				paramsArray[neet[0]] += "," + neet[1];
+			}
 		}
 		var value = paramsArray[key];
 		return value;
@@ -248,13 +252,11 @@ $(function() {
 		}
 		var request = $.ajax({
 			type : "GET",
-			url : "/api/tile",
+			url : "/api/tile" + createParam(position),
 			cache : false,
 			datatype : "json",
 			data : {
-				"order" : order,
-				"page" : position,
-				"tagId" : getParam("tagId")
+				"order" : order
 			},
 			timeout : 3000
 		});
@@ -352,11 +354,13 @@ $(function() {
 		}
 		tagId = getParam("tagId");
 		if(tagId != null){
-			url += "&tagId=" + tagId;
+			tagIds = tagId.split(",");
+			for (i = 0; i < tagIds.length; i++) {
+				url += "&tagId=" + tagIds[i];
+			}
 		}
 		return url;
 	}
-
 	//ページ戻り（上スクロール）
 	$(window).scroll(
 			function(ev) {
