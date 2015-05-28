@@ -73,4 +73,29 @@
 		delete from tag where id = #{id}
 	</delete>
 	
+	<select id="selectTagByNameLike" parameterType="kindlereport.model.ReceiveTag" resultType="kindlereport.model.Tag">
+		select
+			*
+		from
+			tag T
+		where
+			name like #{name}
+			and exists (select
+							'X'
+						from
+							tagmap M
+						where
+							M.tag_id = T.id
+						<foreach item="id" index="index" collection="tagIdList">
+							and exists (select 'X' from tagmap M2 where M2.asin = M.asin and M2.tag_id = #{id})
+						</foreach>
+						)
+		<foreach item="id" index="index" collection="tagIdList">
+			and not exists (select 'X' from tag T2 where T2.id = T.id and T2.id = #{id})
+		</foreach>
+		order by
+			name
+		Limit 10
+	</select>
+	
 </mapper>

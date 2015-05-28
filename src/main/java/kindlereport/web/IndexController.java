@@ -70,6 +70,7 @@ public class IndexController {
 			return DATELIST_PAGE_URL + "_content";
 		}
 	}
+	
     private DateKindleList createDateKindleList(String date){
 		DateKindleList dateKindleList = new DateKindleList();
 		dateKindleList.setReleaseDate(date);

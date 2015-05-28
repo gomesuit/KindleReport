@@ -3,6 +3,8 @@
 <head>
 <head th:substituteby="common::meta" />
 <head th:substituteby="common::static" />
+	<link rel="stylesheet" href="/css/vendor/jquery-ui.min.css" />
+	<script src="/js/vendor/jquery-ui.min.js"></script>
 </head>
 <body>
 	<div th:substituteby="common::menubar" />
@@ -11,7 +13,8 @@
 		<div class="container">
 			<div id="tileHeader" class="col-md-12">
 				<div class="col-md-12">
-					<span>タグ：</span>
+					<span>タグ絞込：</span>
+					<span><input id="tagSearch" type="text" /></span>
 					<div th:each="tag : ${tagList}">
 						<span class="detailLabel label label-warning glyphicon glyphicon-tag" th:text="${tag.name}" aria-hidden="false" th:if="${tag} != null"/>
 						<button class="tagDelete btn btn-default btn-xs" type="button" style="display: none;" th:value="${tag.id}" th:if="${tag} != null">

@@ -4,6 +4,7 @@ $(function() {
 	var order;
 	var position;
 	var viewPosition;
+	var tagIdList;
 	init();
 	pageLoad();
 	function getParam(key) {
@@ -45,6 +46,28 @@ $(function() {
 			position = 1;
 		}
 		viewPosition = position;
+		
+		initTagIdList();
+	}
+	function initTagIdList(){
+		tagId = getParam("tagId");
+		if(tagId != null){
+			tagIdList = tagId.split(",");
+		}else{
+			tagIdList = [];
+		}
+	}
+	function addTagIdList(tagid){
+		tagIdList[tagIdList.length] = tagid;
+	}
+	function deleteTagIdList(tagid){
+		var newTagIdList;
+		for(i = 0; i < tagIdList.length; i++){	
+			if(tagIdList[i] != tagid){
+				newTagIdList[newTagIdList.length] = tagIdList[i];
+			}
+		}
+		tagIdList = newTagIdList;
 	}
 	function selectColRadio(num) {
 		$(".active").removeClass("active");
@@ -349,14 +372,9 @@ $(function() {
 	// });
 	function createParam(viewPosition) {
 		url = "?page=" + viewPosition;
-		if (location.search == "") {
-			return url;
-		}
-		tagId = getParam("tagId");
-		if(tagId != null){
-			tagIds = tagId.split(",");
-			for (i = 0; i < tagIds.length; i++) {
-				url += "&tagId=" + tagIds[i];
+		if(tagIdList != null){
+			for (i = 0; i < tagIdList.length; i++) {
+				url += "&tagId=" + tagIdList[i];
 			}
 		}
 		return url;
@@ -526,7 +544,50 @@ $(function() {
 		
 		init();
 	});
-	
+	if(isListPage()){
+		$("#tagSearch").autocomplete({
+			source: function(req, resp){
+				$.ajax({
+				    headers: { 
+				        'Accept': 'application/json',
+				        'Content-Type': 'application/json' 
+				    },
+				    url: "/api/tag/select",
+				    type: "POST",
+				    cache: false,
+				    dataType: "json",
+				    timeout : 3000,
+				    data: JSON.stringify({
+				    	name: req.term,
+				    	tagIdList: tagIdList
+				    }),
+				    success: function(o){
+						var newO = [];
+						for(var i = 0; i < o.length; i++){
+							var tag = {
+								label: o[i].name,
+								value: o[i].name,
+								id: o[i].id
+							};
+							newO[i] = tag;
+						};
+				    	resp(newO);
+				    },
+				    error: function(xhr, ts, err){
+				    	resp(['']);
+				    }
+				  });
+
+			},
+			autoFocus: true,
+			minLength: 0,
+		    select: function(e, ui) {
+		    	//console.log(ui.item.id);
+		    	addTagIdList(ui.item.id);
+		    	window.location.href = createParam(position);
+		    }
+		});	
+	}
 	//==================================websocket==================================
 	
 	var url = "ws://" + location.host + "/echo";

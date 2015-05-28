@@ -15,6 +15,7 @@ import kindlereport.dao.KindleMapper;
 import kindlereport.dao.TagMapper;
 import kindlereport.model.Comment;
 import kindlereport.model.KindleTile;
+import kindlereport.model.ReceiveTag;
 import kindlereport.model.Tag;
 import kindlereport.model.TagMap;
 
@@ -98,6 +99,12 @@ public class ApiController {
 		}
 		
 		return tagMap.getTagId();
+	}
+
+	@RequestMapping(value = "tag/select", produces = "application/json", method = RequestMethod.POST)
+	public List<Tag> tagSelecter(@RequestBody ReceiveTag receiveTag){
+		receiveTag.setName(receiveTag.getName() + "%");
+		return tagMapper.selectTagByNameLike(receiveTag);
 	}
 
     private Date getCurrentTime(){
