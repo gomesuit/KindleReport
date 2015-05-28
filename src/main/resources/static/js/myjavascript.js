@@ -541,6 +541,48 @@ $(function() {
 				// 	    console.log(i + ': ' + $(elem).attr("id"));
 			$("#" + $(elem).attr("id")).sticky({topSpacing : 62});
 		});
+		$("#tagSearch").autocomplete({
+			source: function(req, resp){
+				$.ajax({
+				    headers: { 
+				        'Accept': 'application/json',
+				        'Content-Type': 'application/json' 
+				    },
+				    url: "/api/tag/select",
+				    type: "POST",
+				    cache: false,
+				    dataType: "json",
+				    timeout : 3000,
+				    data: JSON.stringify({
+				    	name: req.term,
+				    	tagIdList: tagIdList
+				    }),
+				    success: function(o){
+						var newO = [];
+						for(var i = 0; i < o.length; i++){
+							var tag = {
+								label: o[i].name,
+								value: o[i].name,
+								id: o[i].id
+							};
+							newO[i] = tag;
+						};
+				    	resp(newO);
+				    },
+				    error: function(xhr, ts, err){
+				    	resp(['']);
+				    }
+				  });
+
+			},
+			autoFocus: true,
+			minLength: 0,
+		    select: function(e, ui) {
+		    	//console.log(ui.item.id);
+		    	addTagIdList(ui.item.id);
+		    	window.location.href = createParam(position);
+		    }
+		});	
 		
 		init();
 	});
