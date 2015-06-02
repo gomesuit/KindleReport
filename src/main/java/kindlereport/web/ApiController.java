@@ -58,7 +58,7 @@ public class ApiController {
 		requestParam.put("order", order);
 		requestParam.put("tagId", tagIdList);
 		
-		logger.info("{}", tagIdList);
+		//logger.info("{}", tagIdList);
 		
 		if(tagIdList == null){
 			kindleList = kindleMapper.selectKindleList(requestParam);
