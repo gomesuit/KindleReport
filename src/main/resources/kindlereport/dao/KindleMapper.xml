@@ -33,6 +33,9 @@
 		<if test="order == 4">
 			and R.deleteTime is not null
 		</if>
+		<if test="limitedFree == true">
+			and I.isLimitedFree = true
+		</if>
 		order by
 		<choose>
 			<when test="order == null or order == 1">
@@ -69,6 +72,9 @@
 			and K.isAdultProduct = 0
 		<if test="order == 4">
 			and R.deleteTime is not null
+		</if>
+		<if test="limitedFree == true">
+			and I.isLimitedFree = true
 		</if>
 		<foreach item="id" index="index" collection="tagId">
 			and exists (select 'X' from tagmap T where K.asin = T.asin and T.tag_id = #{id})

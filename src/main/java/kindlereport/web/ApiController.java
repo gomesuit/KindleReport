@@ -47,6 +47,7 @@ public class ApiController {
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
 			@RequestParam(value = "order", required = false, defaultValue = "1") int order,
 			@RequestParam(value = "tagId", required = false) List<Integer> tagIdList,
+			@RequestParam(value = "limitedFree", required = false, defaultValue = "false") boolean limitedFree,
 			Model model) {
 		int limit = 24;
 		int offset = (page - 1) * limit;
@@ -57,8 +58,9 @@ public class ApiController {
 		requestParam.put("offset", offset);
 		requestParam.put("order", order);
 		requestParam.put("tagId", tagIdList);
+		requestParam.put("limitedFree", limitedFree);
 		
-		//logger.info("{}", tagIdList);
+		//logger.info("{}", limitedFree);
 		
 		if(tagIdList == null){
 			kindleList = kindleMapper.selectKindleList(requestParam);
