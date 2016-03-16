@@ -1,13 +1,8 @@
 package kindlereport.web;
 
-import java.util.List;
-
 import kindlereport.mapper.CommentMapper;
 import kindlereport.mapper.KindleMapper;
 import kindlereport.mapper.TagMapper;
-import kindlereport.model.Comment;
-import kindlereport.model.KindleDetail;
-import kindlereport.model.Tag;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,17 +26,19 @@ public class DetailsController {
 			@PathVariable String asin,
 			@RequestParam(value = "ajaxflg", required = false, defaultValue = "0") int ajaxflg,
 			Model model) {
-		KindleDetail kindle = kindleMapper.selectKindleByAsin(asin);
-		model.addAttribute("kindle", kindle);
-		List<Comment> commentList = commentMapper.selectComment(asin);
-		model.addAttribute("commentList", commentList);
-		List<Tag> tagList = tagMapper.selectTagsByAsin(asin);
-		model.addAttribute("tagList", tagList);
 		
-		model.addAttribute("LIST_PAGE_URL", "list");
-		model.addAttribute("DATELIST_PAGE_URL", "dateList");
+		// kindle
+		model.addAttribute("kindle", kindleMapper.selectKindleByAsin(asin));
+		
+		// comment
+		model.addAttribute("commentList", commentMapper.selectComment(asin));
+		
+		// tagList
+		model.addAttribute("tagList", tagMapper.selectTagsByAsin(asin));
+		
 		if(ajaxflg == 1){
-			return "items" + "_content";
+			// ajaxリクエストの場合はコンテンツのみ返す
+			return "items_content";
 		}else{
 			return "items";
 		}

@@ -20,31 +20,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class IndexController {
 	private static final String KINDLE_DATE_FORMAT = "yyyy-MM-dd";
-	
+
 	@Autowired
 	private KindleMapper kindleMapper;
 	@Autowired
 	private TagMapper tagMapper;
 
 	@RequestMapping("/")
-	public String front(Model model) {
-		model.addAttribute("LIST_PAGE_URL", "list");
-		model.addAttribute("DATELIST_PAGE_URL", "dateList");
-		model.addAttribute("FRONT_PAGE_URL", "/");
-		
+	public String home(Model model) {
+
 		return "front";
 	}
-	
+
 	@RequestMapping("/list")
-	public String ajax(
+	public String list(
 			@RequestParam(value = "tagId", required = false) List<Integer> tagId,
 			Model model) {
-		model.addAttribute("LIST_PAGE_URL", "list");
-		model.addAttribute("DATELIST_PAGE_URL", "dateList");
-		if(tagId != null){
+
+		if (tagId != null) {
 			model.addAttribute("tagList", tagMapper.selectTagListById(tagId));
 		}
-		
+
 		return "list";
 	}
 
@@ -53,47 +49,45 @@ public class IndexController {
 			@RequestParam(value = "ajaxDate", required = false) String ajaxDate,
 			@RequestParam(value = "ajaxFlg", required = false, defaultValue = "0") int ajaxflg,
 			Model model) {
-		model.addAttribute("LIST_PAGE_URL", "list");
-		model.addAttribute("DATELIST_PAGE_URL", "dateList");
 		model.addAttribute("today", getToday());
-		
-		if(ajaxflg == 0){
+
+		if (ajaxflg == 0) {
 			return "dateList";
-		}else{
+		} else {
 			List<DateKindleList> dateKindleListList = new ArrayList<DateKindleList>();
 			dateKindleListList.add(createDateKindleList(ajaxDate));
 			model.addAttribute("dateKindleListList", dateKindleListList);
 			return "dateList" + "_content";
 		}
 	}
-	
-    private DateKindleList createDateKindleList(String date){
+
+	private DateKindleList createDateKindleList(String date) {
 		DateKindleList dateKindleList = new DateKindleList();
 		dateKindleList.setReleaseDate(date);
 		dateKindleList.setDateString(dateConvert(date));
 		dateKindleList.setSidebarId("sidebar" + date);
 		dateKindleList.setKindleList(kindleMapper.selectDayKindleList(date));
-		
+
 		return dateKindleList;
-    }
+	}
 
-    private String getToday(){
-    	SimpleDateFormat sdf = new SimpleDateFormat(KINDLE_DATE_FORMAT, Locale.JAPAN);
-    	return sdf.format(new Date());
-    }
+	private String getToday() {
+		SimpleDateFormat sdf = new SimpleDateFormat(KINDLE_DATE_FORMAT, Locale.JAPAN);
+		return sdf.format(new Date());
+	}
 
-    private String dateConvert(String releaseDate){
-    	SimpleDateFormat sdf = new SimpleDateFormat(KINDLE_DATE_FORMAT, Locale.JAPAN);
-    	SimpleDateFormat returnSdf = new SimpleDateFormat("M/d(E)", Locale.JAPAN);
-    	Date date = null;
-    	
-    	try {
-    		date = sdf.parse(releaseDate);
+	private String dateConvert(String releaseDate) {
+		SimpleDateFormat sdf = new SimpleDateFormat(KINDLE_DATE_FORMAT, Locale.JAPAN);
+		SimpleDateFormat returnSdf = new SimpleDateFormat("M/d(E)", Locale.JAPAN);
+		Date date = null;
+
+		try {
+			date = sdf.parse(releaseDate);
 		} catch (ParseException e) {
 			e.printStackTrace();
 			return null;
-		}  
-    	return returnSdf.format(date);
-    }
-	
+		}
+		return returnSdf.format(date);
+	}
+
 }
