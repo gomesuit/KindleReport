@@ -1,4 +1,4 @@
-package kindlereport.dao;
+package kindlereport.mapper;
 
 import kindlereport.model.Comment;
 

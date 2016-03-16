@@ -4,9 +4,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
-import kindlereport.dao.CommentMapper;
-import kindlereport.dao.KindleMapper;
-import kindlereport.dao.TagMapper;
+import kindlereport.mapper.CommentMapper;
+import kindlereport.mapper.KindleMapper;
+import kindlereport.mapper.TagMapper;
 import kindlereport.model.Comment;
 import kindlereport.model.Tag;
 import kindlereport.model.WebSocketReceive;

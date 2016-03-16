@@ -4,16 +4,15 @@ import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
-import org.mybatis.spring.mapper.MapperScannerConfigurer;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
+@MapperScan("kindlereport.mapper")
 public class KindleReportApplication {
-
-	private static final String MAPPER_SCAN_BASE_PACKAGE = "kindlereport.dao";
 	private static final String TYPE_ALIASES_PACKAGE = "kindlereport.model";
 	
     @Bean
@@ -23,14 +22,6 @@ public class KindleReportApplication {
       sqlSessionFactoryBean.setDataSource(dataSource);
       sqlSessionFactoryBean.setTypeAliasesPackage(TYPE_ALIASES_PACKAGE);
       return sqlSessionFactoryBean.getObject();
-    }
-    
-    @Bean
-    public MapperScannerConfigurer mapperScannerConfigurer() throws Exception {
-    	final MapperScannerConfigurer msc = new MapperScannerConfigurer();
-    	msc.setBasePackage(MAPPER_SCAN_BASE_PACKAGE);
-    	msc.afterPropertiesSet();
-    	return msc;
     }
 	
     public static void main(String[] args) {

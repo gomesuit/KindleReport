@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import kindlereport.dao.KindleMapper;
+import kindlereport.mapper.KindleMapper;
 import kindlereport.model.KindleTile;
 
 import org.springframework.beans.factory.annotation.Autowired;

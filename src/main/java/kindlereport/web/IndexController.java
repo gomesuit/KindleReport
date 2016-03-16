@@ -7,8 +7,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import kindlereport.dao.KindleMapper;
-import kindlereport.dao.TagMapper;
+import kindlereport.mapper.KindleMapper;
+import kindlereport.mapper.TagMapper;
 import kindlereport.model.DateKindleList;
 
 import org.springframework.beans.factory.annotation.Autowired;

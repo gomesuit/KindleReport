@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="kindlereport.dao.TagMapper">
+<mapper namespace="kindlereport.mapper.TagMapper">
 	
 	<insert id="insertTag" parameterType="kindlereport.model.Tag" statementType="PREPARED" timeout="20">
 		insert into tag (name) values (#{name})
