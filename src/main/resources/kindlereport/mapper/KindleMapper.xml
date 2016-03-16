@@ -5,137 +5,162 @@
 <mapper namespace="kindlereport.mapper.KindleMapper">
 	
 	<select id="selectKindle" resultType="Map">
-		select
+		SELECT
 			asin,
 			title,
 			releaseDate,
 			detailPageURL,
 			largeImage
-		from
+		FROM
 			Kindle
-		where
+		WHERE
 			asin = #{asin}
 	</select>
 	
 	<select id="selectKindleList" resultType="kindlereport.model.KindleTile">
-		select
+		SELECT
 			K.asin,
 			K.releaseDate,
 			I.tileTitle as title,
 			K.mediumImage
-		from
-			Kindle K INNER JOIN KindleRegist R ON K.asin = R.asin LEFT JOIN KindleMyInfo I ON K.asin = I.asin
-		where
+		FROM
+			Kindle K
+				INNER JOIN
+			KindleRegist R
+				ON K.asin = R.asin
+				LEFT JOIN
+			KindleMyInfo I
+				ON K.asin = I.asin
+		WHERE
 			I.isNovel = 0
-			and I.isMagazine = 0
-			and I.isAdult = 0
-			and K.isAdultProduct = 0
+			AND I.isMagazine = 0
+			AND I.isAdult = 0
+			AND K.isAdultProduct = 0
 		<if test="order == 4">
-			and R.deleteTime is not null
+			AND R.deleteTime IS NOT NULL
 		</if>
 		<if test="limitedFree == true">
-			and I.isLimitedFree = true
+			AND I.isLimitedFree = true
 		</if>
-		order by
+		ORDER BY
 		<choose>
 			<when test="order == null or order == 1">
-				K.releaseDate desc, I.tileTitle asc
+				K.releaseDate DESC, I.tileTitle ASC
 			</when>
 			<when test="order == 2">
-				K.releaseDate asc, I.tileTitle asc
+				K.releaseDate ASC, I.tileTitle ASC
 			</when>
 			<when test="order == 3">
-				R.insertTime desc
+				R.insertTime DESC
 			</when>
 			<when test="order == 4">
-				R.deleteTime desc
+				R.deleteTime DESC
 			</when>
 			<otherwise>
-				K.releaseDate desc, I.tileTitle asc
+				K.releaseDate DESC, I.tileTitle ASC
 			</otherwise>
 		</choose>
 		LIMIT #{limit} OFFSET #{offset}
 	</select>
 	
 	<select id="selectKindleListByTag" resultType="kindlereport.model.KindleTile">
-		select
+		SELECT
 			K.asin,
 			K.releaseDate,
 			I.tileTitle as title,
 			K.mediumImage
-		from
-			Kindle K INNER JOIN KindleRegist R ON K.asin = R.asin LEFT JOIN KindleMyInfo I ON K.asin = I.asin
-		where
+		FROM
+			Kindle K
+				INNER JOIN
+			KindleRegist R
+				ON K.asin = R.asin
+				LEFT JOIN
+			KindleMyInfo I
+				ON K.asin = I.asin
+		WHERE
 			I.isNovel = 0
-			and I.isMagazine = 0
-			and I.isAdult = 0
-			and K.isAdultProduct = 0
+			AND I.isMagazine = 0
+			AND I.isAdult = 0
+			AND K.isAdultProduct = 0
 		<if test="order == 4">
-			and R.deleteTime is not null
+			AND R.deleteTime IS NOT NULL
 		</if>
 		<if test="limitedFree == true">
-			and I.isLimitedFree = true
+			AND I.isLimitedFree = true
 		</if>
 		<foreach item="id" index="index" collection="tagId">
-			and exists (select 'X' from tagmap T where K.asin = T.asin and T.tag_id = #{id})
+			AND EXISTS (
+						SELECT
+							'X'
+						FROM
+							tagmap T
+						WHERE
+							K.asin = T.asin AND
+							T.tag_id = #{id}
+						)
 		</foreach>
-		order by
+		ORDER BY
 		<choose>
 			<when test="order == null or order == 1">
-				K.releaseDate desc, I.tileTitle asc
+				K.releaseDate DESC, I.tileTitle ASC
 			</when>
 			<when test="order == 2">
-				K.releaseDate asc, I.tileTitle asc
+				K.releaseDate ASC, I.tileTitle ASC
 			</when>
 			<when test="order == 3">
-				R.insertTime desc
+				R.insertTime DESC
 			</when>
 			<when test="order == 4">
-				R.deleteTime desc
+				R.deleteTime DESC
 			</when>
 			<otherwise>
-				K.releaseDate desc, I.tileTitle asc
+				K.releaseDate DESC, I.tileTitle ASC
 			</otherwise>
 		</choose>
 		LIMIT #{limit} OFFSET #{offset}
 	</select>
 	
 	<select id="selectRereaseDateList" parameterType="String" resultType="String">
-<!-- 		select distinct releaseDate from Kindle order by releaseDate desc LIMIT 10 -->
-		select distinct
+		SELECT DISTINCT
 			K.releaseDate
-		from
-			Kindle K LEFT JOIN KindleMyInfo I ON K.asin = I.asin
-		where
+		FROM
+			Kindle K
+				LEFT JOIN
+			KindleMyInfo I
+				ON K.asin = I.asin
+		WHERE
 			K.releaseDate >= #{date}
-			and I.isNovel = 0
-			and I.isMagazine = 0
-			and I.isAdult = 0
-			and K.isAdultProduct = 0
-		order by
+			AND I.isNovel = 0
+			AND I.isMagazine = 0
+			AND I.isAdult = 0
+			AND K.isAdultProduct = 0
+		ORDER BY
 			K.releaseDate
 	</select>
 	
 	<select id="selectDayKindleList" parameterType="String" resultType="kindlereport.model.KindleTile">
-		select
+		SELECT
 			K.asin,
 			K.releaseDate,
 			I.tileTitle as title,
 			K.mediumImage
-		from
-			Kindle K LEFT JOIN KindleMyInfo I ON K.asin = I.asin
-		where
+		FROM
+			Kindle K
+				LEFT JOIN
+			KindleMyInfo I
+				ON K.asin = I.asin
+		WHERE
 			K.releaseDate = #{releaseDate}
-			and I.isNovel = 0
-			and I.isMagazine = 0
-			and I.isAdult = 0
-			and K.isAdultProduct = 0
-		order by
-			I.tileTitle asc
+			AND I.isNovel = 0
+			AND I.isMagazine = 0
+			AND I.isAdult = 0
+			AND K.isAdultProduct = 0
+		ORDER BY
+			I.tileTitle
 	</select>
 	
 	<select id="selectKindleByAsin" resultType="kindlereport.model.KindleDetail">
-		select
+		SELECT
 			K.asin,
 			K.author,
 			K.publisher,
@@ -147,9 +172,12 @@
 			R.insertTime,
 			R.updateTime,
 			R.deleteTime
-		from
-			Kindle K INNER JOIN KindleRegist R ON K.asin = R.asin
-		where
+		FROM
+			Kindle K
+				INNER JOIN
+			KindleRegist R
+				ON K.asin = R.asin
+		WHERE
 			K.asin = #{asin}
 	</select>
 </mapper>

@@ -14,7 +14,7 @@ public class InterceptorConfiguration extends WebMvcConfigurerAdapter{
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new PageNameInterceptor()).addPathPatterns("/", "/list", "/dateList");
+		registry.addInterceptor(new PageNameInterceptor()).addPathPatterns("/", "/list", "/dateList", "/items/**");
 	}
 	
 	private class PageNameInterceptor implements HandlerInterceptor{

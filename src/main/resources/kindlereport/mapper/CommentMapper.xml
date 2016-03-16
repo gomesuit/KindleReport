@@ -4,37 +4,40 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kindlereport.mapper.CommentMapper">
 	
-	<insert id="insertComment" parameterType="kindlereport.model.Comment" statementType="PREPARED" timeout="20">
-		insert into COMMENT (asin,
-							registerDateTime,
-							content,
-							ipAddr)
-		values (#{asin},
+	<insert id="insertComment" parameterType="kindlereport.model.Comment" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO COMMENT
+			(
+				asin,
+				registerDateTime,
+				content,
+				ipAddr
+			)
+		VALUES
+			(
+				#{asin},
 				#{registerDateTime},
 				#{content},
-				#{ipAddr})
-		<selectKey keyProperty="id" resultType="int" order="AFTER">
-			SELECT @@IDENTITY
-		</selectKey>
+				#{ipAddr}
+			)
 	</insert>
 	
 	<select id="selectComment" resultType="kindlereport.model.Comment">
-		select
+		SELECT
 			*
-		from
+		FROM
 			COMMENT
-		where
+		WHERE
 			asin = #{asin}
-		order by
+		ORDER BY
 			id desc
 	</select>
 	
 	<select id="selectCommentById" resultType="kindlereport.model.Comment">
-		select
+		SELECT
 			*
-		from
+		FROM
 			COMMENT
-		where
+		WHERE
 			id = #{id}
 	</select>
 	
