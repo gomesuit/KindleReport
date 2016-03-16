@@ -1,4 +1,4 @@
-package kindlereport.web;
+package kindlereport.webSocket;
 
 import java.util.Map;
 import java.util.Map.Entry;

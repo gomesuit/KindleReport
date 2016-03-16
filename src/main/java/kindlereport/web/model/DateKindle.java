@@ -4,7 +4,7 @@ import java.util.List;
 
 import kindlereport.model.KindleTile;
 
-public class DateKindleList {
+public class DateKindle {
 	protected String releaseDate;
 	protected String dateString;
     protected List<KindleTile> kindleList;

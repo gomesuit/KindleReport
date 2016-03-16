@@ -1,6 +1,4 @@
-package kindlereport.web.config;
-
-import kindlereport.web.EchoHandler;
+package kindlereport.webSocket;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
