@@ -29,7 +29,7 @@
 		WHERE
 			asin = #{asin}
 		ORDER BY
-			id desc
+			id DESC
 	</select>
 	
 	<select id="selectCommentById" resultType="kindlereport.model.Comment">
