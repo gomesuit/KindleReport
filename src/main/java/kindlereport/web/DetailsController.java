@@ -1,13 +1,10 @@
 package kindlereport.web;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
-import kindlereport.dao.CommentMapper;
-import kindlereport.dao.KindleMapper;
-import kindlereport.dao.TagMapper;
-import kindlereport.model.Comment;
-import kindlereport.model.KindleDetail;
-import kindlereport.model.Tag;
+import kindlereport.mapper.CommentMapper;
+import kindlereport.mapper.KindleMapper;
+import kindlereport.mapper.TagMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,12 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("items")
 public class DetailsController {
-	private static final String DETAILS_PAGE_URL = "items";
-	private static final String LIST_PAGE_URL = "list";
-	private static final String DATELIST_PAGE_URL = "dateList";
-	
 	@Autowired
 	private KindleMapper kindleMapper;
 	@Autowired
@@ -31,24 +23,27 @@ public class DetailsController {
 	@Autowired
 	private TagMapper tagMapper;
 	
-	@RequestMapping(value = "{asin}", method = RequestMethod.GET)
+	@RequestMapping(value = "/items/{asin}", method = RequestMethod.GET)
 	public String ajax(
 			@PathVariable String asin,
 			@RequestParam(value = "ajaxflg", required = false, defaultValue = "0") int ajaxflg,
-			Model model) {
-		KindleDetail kindle = kindleMapper.selectKindleByAsin(asin);
-		model.addAttribute("kindle", kindle);
-		List<Comment> commentList = commentMapper.selectComment(asin);
-		model.addAttribute("commentList", commentList);
-		List<Tag> tagList = tagMapper.selectTagsByAsin(asin);
-		model.addAttribute("tagList", tagList);
+			Model model, HttpServletRequest request) {
 		
-		model.addAttribute("LIST_PAGE_URL", LIST_PAGE_URL);
-		model.addAttribute("DATELIST_PAGE_URL", DATELIST_PAGE_URL);
+		// kindle
+		model.addAttribute("kindle", kindleMapper.selectKindleByAsin(asin));
+		
+		// comment
+		model.addAttribute("commentList", commentMapper.selectComment(asin));
+		
+		// tagList
+		model.addAttribute("tagList", tagMapper.selectTagsByAsin(asin));
+		
 		if(ajaxflg == 1){
-			return DETAILS_PAGE_URL + "_content";
+			// ajaxリクエストの場合はコンテンツのみ返す
+			return "items_content";
 		}else{
-			return DETAILS_PAGE_URL;
+			request.setAttribute("pageName", "items");
+			return "common_frame";
 		}
 	}
 	

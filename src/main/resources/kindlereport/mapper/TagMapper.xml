@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kindlereport.mapper.TagMapper">
+	
+	<insert id="insertTag" parameterType="kindlereport.model.Tag" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO tag
+			(name)
+		VALUES
+			(#{name})
+	</insert>
+	
+	<insert id="insertTagMap" parameterType="kindlereport.model.TagMap">
+		INSERT INTO tagmap
+			(
+				asin,
+				tag_id
+			)
+		VALUES
+			(
+				#{asin},
+				#{tagId}
+			)
+	</insert>
+	
+	<select id="selectTagsByAsin" parameterType="java.lang.String" resultType="kindlereport.model.Tag">
+		SELECT
+			*
+		FROM
+			tag t
+				INNER JOIN
+			tagmap m
+				ON t.id = m.tag_id
+		WHERE
+			m.asin = #{asin}
+		ORDER BY
+			t.id
+	</select>
+	
+	<select id="selectTagById" parameterType="int" resultType="kindlereport.model.Tag">
+		SELECT
+			*
+		FROM
+			tag
+		WHERE
+			id = #{id}
+	</select>
+	
+	<select id="selectTagListById" resultType="kindlereport.model.Tag">
+		SELECT
+			*
+		FROM
+			tag
+		WHERE
+			id in
+		<foreach item="id" index="index" collection="list" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</select>
+	
+	<select id="selectTagByName" parameterType="java.lang.String" resultType="kindlereport.model.Tag">
+		SELECT
+			*
+		FROM
+			tag
+		WHERE
+			name = #{name}
+	</select>
+	
+	<delete id="deleteTagMap" parameterType="kindlereport.model.TagMap">
+		DELETE FROM
+			tagmap
+		WHERE
+			asin = #{asin} AND
+			tag_id = #{tagId}
+	</delete>
+	
+	<select id="countTagMap" resultType="int">
+		SELECT
+			count(*)
+		FROM
+			tagmap
+		WHERE
+			tag_id = #{tagId}
+	</select>
+	
+	<delete id="deleteTag" parameterType="int">
+		DELETE FROM
+			tag
+		WHERE
+			id = #{id}
+	</delete>
+	
+	<select id="selectTagByNameLike" parameterType="kindlereport.model.ReceiveTag" resultType="kindlereport.model.Tag">
+		SELECT
+			*
+		FROM
+			tag T
+		WHERE
+			name LIKE #{name} AND
+			EXISTS (
+					SELECT
+						'X'
+					FROM
+						tagmap M
+					WHERE
+						M.tag_id = T.id
+					<foreach item="id" index="index" collection="tagIdList">
+						AND EXISTS (
+									SELECT
+										'X'
+									FROM
+										tagmap M2
+									WHERE
+										M2.asin = M.asin AND
+										M2.tag_id = #{id}
+									)
+					</foreach>
+					)
+		<foreach item="id" index="index" collection="tagIdList">
+			AND NOT EXISTS (
+							SELECT
+								'X'
+							FROM
+								tag T2
+							WHERE
+								T2.id = T.id AND
+								T2.id = #{id}
+							)
+		</foreach>
+		ORDER BY
+			name
+		LIMIT 10
+	</select>
+	
+</mapper>

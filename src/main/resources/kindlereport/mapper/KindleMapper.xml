@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kindlereport.mapper.KindleMapper">
+	
+	<select id="selectKindle" resultType="Map">
+		SELECT
+			asin,
+			title,
+			releaseDate,
+			detailPageURL,
+			largeImage
+		FROM
+			Kindle
+		WHERE
+			asin = #{asin}
+	</select>
+	
+	<select id="selectKindleList" resultType="kindlereport.model.KindleTile">
+		SELECT
+			K.asin,
+			K.releaseDate,
+			I.tileTitle as title,
+			K.mediumImage
+		FROM
+			Kindle K
+				INNER JOIN
+			KindleRegist R
+				ON K.asin = R.asin
+				LEFT JOIN
+			KindleMyInfo I
+				ON K.asin = I.asin
+		WHERE
+			I.isNovel = 0
+			AND I.isMagazine = 0
+			AND I.isAdult = 0
+			AND K.isAdultProduct = 0
+		<if test="order == 4">
+			AND R.deleteTime IS NOT NULL
+		</if>
+		<if test="limitedFree == true">
+			AND I.isLimitedFree = true
+		</if>
+		ORDER BY
+		<choose>
+			<when test="order == null or order == 1">
+				K.releaseDate DESC, I.tileTitle ASC
+			</when>
+			<when test="order == 2">
+				K.releaseDate ASC, I.tileTitle ASC
+			</when>
+			<when test="order == 3">
+				R.insertTime DESC
+			</when>
+			<when test="order == 4">
+				R.deleteTime DESC
+			</when>
+			<otherwise>
+				K.releaseDate DESC, I.tileTitle ASC
+			</otherwise>
+		</choose>
+		LIMIT #{limit} OFFSET #{offset}
+	</select>
+	
+	<select id="selectKindleListByTag" resultType="kindlereport.model.KindleTile">
+		SELECT
+			K.asin,
+			K.releaseDate,
+			I.tileTitle as title,
+			K.mediumImage
+		FROM
+			Kindle K
+				INNER JOIN
+			KindleRegist R
+				ON K.asin = R.asin
+				LEFT JOIN
+			KindleMyInfo I
+				ON K.asin = I.asin
+		WHERE
+			I.isNovel = 0
+			AND I.isMagazine = 0
+			AND I.isAdult = 0
+			AND K.isAdultProduct = 0
+		<if test="order == 4">
+			AND R.deleteTime IS NOT NULL
+		</if>
+		<if test="limitedFree == true">
+			AND I.isLimitedFree = true
+		</if>
+		<foreach item="id" index="index" collection="tagId">
+			AND EXISTS (
+						SELECT
+							'X'
+						FROM
+							tagmap T
+						WHERE
+							K.asin = T.asin AND
+							T.tag_id = #{id}
+						)
+		</foreach>
+		ORDER BY
+		<choose>
+			<when test="order == null or order == 1">
+				K.releaseDate DESC, I.tileTitle ASC
+			</when>
+			<when test="order == 2">
+				K.releaseDate ASC, I.tileTitle ASC
+			</when>
+			<when test="order == 3">
+				R.insertTime DESC
+			</when>
+			<when test="order == 4">
+				R.deleteTime DESC
+			</when>
+			<otherwise>
+				K.releaseDate DESC, I.tileTitle ASC
+			</otherwise>
+		</choose>
+		LIMIT #{limit} OFFSET #{offset}
+	</select>
+	
+	<select id="selectRereaseDateList" parameterType="String" resultType="String">
+		SELECT DISTINCT
+			K.releaseDate
+		FROM
+			Kindle K
+				LEFT JOIN
+			KindleMyInfo I
+				ON K.asin = I.asin
+		WHERE
+			K.releaseDate >= #{date}
+			AND I.isNovel = 0
+			AND I.isMagazine = 0
+			AND I.isAdult = 0
+			AND K.isAdultProduct = 0
+		ORDER BY
+			K.releaseDate
+	</select>
+	
+	<select id="selectDayKindleList" parameterType="String" resultType="kindlereport.model.KindleTile">
+		SELECT
+			K.asin,
+			K.releaseDate,
+			I.tileTitle as title,
+			K.mediumImage
+		FROM
+			Kindle K
+				LEFT JOIN
+			KindleMyInfo I
+				ON K.asin = I.asin
+		WHERE
+			K.releaseDate = #{releaseDate}
+			AND I.isNovel = 0
+			AND I.isMagazine = 0
+			AND I.isAdult = 0
+			AND K.isAdultProduct = 0
+		ORDER BY
+			I.tileTitle
+	</select>
+	
+	<select id="selectKindleByAsin" resultType="kindlereport.model.KindleDetail">
+		SELECT
+			K.asin,
+			K.author,
+			K.publisher,
+			K.releaseDate,
+			K.title,
+			K.content,
+			K.detailPageURL,
+			K.largeImage,
+			R.insertTime,
+			R.updateTime,
+			R.deleteTime
+		FROM
+			Kindle K
+				INNER JOIN
+			KindleRegist R
+				ON K.asin = R.asin
+		WHERE
+			K.asin = #{asin}
+	</select>
+</mapper>

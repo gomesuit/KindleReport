@@ -1,75 +1,63 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-<head th:substituteby="common::meta" />
-<head th:substituteby="common::static" />
-	<link rel="stylesheet" href="/css/vendor/jquery-ui.min.css" />
-	<script src="/js/vendor/jquery-ui.min.js"></script>
-</head>
-<body>
-	<div th:substituteby="common::menubar" />
 
-	<div id="pageState">
-		<div class="container">
-			<div id="tileHeader" class="col-md-12">
-				<div class="col-md-12">
-					<span>タグ絞込：</span>
-					<span><input id="tagSearch" type="text" /></span>
-					<div th:each="tag : ${tagList}">
-						<span class="detailLabel label label-warning glyphicon glyphicon-tag" th:text="${tag.name}" aria-hidden="false" th:if="${tag} != null"/>
-						<button class="tagDelete btn btn-default btn-xs" type="button" style="display: none;" th:value="${tag.id}" th:if="${tag} != null">
-							<span class="glyphicon glyphicon-remove" aria-hidden="false" />
-						</button>
-					</div>
-				</div>
-				<div class="col-md-12">
-					<div class="checkbox">
-						<label><input id="limitedFree" type="checkbox" value="" />期間限定無料</label>
-					</div>
-				</div>
-				<div class="col-md-10">
-					<div id="list-btn-group" class="btn-group" data-toggle="buttons">
-						<label id="colrdo1" class="btn btn-default mybtn" value="1" >
-							<input type="radio" />☓1
-						</label>
-						<label id="colrdo2" class="btn btn-default mybtn" value="2" >
-							<input type="radio" />☓2
-						</label>
-						<label id="colrdo3" class="btn btn-default mybtn" value="3" >
-							<input type="radio" />☓3
-						</label>
-						<label id="colrdo4" class="btn btn-default mybtn" value="4" >
-							<input type="radio" />☓4
-						</label>
-						<label id="colrdo6" class="btn btn-default mybtn" value="6">
-							<input type="radio" />☓6
-						</label>
-					</div>
-				</div>
-				<div class="col-md-2">
-					<div id="list-dropdown" class="dropdown">
-						<button class="btn btn-default dropdown-toggle" type="button"
-							id="dropdownMenu1" data-toggle="dropdown">
-							並べ替え <span class="caret"></span>
-						</button>
-						<ul class="dropdown-menu" role="menu"
-							aria-labelledby="dropdownMenu1">
-							<li role="presentation" class="myorder" value="1"><a
-								role="menuitem" tabindex="-1" th:href="'/' + ${LIST_PAGE_URL}">発売日降順</a></li>
-							<li role="presentation" class="myorder" value="2"><a
-								role="menuitem" tabindex="-1" th:href="'/' + ${LIST_PAGE_URL}">発売日昇順</a></li>
-							<li role="presentation" class="myorder" value="3"><a
-								role="menuitem" tabindex="-1" th:href="'/' + ${LIST_PAGE_URL}">新着順</a></li>
-							<li role="presentation" class="myorder" value="4"><a
-								role="menuitem" tabindex="-1" th:href="'/' + ${LIST_PAGE_URL}">削除順</a></li>
-						</ul>
-					</div>
+<div id="pageState">
+	<div class="container">
+		<div id="tileHeader" class="col-md-12">
+			<div class="col-md-12">
+				<span>タグ絞込：</span>
+				<span><input id="tagSearch" type="text" /></span>
+				<div th:each="tag : ${tagList}">
+					<span class="detailLabel label label-warning glyphicon glyphicon-tag" th:text="${tag.name}" aria-hidden="false" th:if="${tag} != null"/>
+					<button class="tagDelete btn btn-default btn-xs" type="button" style="display: none;" th:value="${tag.id}" th:if="${tag} != null">
+						<span class="glyphicon glyphicon-remove" aria-hidden="false" />
+					</button>
 				</div>
 			</div>
-			<div class="">
-				<div id="mainrow"></div>
+			<div class="col-md-12">
+				<div class="checkbox">
+					<label><input id="limitedFree" type="checkbox" value="" />期間限定無料</label>
+				</div>
+			</div>
+			<div class="col-md-10">
+				<div id="list-btn-group" class="btn-group" data-toggle="buttons">
+					<label id="colrdo1" class="btn btn-default mybtn" value="1" >
+						<input type="radio" />☓1
+					</label>
+					<label id="colrdo2" class="btn btn-default mybtn" value="2" >
+						<input type="radio" />☓2
+					</label>
+					<label id="colrdo3" class="btn btn-default mybtn" value="3" >
+						<input type="radio" />☓3
+					</label>
+					<label id="colrdo4" class="btn btn-default mybtn" value="4" >
+						<input type="radio" />☓4
+					</label>
+					<label id="colrdo6" class="btn btn-default mybtn" value="6">
+						<input type="radio" />☓6
+					</label>
+				</div>
+			</div>
+			<div class="col-md-2">
+				<div id="list-dropdown" class="dropdown">
+					<button class="btn btn-default dropdown-toggle" type="button"
+						id="dropdownMenu1" data-toggle="dropdown">
+						並べ替え <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu"
+						aria-labelledby="dropdownMenu1">
+						<li role="presentation" class="myorder" value="1"><a
+							role="menuitem" tabindex="-1" th:href="'/' + ${LIST_PAGE_URL}">発売日降順</a></li>
+						<li role="presentation" class="myorder" value="2"><a
+							role="menuitem" tabindex="-1" th:href="'/' + ${LIST_PAGE_URL}">発売日昇順</a></li>
+						<li role="presentation" class="myorder" value="3"><a
+							role="menuitem" tabindex="-1" th:href="'/' + ${LIST_PAGE_URL}">新着順</a></li>
+						<li role="presentation" class="myorder" value="4"><a
+							role="menuitem" tabindex="-1" th:href="'/' + ${LIST_PAGE_URL}">削除順</a></li>
+					</ul>
+				</div>
 			</div>
 		</div>
+		<div class="">
+			<div id="mainrow"></div>
+		</div>
 	</div>
-</body>
-</html>
+</div>

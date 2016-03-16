@@ -1,15 +1,11 @@
 package kindlereport.web;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
-import kindlereport.dao.KindleMapper;
-import kindlereport.dao.TagMapper;
-import kindlereport.model.DateKindleList;
+import javax.servlet.http.HttpServletRequest;
+
+import kindlereport.service.KindleService;
+import kindlereport.web.util.DateUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,86 +14,46 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/")
 public class IndexController {
-	private static final String LIST_PAGE_URL = "list";
-	private static final String DATELIST_PAGE_URL = "dateList";
-	private static final String FRONT_PAGE_URL = "front";
-	private static final String KINDLE_DATE_FORMAT = "yyyy-MM-dd";
 	
 	@Autowired
-	private KindleMapper kindleMapper;
-	@Autowired
-	private TagMapper tagMapper;
+	private KindleService kindleService;
 
 	@RequestMapping("/")
-	public String front(Model model) {
-		model.addAttribute("LIST_PAGE_URL", LIST_PAGE_URL);
-		model.addAttribute("DATELIST_PAGE_URL", DATELIST_PAGE_URL);
-		model.addAttribute("FRONT_PAGE_URL", "/");
+	public String home(Model model, HttpServletRequest request) {
 		
-		return FRONT_PAGE_URL;
-	}
-	
-	@RequestMapping(LIST_PAGE_URL)
-	public String ajax(
-			@RequestParam(value = "tagId", required = false) List<Integer> tagId,
-			Model model) {
-		model.addAttribute("LIST_PAGE_URL", LIST_PAGE_URL);
-		model.addAttribute("DATELIST_PAGE_URL", DATELIST_PAGE_URL);
-		if(tagId != null){
-			model.addAttribute("tagList", tagMapper.selectTagListById(tagId));
-		}
-		
-		return LIST_PAGE_URL;
+		request.setAttribute("pageName", "front");
+		return "common_frame";
 	}
 
-	@RequestMapping(DATELIST_PAGE_URL)
+	@RequestMapping("/list")
+	public String list(
+			@RequestParam(value = "tagId", required = false) List<Integer> tagId,
+			Model model, HttpServletRequest request) {
+
+		if (tagId != null) {
+			model.addAttribute("tagList", kindleService.getTagListById(tagId));
+		}
+
+		request.setAttribute("pageName", "list");
+		return "common_frame";
+	}
+
+	@RequestMapping("/dateList")
 	public String dateList(
 			@RequestParam(value = "ajaxDate", required = false) String ajaxDate,
 			@RequestParam(value = "ajaxFlg", required = false, defaultValue = "0") int ajaxflg,
-			Model model) {
-		model.addAttribute("LIST_PAGE_URL", LIST_PAGE_URL);
-		model.addAttribute("DATELIST_PAGE_URL", DATELIST_PAGE_URL);
-		model.addAttribute("today", getToday());
+			Model model, HttpServletRequest request) {
 		
-		if(ajaxflg == 0){
-			return DATELIST_PAGE_URL;
-		}else{
-			List<DateKindleList> dateKindleListList = new ArrayList<DateKindleList>();
-			dateKindleListList.add(createDateKindleList(ajaxDate));
-			model.addAttribute("dateKindleListList", dateKindleListList);
-			return DATELIST_PAGE_URL + "_content";
+		model.addAttribute("today", DateUtil.getTodayByString());
+
+		if (ajaxflg == 0) {
+			request.setAttribute("pageName", "dateList");
+			return "common_frame";
+		} else {
+			model.addAttribute("dateKindleListList", kindleService.getDateKindleList(ajaxDate));
+			return "dateList_content";
 		}
 	}
-	
-    private DateKindleList createDateKindleList(String date){
-		DateKindleList dateKindleList = new DateKindleList();
-		dateKindleList.setReleaseDate(date);
-		dateKindleList.setDateString(dateConvert(date));
-		dateKindleList.setSidebarId("sidebar" + date);
-		dateKindleList.setKindleList(kindleMapper.selectDayKindleList(date));
-		
-		return dateKindleList;
-    }
 
-    private String getToday(){
-    	SimpleDateFormat sdf = new SimpleDateFormat(KINDLE_DATE_FORMAT, Locale.JAPAN);
-    	return sdf.format(new Date());
-    }
-
-    private String dateConvert(String releaseDate){
-    	SimpleDateFormat sdf = new SimpleDateFormat(KINDLE_DATE_FORMAT, Locale.JAPAN);
-    	SimpleDateFormat returnSdf = new SimpleDateFormat("M/d(E)", Locale.JAPAN);
-    	Date date = null;
-    	
-    	try {
-    		date = sdf.parse(releaseDate);
-		} catch (ParseException e) {
-			e.printStackTrace();
-			return null;
-		}  
-    	return returnSdf.format(date);
-    }
-	
 }
