@@ -1,5 +1,7 @@
 package kindlereport.web;
 
+import javax.servlet.http.HttpServletRequest;
+
 import kindlereport.mapper.CommentMapper;
 import kindlereport.mapper.KindleMapper;
 import kindlereport.mapper.TagMapper;
@@ -25,7 +27,7 @@ public class DetailsController {
 	public String ajax(
 			@PathVariable String asin,
 			@RequestParam(value = "ajaxflg", required = false, defaultValue = "0") int ajaxflg,
-			Model model) {
+			Model model, HttpServletRequest request) {
 		
 		// kindle
 		model.addAttribute("kindle", kindleMapper.selectKindleByAsin(asin));
@@ -38,10 +40,11 @@ public class DetailsController {
 		
 		if(ajaxflg == 1){
 			// ajaxリクエストの場合はコンテンツのみ返す
-			return "items_content";
+			request.setAttribute("pageName", "items_content");
 		}else{
-			return "items";
+			request.setAttribute("pageName", "items");
 		}
+		return "common_frame";
 	}
 	
 }

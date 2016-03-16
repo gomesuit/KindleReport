@@ -1,9 +1,8 @@
 package kindlereport.web;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
+
+import javax.servlet.http.HttpServletRequest;
 
 import kindlereport.service.KindleService;
 import kindlereport.web.util.DateUtil;
@@ -21,42 +20,40 @@ public class IndexController {
 	private KindleService kindleService;
 
 	@RequestMapping("/")
-	public String home(Model model) {
-
-		return "front";
+	public String home(Model model, HttpServletRequest request) {
+		
+		request.setAttribute("pageName", "front");
+		return "common_frame";
 	}
 
 	@RequestMapping("/list")
 	public String list(
 			@RequestParam(value = "tagId", required = false) List<Integer> tagId,
-			Model model) {
+			Model model, HttpServletRequest request) {
 
 		if (tagId != null) {
 			model.addAttribute("tagList", kindleService.getTagListById(tagId));
 		}
 
-		return "list";
+		request.setAttribute("pageName", "list");
+		return "common_frame";
 	}
 
 	@RequestMapping("/dateList")
 	public String dateList(
 			@RequestParam(value = "ajaxDate", required = false) String ajaxDate,
 			@RequestParam(value = "ajaxFlg", required = false, defaultValue = "0") int ajaxflg,
-			Model model) {
+			Model model, HttpServletRequest request) {
 		
-		model.addAttribute("today", getTodayByString());
+		model.addAttribute("today", DateUtil.getTodayByString());
 
 		if (ajaxflg == 0) {
-			return "dateList";
+			request.setAttribute("pageName", "dateList");
 		} else {
 			model.addAttribute("dateKindleListList", kindleService.getDateKindleList(ajaxDate));
-			return "dateList_content";
+			request.setAttribute("pageName", "dateList_content");
 		}
-	}
-
-	private String getTodayByString() {
-		SimpleDateFormat sdf = new SimpleDateFormat(DateUtil.KINDLE_DATE_FORMAT, Locale.JAPAN);
-		return sdf.format(new Date());
+		return "common_frame";
 	}
 
 }

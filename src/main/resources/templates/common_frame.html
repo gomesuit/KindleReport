@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<head th:substituteby="common::meta" />
+<head th:substituteby="common::static" />
+<script src="/js/vendor/jquery.sticky.js"></script>
+</head>
+<body>
+	<div th:substituteby="common::menubar" />
+	
+	<div th:substituteby="${pageName}" />
+
+	<head th:substituteby="common::footer" />
+</body>
+</html>
