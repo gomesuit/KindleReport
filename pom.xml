@@ -80,6 +80,32 @@
 
 	<profiles>
 		<profile>
+			<id>release</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/resources</directory>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+		<profile>
+			<id>develop</id>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/develop/resources</directory>
+					</resource>
+					<resource>
+						<directory>src/main/resources</directory>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+		<profile>
 			<id>devW</id>
 			<build>
 				<resources>
