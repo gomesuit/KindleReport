@@ -49,11 +49,11 @@ public class IndexController {
 
 		if (ajaxflg == 0) {
 			request.setAttribute("pageName", "dateList");
+			return "common_frame";
 		} else {
 			model.addAttribute("dateKindleListList", kindleService.getDateKindleList(ajaxDate));
-			request.setAttribute("pageName", "dateList_content");
+			return "dateList_content";
 		}
-		return "common_frame";
 	}
 
 }

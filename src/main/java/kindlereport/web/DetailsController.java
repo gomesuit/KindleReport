@@ -40,11 +40,11 @@ public class DetailsController {
 		
 		if(ajaxflg == 1){
 			// ajaxリクエストの場合はコンテンツのみ返す
-			request.setAttribute("pageName", "items_content");
+			return "items_content";
 		}else{
 			request.setAttribute("pageName", "items");
+			return "common_frame";
 		}
-		return "common_frame";
 	}
 	
 }
