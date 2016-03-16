@@ -9,8 +9,8 @@ import kindlereport.mapper.KindleMapper;
 import kindlereport.mapper.TagMapper;
 import kindlereport.model.Comment;
 import kindlereport.model.Tag;
-import kindlereport.model.WebSocketReceive;
-import kindlereport.model.WebSocketTransmission;
+import kindlereport.web.model.WebSocketReceive;
+import kindlereport.web.model.WebSocketTransmission;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

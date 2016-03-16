@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api")
 public class ApiController {
 	private static final Logger logger = LoggerFactory.getLogger(ApiController.class);
 	private static final String KINDLE_DATE_FORMAT = "yyyy-MM-dd";
@@ -42,7 +41,7 @@ public class ApiController {
 	@Autowired
 	private TagMapper tagMapper;
 	
-	@RequestMapping("tile")
+	@RequestMapping("/api/tile")
 	public List<KindleTile> tile(
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
 			@RequestParam(value = "order", required = false, defaultValue = "1") int order,
@@ -71,7 +70,7 @@ public class ApiController {
 		return kindleList;
 	}
 
-	@RequestMapping(value = "comment/register", produces = "application/json", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/comment/register", produces = "application/json", method = RequestMethod.POST)
 	public int commentRegister(@RequestBody Comment comment, HttpServletRequest request){
 		comment.setRegisterDateTime(getCurrentTime());
 		comment.setIpAddr(request.getRemoteAddr());
@@ -79,7 +78,7 @@ public class ApiController {
 		return comment.getId();
 	}
 
-	@RequestMapping(value = "tag/register", produces = "application/json", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/tag/register", produces = "application/json", method = RequestMethod.POST)
 	public int tagRegister(@RequestBody TagMap tagMap){
 		Tag tag = tagMapper.selectTagByName(tagMap.getName());
 		if(tag == null){
@@ -93,7 +92,7 @@ public class ApiController {
 		return tagMap.getTagId();
 	}
 
-	@RequestMapping(value = "tag/delete", produces = "application/json", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/tag/delete", produces = "application/json", method = RequestMethod.POST)
 	public int tagDeleter(@RequestBody TagMap tagMap){
 		tagMapper.deleteTagMap(tagMap);
 		if(tagMapper.countTagMap(tagMap.getTagId()) == 0){
@@ -103,7 +102,7 @@ public class ApiController {
 		return tagMap.getTagId();
 	}
 
-	@RequestMapping(value = "tag/select", produces = "application/json", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/tag/select", produces = "application/json", method = RequestMethod.POST)
 	public List<Tag> tagSelecter(@RequestBody ReceiveTag receiveTag){
 		receiveTag.setName(receiveTag.getName() + "%");
 		return tagMapper.selectTagByNameLike(receiveTag);
@@ -116,7 +115,7 @@ public class ApiController {
     }
     
     
-	@RequestMapping("dateList")
+	@RequestMapping("/api/dateList")
 	public List<String> dateList() {
 		List<String> dateList = kindleMapper.selectRereaseDateList(getCurrentDate());
 		return dateList;

@@ -1,4 +1,4 @@
-package kindlereport.model;
+package kindlereport.web.model;
 
 public class WebSocketReceive {
 	protected int sw;

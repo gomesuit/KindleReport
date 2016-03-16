@@ -1,6 +1,8 @@
-package kindlereport.model;
+package kindlereport.web.model;
 
 import java.util.List;
+
+import kindlereport.model.KindleTile;
 
 public class DateKindleList {
 	protected String releaseDate;

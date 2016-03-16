@@ -9,7 +9,7 @@ import java.util.Locale;
 
 import kindlereport.mapper.KindleMapper;
 import kindlereport.mapper.TagMapper;
-import kindlereport.model.DateKindleList;
+import kindlereport.web.model.DateKindleList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,11 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/")
 public class IndexController {
-	private static final String LIST_PAGE_URL = "list";
-	private static final String DATELIST_PAGE_URL = "dateList";
-	private static final String FRONT_PAGE_URL = "front";
 	private static final String KINDLE_DATE_FORMAT = "yyyy-MM-dd";
 	
 	@Autowired
@@ -32,42 +28,42 @@ public class IndexController {
 
 	@RequestMapping("/")
 	public String front(Model model) {
-		model.addAttribute("LIST_PAGE_URL", LIST_PAGE_URL);
-		model.addAttribute("DATELIST_PAGE_URL", DATELIST_PAGE_URL);
+		model.addAttribute("LIST_PAGE_URL", "list");
+		model.addAttribute("DATELIST_PAGE_URL", "dateList");
 		model.addAttribute("FRONT_PAGE_URL", "/");
 		
-		return FRONT_PAGE_URL;
+		return "front";
 	}
 	
-	@RequestMapping(LIST_PAGE_URL)
+	@RequestMapping("/list")
 	public String ajax(
 			@RequestParam(value = "tagId", required = false) List<Integer> tagId,
 			Model model) {
-		model.addAttribute("LIST_PAGE_URL", LIST_PAGE_URL);
-		model.addAttribute("DATELIST_PAGE_URL", DATELIST_PAGE_URL);
+		model.addAttribute("LIST_PAGE_URL", "list");
+		model.addAttribute("DATELIST_PAGE_URL", "dateList");
 		if(tagId != null){
 			model.addAttribute("tagList", tagMapper.selectTagListById(tagId));
 		}
 		
-		return LIST_PAGE_URL;
+		return "list";
 	}
 
-	@RequestMapping(DATELIST_PAGE_URL)
+	@RequestMapping("/dateList")
 	public String dateList(
 			@RequestParam(value = "ajaxDate", required = false) String ajaxDate,
 			@RequestParam(value = "ajaxFlg", required = false, defaultValue = "0") int ajaxflg,
 			Model model) {
-		model.addAttribute("LIST_PAGE_URL", LIST_PAGE_URL);
-		model.addAttribute("DATELIST_PAGE_URL", DATELIST_PAGE_URL);
+		model.addAttribute("LIST_PAGE_URL", "list");
+		model.addAttribute("DATELIST_PAGE_URL", "dateList");
 		model.addAttribute("today", getToday());
 		
 		if(ajaxflg == 0){
-			return DATELIST_PAGE_URL;
+			return "dateList";
 		}else{
 			List<DateKindleList> dateKindleListList = new ArrayList<DateKindleList>();
 			dateKindleListList.add(createDateKindleList(ajaxDate));
 			model.addAttribute("dateKindleListList", dateKindleListList);
-			return DATELIST_PAGE_URL + "_content";
+			return "dateList" + "_content";
 		}
 	}
 	

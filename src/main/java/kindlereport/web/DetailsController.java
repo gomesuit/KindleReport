@@ -18,12 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("items")
 public class DetailsController {
-	private static final String DETAILS_PAGE_URL = "items";
-	private static final String LIST_PAGE_URL = "list";
-	private static final String DATELIST_PAGE_URL = "dateList";
-	
 	@Autowired
 	private KindleMapper kindleMapper;
 	@Autowired
@@ -31,7 +26,7 @@ public class DetailsController {
 	@Autowired
 	private TagMapper tagMapper;
 	
-	@RequestMapping(value = "{asin}", method = RequestMethod.GET)
+	@RequestMapping(value = "/items/{asin}", method = RequestMethod.GET)
 	public String ajax(
 			@PathVariable String asin,
 			@RequestParam(value = "ajaxflg", required = false, defaultValue = "0") int ajaxflg,
@@ -43,12 +38,12 @@ public class DetailsController {
 		List<Tag> tagList = tagMapper.selectTagsByAsin(asin);
 		model.addAttribute("tagList", tagList);
 		
-		model.addAttribute("LIST_PAGE_URL", LIST_PAGE_URL);
-		model.addAttribute("DATELIST_PAGE_URL", DATELIST_PAGE_URL);
+		model.addAttribute("LIST_PAGE_URL", "list");
+		model.addAttribute("DATELIST_PAGE_URL", "dateList");
 		if(ajaxflg == 1){
-			return DETAILS_PAGE_URL + "_content";
+			return "items" + "_content";
 		}else{
-			return DETAILS_PAGE_URL;
+			return "items";
 		}
 	}
 	
