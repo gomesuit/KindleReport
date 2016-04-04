@@ -110,7 +110,7 @@
 			<build>
 				<resources>
 					<resource>
-						<directory>src/develop/resources</directory>
+						<directory>src/developW/resources</directory>
 					</resource>
 					<resource>
 						<directory>src/main/resources</directory>
