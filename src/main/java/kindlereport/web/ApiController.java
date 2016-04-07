@@ -32,7 +32,8 @@ public class ApiController {
 
 	@Autowired
 	private KindleService kindleService;
-
+	
+	//@CrossOrigin(allowedHeaders = "http://localhost")
 	@RequestMapping("/api/tile")
 	public List<KindleTile> tile(
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
