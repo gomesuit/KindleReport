@@ -27,13 +27,25 @@
 }
 
 #dateList .releaseDate{
-	font-size: 208.3%;
 	text-align: left;
 	background-color: #F8F8F8;
+	word-wrap: break-word;
+}
+
+@media screen and (min-width : 768px){
+	#dateList .releaseDate{
+		font-size: 100%;
+	}
+}
+ 
+@media screen and (min-width : 1024px) {
+	#dateList .releaseDate{
+		font-size: 200%;
+	}
 }
 
 #dateList #today{
-	font-size: 300%;
+	color: #ff0000;
 }
 
 
