@@ -36,29 +36,17 @@
 			AND I.isMagazine = 0
 			AND I.isAdult = 0
 			AND K.isAdultProduct = 0
-		<if test="order == 4">
-			AND R.deleteTime IS NOT NULL
-		</if>
 		<if test="limitedFree == true">
 			AND I.isLimitedFree = true
 		</if>
 		ORDER BY
 		<choose>
-			<when test="order == null or order == 1">
+			<when test='order.toString().equals("releaseDateDesc")'>
 				K.releaseDate DESC, I.tileTitle ASC
 			</when>
-			<when test="order == 2">
-				K.releaseDate ASC, I.tileTitle ASC
-			</when>
-			<when test="order == 3">
+			<when test='order.toString().equals("insertTimeDesc")'>
 				R.insertTime DESC
 			</when>
-			<when test="order == 4">
-				R.deleteTime DESC
-			</when>
-			<otherwise>
-				K.releaseDate DESC, I.tileTitle ASC
-			</otherwise>
 		</choose>
 		LIMIT #{limit} OFFSET #{offset}
 	</select>

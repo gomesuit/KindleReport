@@ -38,7 +38,7 @@ $(function() {
 		
 		order = $.cookie("order");
 		if (order == null) {
-			order = 1;
+			order = "releaseDateDesc";
 			$.cookie("order", order);
 		}
 		

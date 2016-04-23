@@ -1,7 +1,15 @@
 
 <div id="front">
 	<div class="container">
-		<div class="col-md-6">
+		<div class="col-md-4 col-xs-6">
+			新着
+			<div th:each="item : ${newReleaseList}" th:remove="tag">
+			</div>
+		</div>
+		<div class="col-md-4 col-xs-6">
+			今日の発売
+		</div>
+		<div class="col-md-4 col-xs-12">
 			<a class="twitter-timeline" href="https://twitter.com/eComic_new" data-widget-id="723125531160403968">@eComic_newさんのツイート</a>
 		</div>
 	</div>

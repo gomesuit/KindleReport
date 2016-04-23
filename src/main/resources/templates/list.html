@@ -44,14 +44,12 @@
 					</button>
 					<ul class="dropdown-menu" role="menu"
 						aria-labelledby="dropdownMenu1">
-						<li role="presentation" class="myorder" value="1"><a
-							role="menuitem" tabindex="-1" th:href="'/' + ${LIST_PAGE_URL}">発売日降順</a></li>
-						<li role="presentation" class="myorder" value="2"><a
-							role="menuitem" tabindex="-1" th:href="'/' + ${LIST_PAGE_URL}">発売日昇順</a></li>
-						<li role="presentation" class="myorder" value="3"><a
-							role="menuitem" tabindex="-1" th:href="'/' + ${LIST_PAGE_URL}">新着順</a></li>
-						<li role="presentation" class="myorder" value="4"><a
-							role="menuitem" tabindex="-1" th:href="'/' + ${LIST_PAGE_URL}">削除順</a></li>
+						<li role="presentation" class="myorder" value="releaseDateDesc">
+							<a role="menuitem" tabindex="-1" th:href="'/' + ${LIST_PAGE_URL}">発売日降順</a>
+						</li>
+						<li role="presentation" class="myorder" value="insertTimeDesc">
+							<a role="menuitem" tabindex="-1" th:href="'/' + ${LIST_PAGE_URL}">新着順</a>
+						</li>
 					</ul>
 				</div>
 			</div>
