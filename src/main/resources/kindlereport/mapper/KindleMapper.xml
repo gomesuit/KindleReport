@@ -37,6 +37,7 @@
 			AND I.isAdult = 0
 			AND I.isBulkBuying = 0
 			AND K.isAdultProduct = 0
+			AND R.deleteTime IS NULL
 		<if test="limitedFree == true">
 			AND I.isLimitedFree = true
 		</if>
@@ -72,6 +73,7 @@
 			AND I.isAdult = 0
 			AND I.isBulkBuying = 0
 			AND K.isAdultProduct = 0
+			AND R.deleteTime IS NULL
 		<if test="limitedFree == true">
 			AND I.isLimitedFree = true
 		</if>
@@ -103,6 +105,9 @@
 			K.releaseDate
 		FROM
 			Kindle K
+				INNER JOIN
+			KindleRegist R
+				ON K.asin = R.asin
 				LEFT JOIN
 			KindleMyInfo I
 				ON K.asin = I.asin
@@ -113,6 +118,7 @@
 			AND I.isAdult = 0
 			AND I.isBulkBuying = 0
 			AND K.isAdultProduct = 0
+			AND R.deleteTime IS NULL
 		ORDER BY
 			K.releaseDate
 	</select>
@@ -125,6 +131,9 @@
 			K.mediumImage
 		FROM
 			Kindle K
+				INNER JOIN
+			KindleRegist R
+				ON K.asin = R.asin
 				LEFT JOIN
 			KindleMyInfo I
 				ON K.asin = I.asin
@@ -135,6 +144,7 @@
 			AND I.isAdult = 0
 			AND I.isBulkBuying = 0
 			AND K.isAdultProduct = 0
+			AND R.deleteTime IS NULL
 		ORDER BY
 			I.tileTitle
 	</select>
