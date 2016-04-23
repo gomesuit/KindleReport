@@ -4,3 +4,103 @@
 		<div th:substituteby="dateList_content::content"></div>
 	</div>
 </div>
+
+<script>
+/*<![CDATA[*/
+console.log("aaaaaaaaaaaa");
+
+
+function isDateListPage() {
+	return ($("#dateList").get(0) != null)
+}
+function datePageLoad(date) {
+	if(!isDateListPage()){
+		return null;
+	}
+	if(date == null){
+		return null;
+	}
+	var request = $.ajax({
+		type : "GET",
+		url : "/dateList",
+		async: false,
+		cache : false,
+		datatype : "html",
+		data : {
+			"ajaxDate" : date,
+			"ajaxFlg" : 1
+		},
+		timeout : 3000,
+		context : date
+	});
+	request.done(function(data) {
+		$("#dateList").append(data);
+		
+		var id = "#" + this + " ";
+		var colnum = 6;
+		var allImage = $(id + ".img");
+		var allImageCount = allImage.length;
+		var completeImageCount = 0;
+		for (var i = 0; i < allImageCount; i++) {
+			var that = this;
+			$(allImage[i]).on("load", function(){
+				completeImageCount++;
+				if (allImageCount == completeImageCount) {
+					$(id + '.mythumbnail').tile(6);
+					$(id + '.title').tile(6);
+					$(id + '.tile').tile(6);
+					//console.log(id);
+				}
+			});
+		}
+		$("#sidebar" + this).sticky({topSpacing : 62});
+		$(window).data('loading', false);
+	});
+	request.fail(function() {
+		// alert("通信エラー");
+	});
+	request.always(function() {
+		// alert("通信完了");
+	});
+}
+var dateList;
+function dateListLoad(){
+	if(!isDateListPage()){
+		return null;
+	}
+	var request = $.ajax({
+		type : "GET",
+		url : "/api/dateList",
+		cache : false,
+		datatype : "json",
+		timeout : 3000
+	});
+	request.done(function(data) {
+		dateList = data.reverse();
+		datePageLoad(dateList.pop());
+		datePageLoad(dateList.pop());
+		datePageLoad(dateList.pop());
+		datePageLoad(dateList.pop());
+		//読み込み後今日の日付にスクロール位置を変更する→後で実装予定
+		//$(window).scrollTop($("#today").offset().top);
+	});
+	request.fail(function() {
+		// alert("通信エラー");
+	});
+	request.always(function() {
+		// alert("通信完了");
+	});
+}
+dateListLoad();
+$(window).on('bottom', function() {
+	if(!isDateListPage()){
+		return null;
+	}
+	var obj = $(this);
+	if (!obj.data('loading')) {
+		obj.data('loading', true);
+		datePageLoad(dateList.pop());
+	}
+});
+/*]]>*/
+</script>
