@@ -8,8 +8,10 @@
 <body>
 	<div th:substituteby="common::menubar" />
 	
-	<div th:substituteby="${pageName}" />
-
+	<div id="pageState">
+		<div th:substituteby="${pageName}" />
+	</div>
+	
 	<head th:substituteby="common::footer" />
 </body>
 </html>

@@ -11,6 +11,7 @@ import kindlereport.model.ReceiveTag;
 import kindlereport.model.Tag;
 import kindlereport.model.TagMap;
 import kindlereport.service.KindleService;
+import kindlereport.web.model.OrderType;
 import kindlereport.web.util.DateUtil;
 
 import org.slf4j.Logger;
@@ -33,11 +34,10 @@ public class ApiController {
 	@Autowired
 	private KindleService kindleService;
 	
-	//@CrossOrigin(allowedHeaders = "http://localhost")
 	@RequestMapping("/api/tile")
 	public List<KindleTile> tile(
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
-			@RequestParam(value = "order", required = false, defaultValue = "1") int order,
+			@RequestParam(value = "order", required = false, defaultValue = "releaseDateDesc") OrderType order,
 			@RequestParam(value = "tagId", required = false) List<Integer> tagIdList,
 			@RequestParam(value = "limitedFree", required = false, defaultValue = "false") boolean limitedFree,
 			Model model) {

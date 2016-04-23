@@ -15,6 +15,7 @@ import kindlereport.model.ReceiveTag;
 import kindlereport.model.Tag;
 import kindlereport.model.TagMap;
 import kindlereport.web.model.DateKindle;
+import kindlereport.web.model.OrderType;
 import kindlereport.web.util.DateUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,7 +95,7 @@ public class KindleService {
 	}
 
 	public List<KindleTile> getKindleList(
-			int limit, int offset, int order,
+			int limit, int offset, OrderType order,
 			List<Integer> tagIdList, boolean limitedFree) {
 
 		Map<String, Object> requestParam = new HashMap<String, Object>();

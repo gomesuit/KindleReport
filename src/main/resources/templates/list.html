@@ -1,63 +1,441 @@
 
-<div id="pageState">
-	<div class="container">
-		<div id="tileHeader" class="col-md-12">
-			<div class="col-md-12">
-				<span>タグ絞込：</span>
-				<span><input id="tagSearch" type="text" /></span>
-				<div th:each="tag : ${tagList}">
-					<span class="detailLabel label label-warning glyphicon glyphicon-tag" th:text="${tag.name}" aria-hidden="false" th:if="${tag} != null"/>
-					<button class="tagDelete btn btn-default btn-xs" type="button" style="display: none;" th:value="${tag.id}" th:if="${tag} != null">
-						<span class="glyphicon glyphicon-remove" aria-hidden="false" />
-					</button>
-				</div>
-			</div>
-			<div class="col-md-12">
-				<div class="checkbox">
-					<label><input id="limitedFree" type="checkbox" value="" />期間限定無料</label>
-				</div>
-			</div>
-			<div class="col-md-10">
-				<div id="list-btn-group" class="btn-group" data-toggle="buttons">
-					<label id="colrdo1" class="btn btn-default mybtn" value="1" >
-						<input type="radio" />☓1
-					</label>
-					<label id="colrdo2" class="btn btn-default mybtn" value="2" >
-						<input type="radio" />☓2
-					</label>
-					<label id="colrdo3" class="btn btn-default mybtn" value="3" >
-						<input type="radio" />☓3
-					</label>
-					<label id="colrdo4" class="btn btn-default mybtn" value="4" >
-						<input type="radio" />☓4
-					</label>
-					<label id="colrdo6" class="btn btn-default mybtn" value="6">
-						<input type="radio" />☓6
-					</label>
-				</div>
-			</div>
-			<div class="col-md-2">
-				<div id="list-dropdown" class="dropdown">
-					<button class="btn btn-default dropdown-toggle" type="button"
-						id="dropdownMenu1" data-toggle="dropdown">
-						並べ替え <span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu" role="menu"
-						aria-labelledby="dropdownMenu1">
-						<li role="presentation" class="myorder" value="1"><a
-							role="menuitem" tabindex="-1" th:href="'/' + ${LIST_PAGE_URL}">発売日降順</a></li>
-						<li role="presentation" class="myorder" value="2"><a
-							role="menuitem" tabindex="-1" th:href="'/' + ${LIST_PAGE_URL}">発売日昇順</a></li>
-						<li role="presentation" class="myorder" value="3"><a
-							role="menuitem" tabindex="-1" th:href="'/' + ${LIST_PAGE_URL}">新着順</a></li>
-						<li role="presentation" class="myorder" value="4"><a
-							role="menuitem" tabindex="-1" th:href="'/' + ${LIST_PAGE_URL}">削除順</a></li>
-					</ul>
-				</div>
+<div class="container">
+	<div id="tileHeader" class="col-md-12">
+		<div class="col-md-12">
+			<span>タグ絞込：</span>
+			<span><input id="tagSearch" type="text" /></span>
+			<div th:each="tag : ${tagList}">
+				<span class="detailLabel label label-warning glyphicon glyphicon-tag" th:text="${tag.name}" aria-hidden="false" th:if="${tag} != null"/>
+				<button class="tagDelete btn btn-default btn-xs" type="button" style="display: none;" th:value="${tag.id}" th:if="${tag} != null">
+					<span class="glyphicon glyphicon-remove" aria-hidden="false" />
+				</button>
 			</div>
 		</div>
-		<div class="">
-			<div id="mainrow"></div>
+		<div class="col-md-12">
+			<div class="checkbox">
+				<label><input id="limitedFree" type="checkbox" value="" />期間限定無料</label>
+			</div>
+		</div>
+		<div class="col-md-2">
+			<div id="list-dropdown" class="dropdown">
+				<button class="btn btn-default dropdown-toggle" type="button"
+					id="dropdownMenu1" data-toggle="dropdown">
+					並べ替え <span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu" role="menu"
+					aria-labelledby="dropdownMenu1">
+					<li role="presentation" class="myorder" value="releaseDateDesc">
+						<a role="menuitem" tabindex="-1" th:href="'/' + ${LIST_PAGE_URL}">発売日降順</a>
+					</li>
+					<li role="presentation" class="myorder" value="insertTimeDesc">
+						<a role="menuitem" tabindex="-1" th:href="'/' + ${LIST_PAGE_URL}">新着順</a>
+					</li>
+				</ul>
+			</div>
 		</div>
 	</div>
+	<div class="">
+		<div id="mainrow"></div>
+	</div>
 </div>
+
+<script>
+/*<![CDATA[*/
+	var itemCount;
+	var colnum;
+	var order;
+	var position;
+	var viewPosition;
+	var tagIdList;
+	var limitedFree;
+	init();
+	pageLoad();
+	$(document).on("click", ".mybtn", function(){
+		colnum = $(this).attr("value");
+		$.cookie("colnum", colnum);
+		$("#mainrow").empty();
+		init()
+		pageLoad();
+	});
+	$(document).on("click", ".myorder", function(){
+		order = $(this).attr("value");
+		$.cookie("order", order);
+		$("#mainrow").empty();
+		init()
+		pageLoad();
+	});
+	
+	function pageLoad() { 
+		if(!isListPage()){
+			return null;
+		}
+		var request = $.ajax({
+			type : "GET",
+			url : "/api/tile" + createParam(position),
+			cache : false,
+			datatype : "json",
+			data : {
+				"order" : order
+			},
+			timeout : 3000
+		});
+		request.done(function(data) {
+			if(data.length == 0){
+				return null;
+			}
+			var pageRow = new PageRow(position, colnum, data);
+			var mainrow = $("#mainrow");
+			mainrow.append(pageRow.getPageRow());
+			pageRow.tileAdjust();
+			
+			$(window).data('loading', false);
+		});
+		request.fail(function() {
+			// alert("通信エラー");
+		});
+		request.always(function() {
+			// alert("通信完了");
+		});
+	}
+	$(window).on('bottom', function() {
+		if(!isListPage()){
+			return null;
+		}
+		if (pageExistsCheck(position + 1)) {
+			position++;
+			return null;
+		}
+		var obj = $(this);
+		if (!obj.data('loading')) {
+			obj.data('loading', true);
+			position++;
+			pageLoad();
+			//pageDelete(position - 2)
+			// history.pushState("", "", "?page=" + position);
+		}
+	});
+	//ページ戻り（上スクロール）
+	$(window).scroll(
+			function(ev) {
+				if(!isListPage()){
+					return null;
+				}
+				var $window = $(ev.currentTarget);
+				var prevPageId = "page" + (viewPosition - 1);
+				var prevPagerow = $("#" + prevPageId);
+				if (prevPagerow.get(0) == null) {
+					return null;
+				}
+				var prevPageBottom = prevPagerow.position().top
+						+ prevPagerow.height();
+				var scrollTop = $window.scrollTop();
+				var scrollBottom = scrollTop + $window.height();
+
+				if (scrollBottom < prevPageBottom) {
+					viewPosition--;
+					history.pushState(null, "", createParam(viewPosition));
+				}
+			});
+	//ページ送り（下スクロール）
+	$(window).scroll(
+			function(ev) {
+				if(!isListPage()){
+					return null;
+				}
+				var $window = $(ev.currentTarget);
+				var nextPageId = "page" + (viewPosition);
+				var nextPagerow = $("#" + nextPageId);
+				if (nextPagerow.get(0) == null) {
+					return null;
+				}
+				var nextPageBottom = nextPagerow.position().top
+						+ nextPagerow.height();
+				var scrollTop = $window.scrollTop();
+				var scrollBottom = scrollTop + $window.height();
+
+				if (scrollTop > nextPageBottom) {
+					viewPosition++;
+					if (position < viewPosition) {
+						position = viewPosition;
+					}
+					//console.log($("#pageState").html());
+					history.pushState([null, $("#pageState").html()], "", createParam(viewPosition));
+				}
+			});
+	function isMobile(){
+		var agent = navigator.userAgent;
+	    if(agent.search(/iPhone/) != -1 || agent.search(/iPad/) != -1 || agent.search(/iPod/) != -1 || agent.search(/Android/) != -1){
+	        return true;
+	    }else{
+	    	return false;
+	    }
+	}
+	function init() {
+		if(isMobile()){
+			colnum = 2;
+		}else{
+			colnum = 6;
+		}
+		
+		order = $.cookie("order");
+		if (order == null) {
+			order = "insertTimeDesc";
+			$.cookie("order", order);
+		}
+		
+		position = getParam("page");
+		if (position == null) {
+			position = 1;
+		}
+		viewPosition = position;
+		
+		initTagIdList();
+		
+		
+		$(".sidebar").each(function(i, elem) {
+				// 	    console.log(i + ': ' + $(elem).attr("id"));
+			$("#" + $(elem).attr("id")).sticky({topSpacing : 62});
+		});
+		if(isListPage()){
+			$("#tagSearch").autocomplete({
+				source: function(req, resp){
+					$.ajax({
+					    headers: { 
+					        'Accept': 'application/json',
+					        'Content-Type': 'application/json' 
+					    },
+					    url: "/api/tag/select",
+					    type: "POST",
+					    cache: false,
+					    dataType: "json",
+					    timeout : 3000,
+					    data: JSON.stringify({
+					    	name: req.term,
+					    	tagIdList: tagIdList
+					    }),
+					    success: function(o){
+							var newO = [];
+							for(var i = 0; i < o.length; i++){
+								var tag = {
+									label: o[i].name,
+									value: o[i].name,
+									id: o[i].id
+								};
+								newO[i] = tag;
+							};
+					    	resp(newO);
+					    },
+					    error: function(xhr, ts, err){
+					    	resp(['']);
+					    }
+					  });
+
+				},
+				autoFocus: true,
+				minLength: 0,
+			    select: function(e, ui) {
+			    	//console.log(ui.item.id);
+			    	addTagIdList(ui.item.id);
+			    	window.location.href = createParam(1);
+			    }
+			});
+			$("#limitedFree").click(function() {
+				limitedFree = $("#limitedFree").prop('checked');
+				window.location.href = createParam(1);
+			});
+			limitedFree = getParam("limitedFree");
+			if (limitedFree == null) {
+				limitedFree = false;
+			}
+			$("#limitedFree").prop('checked', limitedFree)
+		}
+	}
+	function getParam(key) {
+		if (location.search == "") {
+			return null;
+		}
+		var url = location.href;
+		parameters = url.split("?");
+		params = parameters[1].split("&");
+		var paramsArray = [];
+		for (i = 0; i < params.length; i++) {
+			neet = params[i].split("=");
+			paramsArray.push(neet[0]);
+			if(paramsArray[neet[0]] == null){
+				paramsArray[neet[0]] = neet[1];
+			}else{
+				paramsArray[neet[0]] += "," + neet[1];
+			}
+		}
+		var value = paramsArray[key];
+		return value;
+	}
+	function initTagIdList(){
+		tagId = getParam("tagId");
+		if(tagId != null){
+			tagIdList = tagId.split(",");
+		}else{
+			tagIdList = [];
+		}
+	}
+	function isListPage() {
+		return ($("#mainrow").get(0) != null)
+	}
+	function createParam(viewPosition) {
+		url = "?page=" + viewPosition;
+		if(tagIdList != null){
+			for (i = 0; i < tagIdList.length; i++) {
+				url += "&tagId=" + tagIdList[i];
+			}
+		}
+		if(limitedFree != false){
+			url += "&limitedFree=" + limitedFree;
+		}
+		return url;
+	}
+	var PageRow = function(position, colnum, kindlesdata){
+		this.params = {
+			bootColClass:"col-md-" + (12 / colnum) + " col-xs-" + (12 / colnum),
+			tileClassName:"tile" + position,
+			thumbnailClassName:"thumbnail" + position,
+			imgClassName:"img" + position,
+			titleClassName:"title" + position
+		};
+		this.pageId = "page" + position;
+		this.pageDom = new PageDom(kindlesdata, this.params);
+		
+		this.getPageRow = function(){
+			var attrList = [getAttrString("id", this.pageId)];
+			var text = this.pageDom.getPageDom() + this.getPageNumber();
+			return getHtmlDom("div", attrList, text);
+		}
+
+		this.getPageNumber = function(){
+			return getHtmlDom("p", [getAttrString("class", "pagenumber text-center")], "-page" + position + "-");
+		}
+		
+		this.tileAdjust = function(){
+			var allImage = $("." + this.params.imgClassName);
+			var allImageCount = allImage.length;
+			var completeImageCount = 0;
+			for (var i = 0; i < allImageCount; i++) {
+				var that = this;
+				$(allImage[i]).on("load", function(){
+					completeImageCount++;
+					if (allImageCount == completeImageCount) {
+						$('.' + that.params.thumbnailClassName).tile(colnum);
+						$('.' + that.params.titleClassName).tile(colnum);
+						$('.' + that.params.tileClassName).tile(colnum);
+					}
+				});
+			}
+		}
+	}
+	var PageDom = function(kindlesdata, params){
+		this.getPageDom = function(){
+			var text = "";
+			for (var i in kindlesdata) {
+				var itemDom = new ItemDom(kindlesdata[i], params);
+				text += itemDom.getItemDom();
+			}
+			return text;
+		}
+	}
+	function getAttrString(attrName, className){
+		return attrName + '="' + className + '"';
+	}
+	var ItemDom = function(kindledata, params){
+		this.asin = kindledata.asin;
+		this.title = kindledata.title;
+		this.releaseDate = kindledata.releaseDate;
+		this.imageUrl = kindledata.mediumImage;
+		if(this.imageUrl == "" || this.imageUrl == null){
+			this.imageUrl = "/img/noimage_s.png";
+		}
+		var params = clone(params);
+
+		this.getItemDom = function(){
+			var classString = params.bootColClass;
+			var attrList = [getAttrString("class", classString)];
+			var text = this.getItemDomContent();
+			return getHtmlDom("div", attrList, text);
+		}
+
+		this.getItemDomContent = function(){
+			var classString = "tile " + params.tileClassName;
+			var attrList = [getAttrString("class", classString)];
+			var text = this.getItemDomThumbnail() + this.getItemDomInfo();
+			return getHtmlDom("div", attrList, text);
+		}
+
+		this.getItemDomThumbnail = function(){
+			var valueString = "/items/" + this.asin;
+			var classString = "mythumbnail " + params.thumbnailClassName;
+			var attrList = [getAttrString("value", valueString), getAttrString("class", classString)];
+			var text = this.getItemDomImg();
+			return getHtmlDom("a", attrList, text);
+		}
+
+		this.getItemDomImg = function(){
+			var attrList = [getAttrString("class", params.imgClassName), getAttrString("src", this.imageUrl)];
+			return getHtmlDom("img", attrList);
+		}
+		
+		this.getItemDomInfo = function(){
+			var classString = "info";
+			var attrList = [getAttrString("class", classString)];
+			var text = this.getItemDomTitle() + this.getItemDomReleaseDate();
+			return getHtmlDom("div", attrList, text);
+		}
+
+		this.getItemDomTitle = function(){
+			var classString = "title " + params.titleClassName;
+			var attrList = [getAttrString("class", classString)];
+			var text = '『' + this.title + '』';
+			return getHtmlDom("p", attrList, text);
+		}
+
+		this.getItemDomReleaseDate = function(){
+			var classString = "releaseDate";
+			var attrList = [getAttrString("class", classString)];
+			return getHtmlDom("p", attrList, this.releaseDate);
+		}
+	}
+	function clone(src){
+	    var dst = {}
+	    for(var k in src){
+	        dst[k] = src[k];
+	    }
+	    return dst;
+	}
+	function getHtmlDom(htmlName, attrList, text){
+		var dom = '';
+		dom += '<';
+		dom += htmlName;
+		if(attrList != null){
+		    for (var i = 0; i < attrList.length; i++) {
+				dom += ' ';
+				dom += attrList[i];
+		    }
+		}
+	    if(text != null){
+			dom += ' >';
+			dom += text;
+			dom += '</';
+			dom += htmlName;
+			dom += '>';
+	    }else{
+			dom += ' />';
+	    }
+		return dom;
+	}
+	function pageExistsCheck(page) {
+		var PageId = "page" + (page);
+		var Pagerow = $("#" + PageId);
+		if (Pagerow.get(0) == null) {
+			return false;
+		}
+		return true;
+	}
+/*]]>*/
+</script>

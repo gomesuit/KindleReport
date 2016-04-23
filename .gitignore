@@ -1,3 +1,4 @@
 target/
 tmp/
 sqlite/
+log/
