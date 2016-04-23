@@ -16,25 +16,6 @@
 				<label><input id="limitedFree" type="checkbox" value="" />期間限定無料</label>
 			</div>
 		</div>
-		<div class="col-md-10">
-			<div id="list-btn-group" class="btn-group" data-toggle="buttons">
-				<label id="colrdo1" class="btn btn-default mybtn" value="1" >
-					<input type="radio" />☓1
-				</label>
-				<label id="colrdo2" class="btn btn-default mybtn" value="2" >
-					<input type="radio" />☓2
-				</label>
-				<label id="colrdo3" class="btn btn-default mybtn" value="3" >
-					<input type="radio" />☓3
-				</label>
-				<label id="colrdo4" class="btn btn-default mybtn" value="4" >
-					<input type="radio" />☓4
-				</label>
-				<label id="colrdo6" class="btn btn-default mybtn" value="6">
-					<input type="radio" />☓6
-				</label>
-			</div>
-		</div>
 		<div class="col-md-2">
 			<div id="list-dropdown" class="dropdown">
 				<button class="btn btn-default dropdown-toggle" type="button"
@@ -181,13 +162,20 @@
 					history.pushState([null, $("#pageState").html()], "", createParam(viewPosition));
 				}
 			});
+	function isMobile(){
+		var agent = navigator.userAgent;
+	    if(agent.search(/iPhone/) != -1 || agent.search(/iPad/) != -1 || agent.search(/iPod/) != -1 || agent.search(/Android/) != -1){
+	        return true;
+	    }else{
+	    	return false;
+	    }
+	}
 	function init() {
-		colnum = $.cookie("colnum");
-		if (colnum == null) {
-			colnum = 4;
-			$.cookie("colnum", colnum);
+		if(isMobile()){
+			colnum = 2;
+		}else{
+			colnum = 6;
 		}
-		selectColRadio(colnum);
 		
 		order = $.cookie("order");
 		if (order == null) {
@@ -261,11 +249,6 @@
 			}
 			$("#limitedFree").prop('checked', limitedFree)
 		}
-	}
-	function selectColRadio(num) {
-		$(".active").removeClass("active");
-		var radioName = "#colrdo" + num;
-		$(radioName).addClass("active");
 	}
 	function getParam(key) {
 		if (location.search == "") {
