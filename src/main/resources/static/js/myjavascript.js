@@ -284,7 +284,7 @@ $(function() {
 		tag += '<span class="detailLabel label label-warning glyphicon glyphicon-tag">';
 		tag += escapeHtml(tagName);
 		tag += '</span>';
-		tag += '<button class="tagDelete btn btn-default btn-xs" type="button" th:value="';
+		tag += '<button class="tagDelete btn btn-default btn-xs" type="button" value="';
 		tag += id;
 		tag += '" style="display: ';
 		tag += display;
