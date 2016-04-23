@@ -42,7 +42,7 @@ public class DetailsController {
 			// ajaxリクエストの場合はコンテンツのみ返す
 			return "items_content";
 		}else{
-			request.setAttribute("pageName", "items");
+			request.setAttribute("pageName", "items_content");
 			return "common_frame";
 		}
 	}
