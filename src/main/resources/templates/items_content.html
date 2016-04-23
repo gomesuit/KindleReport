@@ -16,9 +16,7 @@
 					<span id="author" th:text="'著者：' + ${kindle.author}" />
 					<span id="publisher" th:text="'出版社：' + ${kindle.publisher}" />
 					<br />
-					<span id="insertTime" th:text="'初回登録日時：' + ${#dates.format(kindle.insertTime, 'yyyy/MM/dd HH:mm')}" />
-					<span id="updateTime" th:text="'最終更新日時：' + ${#dates.format(kindle.updateTime, 'yyyy/MM/dd HH:mm')}" />
-					<span id="deleteTime" th:text="Amazonページ削除済み" th:if="${kindle.deleteTime} != null" />
+					<a th:href="${kindle.detailPageURL}" target="_blank">Amazon購入ページへ</a>
 					<p id="content" th:utext="${kindle.content}" />
 					<input type="hidden" id="asin" th:name="${kindle.asin}" th:value="${kindle.asin}" />
 				</div>
