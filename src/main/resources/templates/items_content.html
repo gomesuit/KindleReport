@@ -4,7 +4,7 @@
 <meta name="twitter:title" th:content="${kindle.title}" />
 <meta name="twitter:description" th:content="${kindle.content}" />
 <meta name="twitter:image" th:content="${kindle.largeImage}" th:if="${kindle.largeImage} != '' and ${kindle.largeImage} != NULL" />
-<meta name="twitter:image" content="/img/noimage.png" th:if="${kindle.largeImage} == '' or ${kindle.largeImage} == NULL" />
+<meta name="twitter:image" content="http://www.comirepo.net/img/noimage.png" th:if="${kindle.largeImage} == '' or ${kindle.largeImage} == NULL" />
 
 <div th:fragment="content" th:remove="tag">
 	<div class="container" id="detail">
