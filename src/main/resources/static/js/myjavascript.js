@@ -467,4 +467,5 @@ $(function() {
 //	});
 	//==================================datelist==================================
 	//$('.sidebar').containedStickyScroll();
+	pageLoad();
 });

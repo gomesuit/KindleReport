@@ -49,19 +49,18 @@
 	var tagIdList;
 	var limitedFree;
 	init();
-	pageLoad();
 	$(document).on("click", ".mybtn", function(){
 		colnum = $(this).attr("value");
 		$.cookie("colnum", colnum);
 		$("#mainrow").empty();
-		init()
+		init();
 		pageLoad();
 	});
 	$(document).on("click", ".myorder", function(){
 		order = $(this).attr("value");
 		$.cookie("order", order);
 		$("#mainrow").empty();
-		init()
+		init();
 		pageLoad();
 	});
 	

@@ -75,7 +75,6 @@ function dateListLoad(){
 		// alert("通信完了");
 	});
 }
-dateListLoad();
 $(window).on('bottom', function() {
 	var obj = $(this);
 	if (!obj.data('loading')) {
@@ -83,6 +82,9 @@ $(window).on('bottom', function() {
 		datePageLoad(dateList.pop());
 	}
 });
+function pageLoad() {
+	dateListLoad();
+}
 function init() {}
 /*]]>*/
 </script>
