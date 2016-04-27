@@ -28,8 +28,10 @@
 
 #dateList .releaseDate{
 	text-align: left;
-	background-color: #F8F8F8;
+	background-color: #FFFFFF;
 	word-wrap: break-word;
+	border-radius: 5px;
+	text-align: center;
 }
  
 @media screen and (min-width : 1024px) {
@@ -329,7 +331,7 @@ body {
 
 @media screen and (min-width : 1024px) {
 	#front {
-		font-size: 120%;
+		font-size: 100%;
 	}
 }
 
