@@ -36,3 +36,7 @@ deploy:
       code: |
         scp -i $PRIVATEKEY_PATH -o StrictHostKeyChecking=no -o UserKnownHostsFile=no target/app.jar $DEPLOY_USERNAME@$DEPLOY_HOSTNAME:$APP_HOME/target/
 
+    - script:
+      name: restart application
+      code: |
+        ssh -i $PRIVATEKEY_PATH -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $DEPLOY_USERNAME@$DEPLOY_HOSTNAME 'cd $APP_HOME && ./docker_build.sh && ./docker_run.sh'
