@@ -29,8 +29,6 @@ deploy:
       name: deploy application
       code: |
         pwd
-        ls -la
-        scp --help
    - script:
       name: restart application
       code: |
