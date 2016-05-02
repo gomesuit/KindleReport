@@ -6,7 +6,6 @@ build:
     - script:
         name: create cache directory
         code: |
-          ls -la $WERCKER_CACHE_DIR/.m2/repository
           mkdir -p $WERCKER_CACHE_DIR/.m2/repository
           ln -sf $WERCKER_CACHE_DIR/.m2/repository /root/.m2/repository
     - script:
