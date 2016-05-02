@@ -25,12 +25,3 @@ deploy:
       content: $SSH_KEY_PRIVATE
       overwrite: true
       hide-from-log: true
-    - script:
-      name: deploy application
-      code: |
-        pwd
-        ls -la
-   - script:
-      name: restart application
-      code: |
-        ssh -i $PRIVATEKEY_PATH -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $DEPLOY_USERNAME@$DEPLOY_HOSTNAME 'cd $APP_HOME && ./docker_build.sh && ./docker_run.sh'
