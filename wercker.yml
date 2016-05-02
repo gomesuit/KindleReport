@@ -11,12 +11,4 @@ build:
     - script:
         name: maven package
         code: |
-          mvn clean package -Pdevelop -Dmaven.test.skip=true
-    - script:
-        name: show cache size
-        code: |
-          echo $WERCKER_CACHE_DIR/.m2
-          ls -la $WERCKER_CACHE_DIR/.m2
-          du -sh $WERCKER_CACHE_DIR/.m2
-          ls -la /root/.m2
-          ls -la /root/.m2/repository
+          mvn clean package -Prelease -Dmaven.test.skip=true
