@@ -15,5 +15,6 @@ build:
     - script:
         name: show cache size
         code: |
-          ls -la $WERCKER_CACHE_DIR
-          du -sh $WERCKER_CACHE_DIR
+          echo $WERCKER_CACHE_DIR/.m2
+          ls -la $WERCKER_CACHE_DIR/.m2
+          du -sh $WERCKER_CACHE_DIR/.m2
