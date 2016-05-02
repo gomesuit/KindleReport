@@ -8,23 +8,30 @@ build:
       code: |
         mkdir -p $WERCKER_CACHE_DIR/.m2/repository
         ln -sf $WERCKER_CACHE_DIR/.m2/repository /root/.m2/repository
+
     - script:
       name: maven package
       code: |
         mvn clean package -Prelease -Dmaven.test.skip=true
         cp target/KindleReport-0.0.1-SNAPSHOT.jar target/app.jar
+
+
 deploy:
   steps:
     - add-to-known_hosts:
       hostname: $DEPLOY_HOSTNAME
+
     - mktemp:
       envvar: PRIVATEKEY_PATH
+
     - create-file:
       name: write key
       filename: $PRIVATEKEY_PATH
       content: $SSH_KEY_PRIVATE
       overwrite: true
       hide-from-log: true
+
     - script:
       name: deploy application
-      code: echo aaaa
+      code: |
+        echo aaaa
