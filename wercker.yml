@@ -28,7 +28,3 @@ deploy:
     - script:
       name: deploy application
       code: echo aaaa
-   - script:
-      name: restart application
-      code: |
-        ssh --help
