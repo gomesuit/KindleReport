@@ -27,8 +27,7 @@ deploy:
       hide-from-log: true
     - script:
       name: deploy application
-      code: |
-        pwd
+      code: echo aaaa
    - script:
       name: restart application
       code: |
