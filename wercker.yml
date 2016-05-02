@@ -34,4 +34,4 @@ deploy:
     - script:
       name: deploy application
       code: |
-        echo aaaa
+        scp target/app.jar $DEPLOY_USERNAME@$DEPLOY_HOSTNAME:$APP_HOME/target/
