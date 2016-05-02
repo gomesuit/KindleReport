@@ -4,7 +4,11 @@ box: maven:3-jdk-7
 build:
   steps:
     - script:
-        name: echo
+        name: create cache directory
         code: |
-          echo "hello world!"
+          mkdir -p $WERCKER_CACHE_DIR/.m2
+          ln -sf $WERCKER_CACHE_DIR/.m2 ~/.m2
+    - script:
+        name: maven package
+        code: |
           mvn clean package -Pdevelop -Dmaven.test.skip=true
