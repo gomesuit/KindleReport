@@ -30,7 +30,7 @@ deploy:
       code: |
         pwd
         ls -la
-        scp -i $PRIVATEKEY_PATH -o StrictHostKeyChecking=no -o UserKnownHostsFile=no target/app.jar $DEPLOY_USERNAME@$DEPLOY_HOSTNAME:$APP_HOME/target/
+        #scp -i $PRIVATEKEY_PATH -o StrictHostKeyChecking=no -o UserKnownHostsFile=no target/app.jar $DEPLOY_USERNAME@$DEPLOY_HOSTNAME:$APP_HOME/target/
    - script:
       name: restart application
       code: |
