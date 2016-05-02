@@ -14,7 +14,9 @@ build:
       code: |
         mvn clean package -Prelease -Dmaven.test.skip=true
         cp target/KindleReport-0.0.1-SNAPSHOT.jar target/app.jar
-
+  after-steps:
+    - slack-notifier:
+      url: $SLACK_WEBHOOK_URL
 
 deploy:
   steps:
@@ -40,3 +42,6 @@ deploy:
       name: restart application
       code: |
         ssh -i $PRIVATEKEY_PATH -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $DEPLOY_USERNAME@$DEPLOY_HOSTNAME "cd $APP_HOME && ./docker_build.sh && ./docker_run.sh"
+  after-steps:
+    - slack-notifier:
+      url: $SLACK_WEBHOOK_URL
