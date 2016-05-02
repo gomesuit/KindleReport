@@ -6,6 +6,7 @@ build:
     - script:
         name: create cache directory
         code: |
+          mkdir -p $WERCKER_CACHE_DIR/.m2
           ln -sf $WERCKER_CACHE_DIR/.m2 /root/.m2
     - script:
         name: maven package
