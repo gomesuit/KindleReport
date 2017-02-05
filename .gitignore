@@ -2,3 +2,9 @@ target/
 tmp/
 sqlite/
 log/
+
+# eclipse
+.classpath
+.project
+.settings
+docker-compose.yml
