@@ -1,0 +1,25 @@
+version: '2'
+services:
+  web:
+    build: .
+    ports:
+      - "8080:8080"
+    links:
+      - mysql 
+    environment:
+      - JAVA_OPTS=-Xms256m -Xmx256m -XX:MaxPermSize=64m
+      - LANG=en_US.UTF-8
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/kindle?useUnicode=true&characterEncoding=utf8
+      - SPRING_DATASOURCE_USERNAME=kindle
+      - SPRING_DATASOURCE_PASSWORD=password
+  mysql:
+    image: mysql:5.6
+    ports:
+      - "127.0.0.1:3306:3306"
+    environment:
+      - MYSQL_DATABASE=kindle
+      - MYSQL_ROOT_PASSWORD=rootpasswd
+      - MYSQL_USER=kindle
+      - MYSQL_PASSWORD=password
+      - TZ=Japan
+
